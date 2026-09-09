@@ -1,0 +1,55 @@
+[
+  {
+    "id": "item-transfer",
+    "initial": {
+      "ringOwner": "player",
+      "entities": [
+        "player",
+        "eileen"
+      ],
+      "items": [
+        "ring"
+      ]
+    },
+    "proposal": {
+      "kind": "transfer",
+      "item": "ring",
+      "from": "player",
+      "to": "eileen"
+    },
+    "expected": "COMMIT",
+    "result": {
+      "ringOwner": "eileen",
+      "event": "Player gave Eileen the ring."
+    }
+  },
+  {
+    "id": "promise",
+    "utterance": "I promise to bring a ring tomorrow.",
+    "expected": "PENDING",
+    "mustNot": "Change item ownership merely from a promise; final promise rules await product specification."
+  },
+  {
+    "id": "knowledge",
+    "utterance": "Eileen believes the tower is empty.",
+    "expected": "PENDING",
+    "mustNot": "Convert a subjective belief into a verified world fact; final knowledge rules await product specification."
+  },
+  {
+    "id": "no-change",
+    "utterance": "Good morning.",
+    "expected": "NO_CHANGE"
+  },
+  {
+    "id": "hallucinated-item",
+    "initial": {
+      "items": []
+    },
+    "proposal": {
+      "kind": "transfer",
+      "item": "imaginary-ring",
+      "to": "eileen"
+    },
+    "expected": "REJECT"
+  }
+]

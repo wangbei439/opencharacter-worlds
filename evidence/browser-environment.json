@@ -1,0 +1,39 @@
+{
+  "browser": "152.0.4191.53",
+  "results": [
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "status": "passed",
+      "checks": [
+        "click",
+        "input",
+        "file import",
+        "navigation",
+        "IndexedDB Blob survives reload",
+        "download",
+        "console errors",
+        "screenshot"
+      ]
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "status": "passed",
+      "checks": [
+        "click",
+        "input",
+        "file import",
+        "navigation",
+        "IndexedDB Blob survives reload",
+        "download",
+        "console errors",
+        "screenshot"
+      ]
+    }
+  ]
+}

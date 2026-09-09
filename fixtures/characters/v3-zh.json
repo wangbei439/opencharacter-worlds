@@ -1,0 +1,31 @@
+{
+  "spec": "chara_card_v3",
+  "spec_version": "3.0",
+  "data": {
+    "name": "艾琳",
+    "description": "图书馆的管理员。这是合成测试数据。",
+    "personality": "Careful",
+    "scenario": "A quiet library",
+    "first_mes": "欢迎，旅行者。",
+    "mes_example": "",
+    "creator_notes": "Synthetic fixture",
+    "system_prompt": "",
+    "post_history_instructions": "",
+    "alternate_greetings": [],
+    "tags": [
+      "fixture"
+    ],
+    "creator": "OpenCharacter preparation",
+    "character_version": "1",
+    "extensions": {
+      "fixture": {
+        "unknownField": "preserve-me"
+      }
+    },
+    "assets": [],
+    "nickname": "",
+    "creator_notes_multilingual": {},
+    "source": [],
+    "group_only_greetings": []
+  }
+}

@@ -1,0 +1,13 @@
+node_modules/
+.npm-cache/
+dist/
+.env
+.env.*
+!.env.example
+*.local
+secrets/
+fixtures/private/
+test-results/
+playwright-report/
+.wrangler/
+*.log

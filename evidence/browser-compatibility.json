@@ -1,0 +1,54 @@
+{
+  "rows": [
+    {
+      "fixture": "v2-en.json",
+      "name": "Eileen",
+      "assets": 0
+    },
+    {
+      "fixture": "v3-en.json",
+      "name": "Eileen",
+      "assets": 0
+    },
+    {
+      "fixture": "v3-zh.json",
+      "name": "艾琳",
+      "assets": 0
+    },
+    {
+      "fixture": "v2-lorebook.json",
+      "name": "Eileen",
+      "assets": 0
+    },
+    {
+      "fixture": "long-description.json",
+      "name": "Eileen",
+      "assets": 0
+    },
+    {
+      "fixture": "minimal.json",
+      "name": "Minimal",
+      "assets": 0
+    },
+    {
+      "fixture": "v2-en.png",
+      "name": "Eileen",
+      "assets": 1
+    },
+    {
+      "fixture": "v3-zh.png",
+      "name": "艾琳",
+      "assets": 1
+    },
+    {
+      "fixture": "embedded-assets.charx",
+      "name": "Eileen",
+      "assets": 1
+    }
+  ],
+  "digest": "16ccbe62076caabb1b779ab7eef4ad96b169714f86ce5fc1e778631f1f4edd41",
+  "malformedRejected": true,
+  "browserExport": true,
+  "originalBlobHashSurvivesReload": true,
+  "errors": []
+}

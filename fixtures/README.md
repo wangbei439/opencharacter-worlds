@@ -1,0 +1,1 @@
+Fixtures are synthetic and contain no user content or credentials. PNG and CharX fixtures were generated using Character Foundry 0.5.0, so they are not independent compatibility oracles. Runtime scenarios describe test intents; final Promise/Knowledge semantics await the product specification.

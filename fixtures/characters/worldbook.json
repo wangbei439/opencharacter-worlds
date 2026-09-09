@@ -1,0 +1,26 @@
+{
+  "name": "Library",
+  "description": "Synthetic lorebook",
+  "scan_depth": 2,
+  "token_budget": 512,
+  "recursive_scanning": false,
+  "extensions": {},
+  "entries": [
+    {
+      "id": 1,
+      "keys": [
+        "library",
+        "图书馆"
+      ],
+      "content": "The library closes at sunset.",
+      "extensions": {},
+      "enabled": true,
+      "insertion_order": 0,
+      "case_sensitive": false,
+      "constant": false,
+      "selective": false,
+      "secondary_keys": [],
+      "position": "before_char"
+    }
+  ]
+}

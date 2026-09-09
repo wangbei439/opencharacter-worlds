@@ -1,0 +1,26 @@
+{
+  "spec": "chara_card_v2",
+  "spec_version": "2.0",
+  "data": {
+    "name": "Eileen",
+    "description": "A fictional archivist. Synthetic test data.",
+    "personality": "Careful",
+    "scenario": "A quiet library",
+    "first_mes": "Welcome.",
+    "mes_example": "",
+    "creator_notes": "Synthetic fixture",
+    "system_prompt": "",
+    "post_history_instructions": "",
+    "alternate_greetings": [],
+    "tags": [
+      "fixture"
+    ],
+    "creator": "OpenCharacter preparation",
+    "character_version": "1",
+    "extensions": {
+      "fixture": {
+        "unknownField": "preserve-me"
+      }
+    }
+  }
+}
