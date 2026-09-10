@@ -27,3 +27,11 @@
 修正：测试 actor 上限 1024、resolver 512（总调用上限仍不变，实际费用可能增加，页面显示说明）；正式游戏 resolver 使用已配置输出预算并限制在 64–1024。适配器将 length 标记为 outputLimit，正常结束但无正文标记为 emptyResponse；空片段不再计作正文，截断回复不作为完成结果提交。失败报告保留安全的结束原因及推理/输出计数，不输出推理正文。
 
 36 项测试、生产构建以及测试页受控浏览器回归通过后，仍需真实服务复测；没有自动调用用户 API，也没有宣称多卡验收完成。
+
+## 版本 .3 报告（14:22 UTC）
+
+此次确认为新版：1024/512 预算，3 次调用后在首卡第二轮 resolver 停止，明确 finishReason=length、completionTokens=reasoningTokens=512。不能判定为网络问题，也不能将其当作模型的 UNCLEAR 决策。普通角色回复已成功，仍无多角色验收结果。
+
+版本 .4 按可验证服务地址对 GLM-4.5/4.6/4.7、GLM-5/5.1/5.2 的 resolver 关闭推理：阿里云 DashScope 使用 enable_thinking=false，智谱 open.bigmodel.cn 使用 thinking.type=disabled。未知自定义代理不猜测协议；actor 对话不变。依据 https://help.aliyun.com/zh/model-studio/glm 与 https://docs.bigmodel.cn/cn/guide/capabilities/thinking-mode 。
+
+测试器对 resolver 的 outputLimit/emptyResponse 留下错误记录并保持待定，继续其他轮次；最终标为 completed_with_warnings，不能算全部通过。授权/网络等错误仍停止，无自动重试。版本号展示并进入报告，待更新时禁止开始。37 项测试及模拟 resolver 耗尽预算的浏览器检查通过，三卡九轮可继续完成，最多 11 次调用。真实新版运行尚待验证。
