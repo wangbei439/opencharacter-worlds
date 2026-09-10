@@ -1,3 +1,4 @@
+import {normalizeProvider} from '../providers/presets.ts';
 import Dexie, {type Table} from 'dexie';
 import type {Asset,Character,Worldbook,Persona,Chat,Message,WorldState,WorldEvent,Transaction,Fact,ProviderConfig,Settings} from '../domain/types.ts';
 import {defaultSettings} from '../domain/types.ts';
@@ -33,7 +34,7 @@ export async function saveProvider(provider:ProviderConfig){
 export async function loadProvider():Promise<ProviderConfig|undefined>{
  const row=await configs.get('primary');if(!row)return;
  const plain=await crypto.subtle.decrypt({name:'AES-GCM',iv:new Uint8Array(row.iv)},await localKey(),new Uint8Array(row.cipher));
- return {...row.config,...JSON.parse(new TextDecoder().decode(plain))};
+ return normalizeProvider({...row.config,...JSON.parse(new TextDecoder().decode(plain))});
 }
 export async function sha256(blob:Blob){return [...new Uint8Array(await crypto.subtle.digest('SHA-256',await blob.arrayBuffer()))].map(v=>v.toString(16).padStart(2,'0')).join('')}
 export async function putAsset(blob:Blob,name:string,kind:Asset['kind'],characterId?:string){const asset:Asset={id:crypto.randomUUID(),blob,name,mime:blob.type,kind,characterId,sha256:await sha256(blob)};await (kind==='background'?backgrounds:assets).put(asset);return asset}

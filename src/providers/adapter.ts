@@ -19,17 +19,18 @@ export class CompatibleProvider implements ProviderAdapter {
  supportsStructuredOutput(){return this.config.structuredOutput}
  supportsStreaming(){return true}
  getCapabilities(){return {streaming:true,structuredOutput:this.supportsStructuredOutput(),modelListing:true}}
+ authHeaders(){const headers=new Headers(this.config.headers);headers.set('Content-Type','application/json');if(this.config.apiKey)headers.set('Authorization',`Bearer ${this.config.apiKey}`);return headers}
  async request(path:string,init:RequestInit,signal?:AbortSignal){
-  const headers=new Headers(this.config.headers);headers.set('Content-Type','application/json');if(this.config.apiKey)headers.set('Authorization',`Bearer ${this.config.apiKey}`);
+  const headers=this.authHeaders();
   try{
    const response=await fetch(endpoint(this.config,path),{...init,headers,credentials:'omit',redirect:'error',signal:AbortSignal.any([AbortSignal.timeout(90000),...(signal?[signal]:[])])});
    if(!response.ok){const raw=safeDetail(await response.text(),this.config);const code=response.status===401||response.status===403?'auth':response.status===429?'rateLimit':response.status===404?'model':/context|token.*limit/i.test(raw)?'context':'provider';throw new ProviderError(code,response.status,raw)}
    return response;
   }catch(e){if(signal?.aborted)throw signal.reason;if(e instanceof ProviderError)throw e;if(e instanceof Error&&(e.name==='TimeoutError'||e.name==='AbortError'))throw new ProviderError('timeout');throw new ProviderError('network')}
  }
- async listModels(signal?:AbortSignal){const response=await this.request('/models',{method:'GET'},signal);const data=await response.json();if(!Array.isArray(data.data))throw new ProviderError('models');return data.data.filter((m:unknown):m is {id:string;name?:string}=>!!m&&typeof (m as {id?:unknown}).id==='string').map((m:{id:string;name?:string})=>({id:m.id,name:m.name??m.id}))}
- async testConnection(signal?:AbortSignal){await this.chat({messages:[{role:'user',content:'Reply OK.'}],maxTokens:8},signal);return true}
- body(request:ChatRequest,stream:boolean){return JSON.stringify({model:this.config.model,messages:request.messages,stream,temperature:request.purpose==='resolver'?0:this.config.temperature,top_p:this.config.topP,max_tokens:request.maxTokens??this.config.maxTokens,...(request.purpose==='resolver'&&this.supportsStructuredOutput()?{response_format:{type:'json_object'}}:{})})}
+ async listModels(signal?:AbortSignal){const response=await this.request('/models',{method:'GET'},signal);const data=await response.json();if(!Array.isArray(data.data))throw new ProviderError('models');return data.data.filter((m:unknown):m is {id:string;name?:string}=>!!m&&typeof (m as {id?:unknown}).id==='string').map((m:{id:string;name?:string})=>({id:m.id,name:m.name??(m as {display_name?:string}).display_name??m.id}))}
+ async testConnection(signal?:AbortSignal){await this.chat({messages:[{role:'user',content:'Reply OK.'}],maxTokens:64},signal);return true}
+ body(request:ChatRequest,stream:boolean){const nativeOpenAI=this.config.kind==='openai',restricted=nativeOpenAI&&/^(gpt-[56]|o[134])/.test(this.config.model);return JSON.stringify({model:this.config.model,messages:request.messages,stream,...(!restricted?{temperature:request.purpose==='resolver'?0:this.config.temperature,top_p:this.config.topP}:{}),[nativeOpenAI?'max_completion_tokens':'max_tokens']:request.maxTokens??this.config.maxTokens,...(request.purpose==='resolver'&&this.supportsStructuredOutput()?{response_format:{type:'json_object'}}:{})})}
  async chat(request:ChatRequest,signal?:AbortSignal):Promise<ChatResult>{const res=await this.request('/chat/completions',{method:'POST',body:this.body(request,false)},signal);const data=await res.json();const text=data.choices?.[0]?.message?.content;if(typeof text!=='string')throw new ProviderError('response');return {text,usage:data.usage}}
  async *streamChat(request:ChatRequest,signal?:AbortSignal):AsyncIterable<StreamEvent>{
   if(!this.config.streaming){const result=await this.chat(request,signal);yield {type:'delta',text:result.text};yield {type:'done',result};return}
@@ -56,4 +57,22 @@ export class MockProvider implements ProviderAdapter {
  }
  async *streamChat(req:ChatRequest,signal?:AbortSignal):AsyncIterable<StreamEvent>{const result=await this.chat(req,signal);for(const chunk of result.text.match(/.{1,4}|\n/gu)??[]){signal?.throwIfAborted();yield {type:'delta',text:chunk};await new Promise(r=>setTimeout(r,12))}signal?.throwIfAborted();yield {type:'done',result}}
 }
-export function createProvider(config:ProviderConfig):ProviderAdapter{return config.kind==='mock'?new MockProvider():new CompatibleProvider(config)}
+export class AnthropicProvider extends CompatibleProvider {
+ supportsStructuredOutput(){return false}
+ authHeaders(){const headers=new Headers(this.config.headers);headers.set('Content-Type','application/json');headers.delete('Authorization');headers.set('x-api-key',this.config.apiKey);headers.set('anthropic-version','2023-06-01');headers.set('anthropic-dangerous-direct-browser-access','true');return headers}
+ body(request:ChatRequest,stream:boolean){const messages:ChatTurn[]=[];for(const m of request.messages.filter(m=>m.role!=='system')){const last=messages.at(-1);if(last?.role===m.role)last.content+='\n\n'+m.content;else messages.push({...m})}return JSON.stringify({model:this.config.model,system:request.messages.filter(m=>m.role==='system').map(m=>m.content).join('\n\n'),messages,max_tokens:request.maxTokens??this.config.maxTokens,stream})}
+ async chat(request:ChatRequest,signal?:AbortSignal):Promise<ChatResult>{const response=await this.request('/messages',{method:'POST',body:this.body(request,false)},signal);const data=await response.json();const text=data.content?.filter((b:{type:string})=>b.type==='text').map((b:{text:string})=>b.text).join('');if(!text)throw new ProviderError('response');const input=data.usage?.input_tokens??0,output=data.usage?.output_tokens??0;return {text,usage:{prompt_tokens:input,completion_tokens:output,total_tokens:input+output}}}
+ async *streamChat(request:ChatRequest,signal?:AbortSignal):AsyncIterable<StreamEvent>{
+  if(!this.config.streaming){const result=await this.chat(request,signal);yield {type:'delta',text:result.text};yield {type:'done',result};return}
+  const response=await this.request('/messages',{method:'POST',body:this.body(request,true)},signal);if(!response.body)throw new ProviderError('response');let text='',input=0,output=0,finished=false;
+  for await(const line of readSSE(response.body)){signal?.throwIfAborted();let data;try{data=JSON.parse(line)}catch{throw new ProviderError('response')}
+   if(data.type==='error')throw new ProviderError('provider',undefined,safeDetail(JSON.stringify(data.error),this.config));
+   if(data.type==='message_start')input=data.message?.usage?.input_tokens??0;
+   if(data.type==='content_block_delta'&&data.delta?.type==='text_delta'){text+=data.delta.text;yield {type:'delta',text:data.delta.text}}
+   if(data.type==='message_delta')output=data.usage?.output_tokens??output;
+   if(data.type==='message_stop'){finished=true;break}
+  }
+  if(!finished||!text)throw new ProviderError('interrupted');yield {type:'done',result:{text,usage:{prompt_tokens:input,completion_tokens:output,total_tokens:input+output}}};
+ }
+}
+export function createProvider(config:ProviderConfig):ProviderAdapter{return config.kind==='mock'?new MockProvider():config.kind==='claude'||config.protocol==='anthropic'?new AnthropicProvider(config):new CompatibleProvider(config)}

@@ -1,0 +1,17 @@
+{
+  "manualCreation": true,
+  "promptAndWorldview": true,
+  "lorebookEntry": true,
+  "backgrounds": 3,
+  "musicTracks": 2,
+  "videoDecoded": true,
+  "originalPreservedAfterEdit": true,
+  "manualBackgroundSwitch": true,
+  "automaticRotation": true,
+  "musicStartsOnlyOnClick": true,
+  "trackSwitch": true,
+  "saveMediaRoundtrip": true,
+  "reload": true,
+  "mobile360": true,
+  "errors": []
+}

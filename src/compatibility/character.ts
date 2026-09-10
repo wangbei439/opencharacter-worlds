@@ -13,7 +13,7 @@ export async function importCharacter(file:File):Promise<Character>{
  let parsed;try{parsed=parseCard(new Uint8Array(await file.arrayBuffer()))}catch{throw new Error('invalidCard')}
  const data=parsed.card.data;const id=newId(),originalId=newId();
  const original:Asset={id:originalId,characterId:id,kind:'original',name:file.name,mime:file.type||'application/octet-stream',blob:file,sha256:await sha256(file)};
- const character:Character={id,name:data.name,description:data.description,personality:data.personality,scenario:data.scenario,examples:data.mes_example,systemPrompt:data.system_prompt,postHistory:data.post_history_instructions,greetings:[data.first_mes,...data.alternate_greetings],creator:data.creator,tags:data.tags,originalAssetId:originalId,expressions:{},worldbookIds:[],createdAt:Date.now(),sourceSpec:String(parsed.spec)};
+ const character:Character={id,worldview:asString((data as unknown as {extensions?:{opencharacter?:{worldview?:string}}}).extensions?.opencharacter?.worldview),name:data.name,description:data.description,personality:data.personality,scenario:data.scenario,examples:data.mes_example,systemPrompt:data.system_prompt,postHistory:data.post_history_instructions,greetings:[data.first_mes,...data.alternate_greetings],creator:data.creator,tags:data.tags,originalAssetId:originalId,expressions:{},worldbookIds:[],createdAt:Date.now(),sourceSpec:String(parsed.spec)};
  const extracted:Asset[]=[];let total=0;
  for(const resource of parsed.assets.slice(0,40)){
   if(!['png','jpg','jpeg','webp','gif'].includes(resource.ext.toLowerCase()))continue;total+=resource.data.byteLength;if(total>64*1024*1024)throw new Error('fileTooLarge');

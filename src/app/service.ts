@@ -11,7 +11,7 @@ let controller:AbortController|undefined;
 export async function refresh(chatId=useApp.getState().activeChatId){
  const [allCharacters,allChats,allPersonas]=await Promise.all([characters.toArray(),chats.orderBy('updatedAt').reverse().toArray(),personas.toArray()]);
  const chat=allChats.find(c=>c.id===chatId),character=allCharacters.find(c=>c.id===chat?.characterId);
- const [ms,world,es,txs,bks]=await Promise.all([chat?messages.where('chatId').equals(chat.id).sortBy('createdAt'):[],chat?worlds.get(chat.id):undefined,chat?events.where('worldId').equals(chat.id).sortBy('timestamp'):[],chat?transactions.where('worldId').equals(chat.id).sortBy('createdAt'):[],character?books.where('characterId').equals(character.id).toArray():[]]);
+ const [ms,world,es,txs,bks]=await Promise.all([chat?messages.where('chatId').equals(chat.id).sortBy('createdAt'):[],chat?worlds.get(chat.id):undefined,chat?events.where('worldId').equals(chat.id).sortBy('timestamp'):[],chat?transactions.where('worldId').equals(chat.id).sortBy('createdAt'):[],character?books.bulkGet(character.worldbookIds).then(rows=>rows.filter((b):b is NonNullable<typeof b>=>!!b)):[]]);
  patchApp({characters:allCharacters,chats:allChats,personas:allPersonas,messages:ms,world,events:es,transactions:txs,books:bks,activeChatId:chat?.id,selectedCharacterId:character?.id??useApp.getState().selectedCharacterId});
 }
 export async function initialize(){const [settings,provider,active]=await Promise.all([loadSettings(),loadProvider(),db.table('settings').get('activeChat')]);patchApp({settings,...(provider?{provider}:{})});await refresh(active?.value);patchApp({ready:true,route:useApp.getState().activeChatId?'play':'landing'})}
@@ -42,7 +42,7 @@ async function generate(chat:Chat,character:Character,user:Message,action?:Parti
   candidate=continuation?undefined:action?makeCandidate(world,action.kind!,user.id,{text:user.content,...action}):detectCandidate(user.content,world,character.id,user.id);
   if(candidate){if(candidate.requiresConsent){await transactions.put({...candidate,status:'pending',reason:'awaitingActor',createdAt:Date.now()})}else{const outcome=await commitCandidate(candidate);if(outcome.status==='rejected')patchApp({notice:'rejected'});candidate=undefined;world=(await worlds.get(chat.id))!}}
   const history=await messages.where('chatId').equals(chat.id).sortBy('createdAt');const filtered=replace?history.filter(m=>m.id!==replace.id):history;
-  const ledger=await events.where('worldId').equals(chat.id).toArray();const worldbooks=await books.where('characterId').equals(character.id).toArray();const persona=chat.personaId?await personas.get(chat.personaId):undefined;
+  const ledger=await events.where('worldId').equals(chat.id).toArray();const worldbooks=(await books.bulkGet(character.worldbookIds)).filter((b):b is NonNullable<typeof b>=>!!b);const persona=chat.personaId?await personas.get(chat.personaId):undefined;
   const ctx=buildContext(character,filtered,world,ledger,worldbooks,persona,config.contextLimit,config.maxTokens,candidate);
   if(continuation)ctx.messages.push({role:'user',content:'Continue the previous character reply without repeating it. Do not speak for the player.'});patchApp({context:ctx});
   for await(const e of provider.streamChat({messages:ctx.messages},signal)){if(e.type==='delta'){reply+=e.text;patchApp({streamText:reply})}else if(e.result.expression)resultExpression=e.result.expression}

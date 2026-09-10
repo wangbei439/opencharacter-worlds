@@ -18,7 +18,8 @@
     "test:e2e": "node tests/e2e/product-smoke.mjs",
     "test:real-card": "node tests/e2e/real-card-provider.mjs",
     "benchmark": "node scripts/benchmark.mjs",
-    "benchmark:real": "node scripts/benchmark.mjs --real"
+    "benchmark:real": "node scripts/benchmark.mjs --real",
+    "test:studio": "node tests/e2e/studio.mjs"
   },
   "dependencies": {
     "@character-foundry/character-foundry": "0.5.0",

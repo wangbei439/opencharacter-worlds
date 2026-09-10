@@ -24,14 +24,24 @@ Open http://127.0.0.1:4173. Use the same address and port for the same local dat
 
 ## 开始使用
 
-1. 导入 PNG / JSON V2、V3 角色卡，或选择原创示例角色艾琳。
-2. 选择 Provider，填写自己的 Key 和模型名称；支持 OpenAI-compatible 自定义地址。可以先选择“离线演示”体验界面，但它不是真实 AI。
+1. 点击顶部“＋”打开角色创作室，手动创建角色；也可导入 PNG / JSON V2、V3 角色卡，或选择原创示例角色艾琳。
+2. 选择 Provider，填写自己的 Key 和模型名称；提供 OpenAI、Claude、DeepSeek、GLM、Qwen 和自定义 API；自定义支持 OpenAI Chat Completions / Anthropic Messages 协议。可以先选择“离线演示”体验界面，但它不是真实 AI。
 3. 开始对话。赠送、使用、拾取、放下、移动和等待通过当前世界中的已有对象执行。
 4. “世界”面板查看在场人物、物品归属、事实和经历。角色可以接受、拒绝或暂缓赠送与邀请。
 5. 设置 → 数据：导出 `.ocwsave`。重新导入会创建独立故事，保留现有记录。
 6. Advanced 模式可配置 Persona 和 Lorebook；Expert 可检查上下文、候选事务，并明确创作世界物品。
 
 切换界面语言不会翻译角色卡。修改、删除、切换历史回复会截去之后的对话，并回退相关世界变化；界面会先说明这一影响。
+
+## 角色创作室
+
+角色面板的“编辑角色”可修改已有角色。创作室提供角色设定、Prompt / 世界观、世界书、场景与音乐四个页签，并在本地保存草稿。图片、GIF 和视频可组成轮换背景；音乐支持播放列表、切歌和音量。可调整粒子、遮罩与立绘大小。音乐首次需要点击播放，低性能或减少动态模式会停用自动背景轮换。
+
+单文件不超过 48 MB，创作室所引用的媒体合计不超过 90 MB。视频能否播放取决于浏览器支持的编码。导出设计 JSON 包含文字设定；完整媒体随 `.ocwsave` 保存。编辑已有角色不覆盖原始导入文件。
+
+如果旧预览页仍只显示原来的入口，请关闭该页再重新打开同一地址；不要清除网站数据。后续更新可使用界面中的更新按钮。
+
+详见[产品规范差距与本轮补充](docs/IMPLEMENTATION-STATUS.md)。
 
 ## Data and privacy
 
@@ -62,6 +72,8 @@ npm run preview -- --port 4173
 npm run test:e2e
 node scripts/fetch-real-card.mjs
 npm run test:real-card
+node scripts/fetch-media-fixture.mjs
+npm run test:studio
 npm run benchmark
 ```
 

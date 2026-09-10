@@ -17,10 +17,12 @@ In a second terminal, at the repository root:
 npm run test:e2e
 node scripts/fetch-real-card.mjs
 npm run test:real-card
+node scripts/fetch-media-fixture.mjs
+npm run test:studio
 npm run benchmark
 ```
 
-The two product tests use installed Edge on Windows, or Playwright Chromium otherwise. Install it with `npx playwright install chromium`; `PW_CHANNEL=chromium` forces it on Windows. Browser state is isolated and discarded after each test. Downloads go into ignored `test-results/`, while reproducible screenshots and non-secret summaries go into `evidence/product/`.
+The product tests use installed Edge on Windows, or Playwright Chromium otherwise. Install it with `npx playwright install chromium`; `PW_CHANNEL=chromium` forces it on Windows. Browser state is isolated and discarded after each test. Downloads go into ignored `test-results/`, while reproducible screenshots and non-secret summaries go into `evidence/product/`.
 
 ## Coverage
 
@@ -36,3 +38,6 @@ The two product tests use installed Edge on Windows, or Playwright Chromium othe
 ## Pending external acceptance
 
 A live BYOK streaming conversation, real-model benchmark review, public Cloudflare URL flow, and physical Android install require the user's provider/account/device. CI configuration is present but has not run remotely because this repository has no remote configured.
+
+- `tests/e2e/studio.mjs`: manual creation/editing, prompt/worldview/lorebook, actual video decoding, background rotation, music playback/switching, mobile layout, media save roundtrip and immutable originals. Fetch the hash-checked MDN CC0 video first, or set `STUDIO_VIDEO` to a local compatible WebM.
+- `tests/unit/provider-presets.test.mjs`: six presets, migration, native Claude headers/body/streaming and OpenAI reasoning budgets. Synthetic responses only.

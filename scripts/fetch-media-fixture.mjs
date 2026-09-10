@@ -1,0 +1,3 @@
+import fs from 'node:fs/promises';import {createHash} from 'node:crypto';
+const source=JSON.parse(await fs.readFile('evidence/product/video-source.json','utf8'));
+const response=await fetch(source.url,{signal:AbortSignal.timeout(60000)});if(!response.ok)throw new Error('Video fixture download failed');const bytes=new Uint8Array(await response.arrayBuffer());if(createHash('sha256').update(bytes).digest('hex')!==source.sha256)throw new Error('Video fixture changed; review before updating the expected hash.');await fs.mkdir('test-results',{recursive:true});await fs.writeFile('test-results/studio-valid.webm',bytes);console.log('Verified CC0 media fixture saved for browser testing.');
