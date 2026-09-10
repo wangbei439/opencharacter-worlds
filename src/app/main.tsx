@@ -6,4 +6,5 @@ import '../ui/style.css';
 import {registerSW} from 'virtual:pwa-register';
 const updateServiceWorker=registerSW({immediate:true,onNeedRefresh(){patchApp({updateReady:true})}});
 window.addEventListener('oc-apply-update',()=>{if(!useApp.getState().sending)void updateServiceWorker(true)});
-createRoot(document.getElementById('root')!).render(<React.StrictMode><App/></React.StrictMode>);
+const LiveCheck=React.lazy(()=>import('../ui/LiveCheck.tsx'));
+createRoot(document.getElementById('root')!).render(<React.StrictMode>{new URLSearchParams(location.search).has('live-check')?<React.Suspense fallback="Loading…"><LiveCheck/></React.Suspense>:<App/>}</React.StrictMode>);

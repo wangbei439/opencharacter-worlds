@@ -41,3 +41,9 @@ A live BYOK streaming conversation, real-model benchmark review, public Cloudfla
 
 - `tests/e2e/studio.mjs`: manual creation/editing, prompt/worldview/lorebook, actual video decoding, background rotation, music playback/switching, mobile layout, media save roundtrip and immutable originals. Fetch the hash-checked MDN CC0 video first, or set `STUDIO_VIDEO` to a local compatible WebM.
 - `tests/unit/provider-presets.test.mjs`: six presets, migration, native Claude headers/body/streaming and OpenAI reasoning budgets. Synthetic responses only.
+
+## Small live multi-card check
+
+Open `/?live-check` on the same browser origin after saving a provider. Start explicitly: three original synthetic cards, nine actor turns and up to two resolver requests, capped at 384 actor output tokens. Stop on the first error; no automatic retry. This uses the production adapter/context/runtime with isolated in-memory worlds and reads the existing encrypted configuration through the normal application loader. It does not alter existing stories or export credentials. Export the report for human review. Four named NPCs and eight lore entries are a small multi-character probe, not a long-world-card benchmark. This does not verify UI imports, saved-story reload, or complete multi-agent simulation.
+
+`node tests/e2e/live-check.mjs` verifies the runner with intercepted responses, including target ownership, hidden-context exclusion, nine-turn completion and report credential exclusion. A passing runner test is not live-provider acceptance.
