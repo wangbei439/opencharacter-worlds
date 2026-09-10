@@ -340,5 +340,7 @@
   "error.mediaFormat": "这个媒体格式暂不支持，请选择图片、视频或音频文件。",
   "common.update": "更新应用",
   "provider.samplingDefault": "此协议／模型使用默认采样设置，以避免不支持的参数导致请求失败。",
-  "error.mediaBudget": "当前素材总量接近存档上限，请移除部分素材后再添加。"
+  "error.mediaBudget": "当前素材总量接近存档上限，请移除部分素材后再添加。",
+  "error.outputLimit": "模型输出预算已用尽，回复可能不完整。请提高输出上限后再试。",
+  "error.emptyResponse": "模型已结束，但没有返回正文；推理可能耗尽了输出预算。"
 }

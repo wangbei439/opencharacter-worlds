@@ -5,7 +5,8 @@ export type Usage={prompt_tokens:number;completion_tokens:number;total_tokens:nu
 export type ChatResult={text:string;usage?:Usage;expression?:Expression};
 export type StreamEvent={type:'delta';text:string}|{type:'done';result:ChatResult};
 export interface ProviderAdapter {listModels(signal?:AbortSignal):Promise<{id:string;name:string}[]>;testConnection(signal?:AbortSignal):Promise<boolean>;chat(request:ChatRequest,signal?:AbortSignal):Promise<ChatResult>;streamChat(request:ChatRequest,signal?:AbortSignal):AsyncIterable<StreamEvent>;supportsStructuredOutput():boolean;supportsStreaming():boolean;getCapabilities():{streaming:boolean;structuredOutput:boolean;modelListing:boolean}}
-export class ProviderError extends Error { code:string; status?:number; detail:string;constructor(code:string,status?:number,detail=''){super(code);this.name='ProviderError';this.code=code;this.status=status;this.detail=detail} }
+export class ProviderError extends Error { code:string; status?:number; detail:string; output?:{finishReason:string;completionTokens?:number;reasoningTokens?:number};constructor(code:string,status?:number,detail=''){super(code);this.name='ProviderError';this.code=code;this.status=status;this.detail=detail} }
+function outputError(code:string,reason:unknown,usage:any){const error=new ProviderError(code);error.output={finishReason:['stop','length','content_filter'].includes(String(reason))?String(reason):'unknown',completionTokens:typeof usage?.completion_tokens==='number'?usage.completion_tokens:undefined,reasoningTokens:typeof usage?.completion_tokens_details?.reasoning_tokens==='number'?usage.completion_tokens_details.reasoning_tokens:undefined};return error}
 export function safeDetail(text:string,config:ProviderConfig){let out=text.slice(0,3000);for(const secret of [config.apiKey,...Object.values(config.headers)].filter(Boolean))out=out.split(secret).join('[redacted]');return out.replace(/Bearer\s+[^\s"']+/gi,'Bearer [redacted]').replace(/sk-[\w-]+/g,'[redacted]')}
 export function endpoint(config:ProviderConfig,path:string){const u=new URL(config.baseUrl);if(u.username||u.password||u.search||u.hash||!(u.protocol==='https:'||(u.protocol==='http:'&&['localhost','127.0.0.1','[::1]'].includes(u.hostname))))throw new ProviderError('endpoint');return config.baseUrl.replace(/\/+$/,'')+path}
 export async function* readSSE(body:ReadableStream<Uint8Array>):AsyncGenerator<string>{
@@ -31,19 +32,19 @@ export class CompatibleProvider implements ProviderAdapter {
  async listModels(signal?:AbortSignal){const response=await this.request('/models',{method:'GET'},signal);const data=await response.json();if(!Array.isArray(data.data))throw new ProviderError('models');return data.data.filter((m:unknown):m is {id:string;name?:string}=>!!m&&typeof (m as {id?:unknown}).id==='string').map((m:{id:string;name?:string})=>({id:m.id,name:m.name??(m as {display_name?:string}).display_name??m.id}))}
  async testConnection(signal?:AbortSignal){await this.chat({messages:[{role:'user',content:'Reply OK.'}],maxTokens:64},signal);return true}
  body(request:ChatRequest,stream:boolean){const nativeOpenAI=this.config.kind==='openai',restricted=nativeOpenAI&&/^(gpt-[56]|o[134])/.test(this.config.model);return JSON.stringify({model:this.config.model,messages:request.messages,stream,...(!restricted?{temperature:request.purpose==='resolver'?0:this.config.temperature,top_p:this.config.topP}:{}),[nativeOpenAI?'max_completion_tokens':'max_tokens']:request.maxTokens??this.config.maxTokens,...(request.purpose==='resolver'&&this.supportsStructuredOutput()?{response_format:{type:'json_object'}}:{})})}
- async chat(request:ChatRequest,signal?:AbortSignal):Promise<ChatResult>{const res=await this.request('/chat/completions',{method:'POST',body:this.body(request,false)},signal);const data=await res.json();const text=data.choices?.[0]?.message?.content;if(typeof text!=='string')throw new ProviderError('response');return {text,usage:data.usage}}
+ async chat(request:ChatRequest,signal?:AbortSignal):Promise<ChatResult>{const res=await this.request('/chat/completions',{method:'POST',body:this.body(request,false)},signal);const data=await res.json();const text=data.choices?.[0]?.message?.content;if(data.choices?.[0]?.finish_reason==='length')throw outputError('outputLimit','length',data.usage);if(typeof text!=='string'||!text.trim())throw outputError('emptyResponse',data.choices?.[0]?.finish_reason,data.usage);return {text,usage:data.usage}}
  async *streamChat(request:ChatRequest,signal?:AbortSignal):AsyncIterable<StreamEvent>{
   if(!this.config.streaming){const result=await this.chat(request,signal);yield {type:'delta',text:result.text};yield {type:'done',result};return}
   const response=await this.request('/chat/completions',{method:'POST',body:this.body(request,true)},signal);
-  if(!response.body)throw new ProviderError('response');let text='',usage:Usage|undefined,finished=false;
+  if(!response.body)throw new ProviderError('response');let text='',usage:Usage|undefined,finished=false,finishReason:unknown;
   for await(const line of readSSE(response.body)){
    signal?.throwIfAborted();if(line==='[DONE]'){finished=true;break}
    let data;try{data=JSON.parse(line)}catch{throw new ProviderError('response')}
    if(data.error)throw new ProviderError('provider',undefined,safeDetail(JSON.stringify(data.error),this.config));
-   const choice=data.choices?.[0];if(choice?.finish_reason)finished=true;if(data.usage)usage=data.usage;
-   if(typeof choice?.delta?.content==='string'){text+=choice.delta.content;yield {type:'delta',text:choice.delta.content}}
+   const choice=data.choices?.[0];if(choice?.finish_reason){finished=true;finishReason=choice.finish_reason;}if(data.usage)usage=data.usage;
+   if(typeof choice?.delta?.content==='string'&&choice.delta.content.length>0){text+=choice.delta.content;yield {type:'delta',text:choice.delta.content}}
   }
-  if(!finished||!text)throw new ProviderError('interrupted');yield {type:'done',result:{text,usage}};
+  if(finishReason==='length')throw outputError('outputLimit',finishReason,usage);if(!finished)throw outputError('interrupted',finishReason,usage);if(!text.trim())throw outputError('emptyResponse',finishReason,usage);yield {type:'done',result:{text,usage}};
  }
 }
 export class MockProvider implements ProviderAdapter {

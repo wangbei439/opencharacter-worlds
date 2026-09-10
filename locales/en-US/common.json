@@ -340,5 +340,7 @@
   "error.mediaFormat": "Unsupported media format. Choose a supported image, video or audio file.",
   "common.update": "Update app",
   "provider.samplingDefault": "This protocol/model uses its default sampling settings to avoid unsupported-parameter errors.",
-  "error.mediaBudget": "The media library is near the save-size limit. Remove some media before adding more."
+  "error.mediaBudget": "The media library is near the save-size limit. Remove some media before adding more.",
+  "error.outputLimit": "The output budget was exhausted. The reply may be incomplete; increase the output limit before retrying.",
+  "error.emptyResponse": "The model finished without response text. Reasoning may have consumed the output budget."
 }
