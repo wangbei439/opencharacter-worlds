@@ -1,0 +1,8 @@
+import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs/promises';
+import {validateSave} from '../../src/storage/save-schema.ts';
+import {remapWorld} from '../../src/storage/remap.ts';
+import {initialWorld} from '../../src/runtime/engine.ts';
+const file=JSON.parse(await fs.readFile('fixtures/runtime/save-v1.json','utf8'));
+test('browser-exported save validates; extra credential field is rejected',()=>{assert.equal(validateSave(file).version,1);assert.throws(()=>validateSave({...file,apiKey:'not-real'}))});
+test('dangling causal message, item owner and original asset are rejected',()=>{for(const mutate of [s=>s.events[0].source_message_id='missing',s=>s.world.entities.ring.owner='missing',s=>s.character.originalAssetId='missing',s=>s.messages[0].selected=999]){const save=structuredClone(file);mutate(save);assert.throws(()=>validateSave(save))}});
+test('remapping changes references while preserving text identical to an identifier',()=>{const w=initialWorld('world',{id:'actor',name:'actor',builtin:true});w.promises.tx={text:'actor',actor:'player',target:'actor',status:'accepted'};w.relationships.actor='actor';w.entities.ring.description='world';const r=remapWorld(w,new Map([['world','new-world'],['actor','new-actor'],['tx','new-tx']]));assert.equal(r.id,'new-world');assert.equal(r.entities['new-actor'].name,'actor');assert.equal(r.entities.ring.description,'world');assert.equal(r.promises['new-tx'].text,'actor');assert.equal(r.promises['new-tx'].target,'new-actor');assert.equal(r.relationships['new-actor'],'actor');assert.equal(w.id,'world')});

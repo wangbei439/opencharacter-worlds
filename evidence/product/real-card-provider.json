@@ -1,0 +1,11 @@
+{
+  "realCard": "SillyTavern Seraphina",
+  "originalBytesPreserved": true,
+  "originalTextPreserved": true,
+  "credentialEncryptedAtRest": true,
+  "credentialExcludedFromSave": true,
+  "credentialRestoredAfterReload": true,
+  "transport": "Browser intercepted fixture endpoint, NOT a live BYOK provider",
+  "requests": 3,
+  "errors": []
+}

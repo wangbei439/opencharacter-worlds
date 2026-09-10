@@ -1,0 +1,25 @@
+{
+  "errors": [],
+  "events": 1,
+  "ringOwnerChanged": true,
+  "viewports": [
+    "1440x960",
+    "360x800"
+  ],
+  "saveRoundtrip": true,
+  "regeneration": true,
+  "causalEditRewind": true,
+  "english": true,
+  "offlineReload": true,
+  "branchAtHistoricalMessage": true,
+  "particleCanvasRendered": true,
+  "quickActions": [
+    "drop",
+    "take",
+    "use key",
+    "leave",
+    "follow",
+    "wait",
+    "invite"
+  ]
+}

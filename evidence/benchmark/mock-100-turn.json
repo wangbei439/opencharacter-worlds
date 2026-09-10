@@ -1,0 +1,1459 @@
+{
+  "createdAt": "2026-09-10T04:36:06.983Z",
+  "model": "offline-demo",
+  "realProvider": false,
+  "limits": "Deterministic offline MockProvider mechanism check. Does NOT measure real model quality, factual accuracy, forgetting, cost or comparative superiority. Null metrics are not comparable or not measured.",
+  "characterFixture": "fixtures/characters/v2-en.json",
+  "sameCharacter": true,
+  "sameModel": true,
+  "outputs": [
+    {
+      "mode": "normal",
+      "turns": 100,
+      "actorCalls": 100,
+      "resolverCalls": 0,
+      "estimatedInputTokens": 69177,
+      "reportedTotalTokens": null,
+      "metrics": {
+        "authoritativeRingOwner": null,
+        "authoritativeInventedItems": null,
+        "significantEvents": null,
+        "eventRecallInLastContext": false,
+        "unknownCodeTextLeakage": 0,
+        "relationshipTextDriftManualReviewRequired": true,
+        "runtimeFalsePositive": null,
+        "runtimeFalseNegativeGivenAcceptedCandidates": null,
+        "factContradictionManualReviewRequired": true
+      },
+      "transcript": [
+        {
+          "turn": 1,
+          "prompt": "I give you the silver ring.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 2,
+          "prompt": "I promise to return tomorrow.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 3,
+          "prompt": "Good morning.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 4,
+          "prompt": "Good morning.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 5,
+          "prompt": "Good morning.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 6,
+          "prompt": "Good morning.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 7,
+          "prompt": "Good morning.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 8,
+          "prompt": "Good morning.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 9,
+          "prompt": "Good morning.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 10,
+          "prompt": "Good morning.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 11,
+          "prompt": "Good morning.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 12,
+          "prompt": "Good morning.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 13,
+          "prompt": "Good morning.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 14,
+          "prompt": "Good morning.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 15,
+          "prompt": "Good morning.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 16,
+          "prompt": "Good morning.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 17,
+          "prompt": "Good morning.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 18,
+          "prompt": "Good morning.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 19,
+          "prompt": "Good morning.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 20,
+          "prompt": "Good morning.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 21,
+          "prompt": "Good morning.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 22,
+          "prompt": "Good morning.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 23,
+          "prompt": "I give you the dragon egg.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 24,
+          "prompt": "Let us talk about the rain and the archive. Evening note 23.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 25,
+          "prompt": "Let us talk about the rain and the archive. Evening note 24.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 26,
+          "prompt": "Let us talk about the rain and the archive. Evening note 25.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 27,
+          "prompt": "Let us talk about the rain and the archive. Evening note 26.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 28,
+          "prompt": "Let us talk about the rain and the archive. Evening note 27.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 29,
+          "prompt": "Let us talk about the rain and the archive. Evening note 28.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 30,
+          "prompt": "Let us talk about the rain and the archive. Evening note 29.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 31,
+          "prompt": "Let us talk about the rain and the archive. Evening note 30.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 32,
+          "prompt": "Let us talk about the rain and the archive. Evening note 31.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 33,
+          "prompt": "Let us talk about the rain and the archive. Evening note 32.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 34,
+          "prompt": "Let us talk about the rain and the archive. Evening note 33.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 35,
+          "prompt": "Let us talk about the rain and the archive. Evening note 34.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 36,
+          "prompt": "Let us talk about the rain and the archive. Evening note 35.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 37,
+          "prompt": "Let us talk about the rain and the archive. Evening note 36.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 38,
+          "prompt": "Let us talk about the rain and the archive. Evening note 37.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 39,
+          "prompt": "Let us talk about the rain and the archive. Evening note 38.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 40,
+          "prompt": "Let us talk about the rain and the archive. Evening note 39.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 41,
+          "prompt": "Let us talk about the rain and the archive. Evening note 40.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 42,
+          "prompt": "Let us talk about the rain and the archive. Evening note 41.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 43,
+          "prompt": "Let us talk about the rain and the archive. Evening note 42.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 44,
+          "prompt": "Let us talk about the rain and the archive. Evening note 43.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 45,
+          "prompt": "Let us talk about the rain and the archive. Evening note 44.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 46,
+          "prompt": "Let us talk about the rain and the archive. Evening note 45.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 47,
+          "prompt": "Let us talk about the rain and the archive. Evening note 46.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 48,
+          "prompt": "Let us talk about the rain and the archive. Evening note 47.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 49,
+          "prompt": "Let us talk about the rain and the archive. Evening note 48.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 50,
+          "prompt": "Let us talk about the rain and the archive. Evening note 49.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 51,
+          "prompt": "Let us talk about the rain and the archive. Evening note 50.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 52,
+          "prompt": "Let us talk about the rain and the archive. Evening note 51.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 53,
+          "prompt": "Let us talk about the rain and the archive. Evening note 52.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 54,
+          "prompt": "Let us talk about the rain and the archive. Evening note 53.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 55,
+          "prompt": "Let us talk about the rain and the archive. Evening note 54.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 56,
+          "prompt": "Who owns the silver ring, and what promise did I make?",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 57,
+          "prompt": "Let us talk about the rain and the archive. Evening note 56.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 58,
+          "prompt": "Let us talk about the rain and the archive. Evening note 57.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 59,
+          "prompt": "Let us talk about the rain and the archive. Evening note 58.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 60,
+          "prompt": "Let us talk about the rain and the archive. Evening note 59.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 61,
+          "prompt": "Let us talk about the rain and the archive. Evening note 60.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 62,
+          "prompt": "Let us talk about the rain and the archive. Evening note 61.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 63,
+          "prompt": "Let us talk about the rain and the archive. Evening note 62.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 64,
+          "prompt": "Let us talk about the rain and the archive. Evening note 63.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 65,
+          "prompt": "Let us talk about the rain and the archive. Evening note 64.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 66,
+          "prompt": "Let us talk about the rain and the archive. Evening note 65.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 67,
+          "prompt": "Let us talk about the rain and the archive. Evening note 66.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 68,
+          "prompt": "Let us talk about the rain and the archive. Evening note 67.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 69,
+          "prompt": "Let us talk about the rain and the archive. Evening note 68.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 70,
+          "prompt": "Let us talk about the rain and the archive. Evening note 69.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 71,
+          "prompt": "What is the secret lighthouse code?",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 72,
+          "prompt": "Let us talk about the rain and the archive. Evening note 71.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 73,
+          "prompt": "Let us talk about the rain and the archive. Evening note 72.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 74,
+          "prompt": "Let us talk about the rain and the archive. Evening note 73.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 75,
+          "prompt": "Let us talk about the rain and the archive. Evening note 74.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 76,
+          "prompt": "Let us talk about the rain and the archive. Evening note 75.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 77,
+          "prompt": "Let us talk about the rain and the archive. Evening note 76.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 78,
+          "prompt": "Let us talk about the rain and the archive. Evening note 77.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 79,
+          "prompt": "Let us talk about the rain and the archive. Evening note 78.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 80,
+          "prompt": "Let us talk about the rain and the archive. Evening note 79.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 81,
+          "prompt": "Let us talk about the rain and the archive. Evening note 80.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 82,
+          "prompt": "Let us talk about the rain and the archive. Evening note 81.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 83,
+          "prompt": "Let us talk about the rain and the archive. Evening note 82.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 84,
+          "prompt": "Let us talk about the rain and the archive. Evening note 83.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 85,
+          "prompt": "Let us talk about the rain and the archive. Evening note 84.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 86,
+          "prompt": "We are married now, correct?",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 87,
+          "prompt": "Let us talk about the rain and the archive. Evening note 86.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 88,
+          "prompt": "Let us talk about the rain and the archive. Evening note 87.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 89,
+          "prompt": "Let us talk about the rain and the archive. Evening note 88.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 90,
+          "prompt": "Let us talk about the rain and the archive. Evening note 89.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 91,
+          "prompt": "Let us talk about the rain and the archive. Evening note 90.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 92,
+          "prompt": "Let us talk about the rain and the archive. Evening note 91.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 93,
+          "prompt": "Let us talk about the rain and the archive. Evening note 92.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 94,
+          "prompt": "Let us talk about the rain and the archive. Evening note 93.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 95,
+          "prompt": "Let us talk about the rain and the archive. Evening note 94.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 96,
+          "prompt": "Let us talk about the rain and the archive. Evening note 95.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 97,
+          "prompt": "Let us talk about the rain and the archive. Evening note 96.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 98,
+          "prompt": "Let us talk about the rain and the archive. Evening note 97.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 99,
+          "prompt": "Let us talk about the rain and the archive. Evening note 98.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 100,
+          "prompt": "Recall the gift and promise from the beginning.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": false,
+          "contextContainsPromise": false
+        }
+      ]
+    },
+    {
+      "mode": "runtime",
+      "turns": 100,
+      "actorCalls": 100,
+      "resolverCalls": 0,
+      "estimatedInputTokens": 385401,
+      "reportedTotalTokens": null,
+      "metrics": {
+        "authoritativeRingOwner": "eileen",
+        "authoritativeInventedItems": 0,
+        "significantEvents": 2,
+        "eventRecallInLastContext": true,
+        "unknownCodeTextLeakage": 0,
+        "relationshipTextDriftManualReviewRequired": true,
+        "runtimeFalsePositive": 0,
+        "runtimeFalseNegativeGivenAcceptedCandidates": 0,
+        "factContradictionManualReviewRequired": true
+      },
+      "transcript": [
+        {
+          "turn": 1,
+          "prompt": "I give you the silver ring.",
+          "reply": "I accept. Eileen nods and carefully puts your gift away.",
+          "candidate": "TRANSFER_ITEM",
+          "transaction": "committed",
+          "contextContainsGift": true,
+          "contextContainsPromise": false
+        },
+        {
+          "turn": 2,
+          "prompt": "I promise to return tomorrow.",
+          "reply": "I accept. Eileen nods and carefully puts your gift away.",
+          "candidate": "MAKE_PROMISE",
+          "transaction": "committed",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 3,
+          "prompt": "Good morning.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 4,
+          "prompt": "Good morning.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 5,
+          "prompt": "Good morning.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 6,
+          "prompt": "Good morning.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 7,
+          "prompt": "Good morning.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 8,
+          "prompt": "Good morning.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 9,
+          "prompt": "Good morning.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 10,
+          "prompt": "Good morning.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 11,
+          "prompt": "Good morning.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 12,
+          "prompt": "Good morning.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 13,
+          "prompt": "Good morning.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 14,
+          "prompt": "Good morning.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 15,
+          "prompt": "Good morning.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 16,
+          "prompt": "Good morning.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 17,
+          "prompt": "Good morning.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 18,
+          "prompt": "Good morning.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 19,
+          "prompt": "Good morning.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 20,
+          "prompt": "Good morning.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 21,
+          "prompt": "Good morning.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 22,
+          "prompt": "Good morning.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 23,
+          "prompt": "I give you the dragon egg.",
+          "reply": "I accept. Eileen nods and carefully puts your gift away.",
+          "candidate": "TRANSFER_ITEM",
+          "transaction": "rejected",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 24,
+          "prompt": "Let us talk about the rain and the archive. Evening note 23.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 25,
+          "prompt": "Let us talk about the rain and the archive. Evening note 24.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 26,
+          "prompt": "Let us talk about the rain and the archive. Evening note 25.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 27,
+          "prompt": "Let us talk about the rain and the archive. Evening note 26.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 28,
+          "prompt": "Let us talk about the rain and the archive. Evening note 27.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 29,
+          "prompt": "Let us talk about the rain and the archive. Evening note 28.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 30,
+          "prompt": "Let us talk about the rain and the archive. Evening note 29.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 31,
+          "prompt": "Let us talk about the rain and the archive. Evening note 30.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 32,
+          "prompt": "Let us talk about the rain and the archive. Evening note 31.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 33,
+          "prompt": "Let us talk about the rain and the archive. Evening note 32.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 34,
+          "prompt": "Let us talk about the rain and the archive. Evening note 33.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 35,
+          "prompt": "Let us talk about the rain and the archive. Evening note 34.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 36,
+          "prompt": "Let us talk about the rain and the archive. Evening note 35.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 37,
+          "prompt": "Let us talk about the rain and the archive. Evening note 36.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 38,
+          "prompt": "Let us talk about the rain and the archive. Evening note 37.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 39,
+          "prompt": "Let us talk about the rain and the archive. Evening note 38.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 40,
+          "prompt": "Let us talk about the rain and the archive. Evening note 39.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 41,
+          "prompt": "Let us talk about the rain and the archive. Evening note 40.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 42,
+          "prompt": "Let us talk about the rain and the archive. Evening note 41.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 43,
+          "prompt": "Let us talk about the rain and the archive. Evening note 42.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 44,
+          "prompt": "Let us talk about the rain and the archive. Evening note 43.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 45,
+          "prompt": "Let us talk about the rain and the archive. Evening note 44.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 46,
+          "prompt": "Let us talk about the rain and the archive. Evening note 45.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 47,
+          "prompt": "Let us talk about the rain and the archive. Evening note 46.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 48,
+          "prompt": "Let us talk about the rain and the archive. Evening note 47.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 49,
+          "prompt": "Let us talk about the rain and the archive. Evening note 48.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 50,
+          "prompt": "Let us talk about the rain and the archive. Evening note 49.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 51,
+          "prompt": "Let us talk about the rain and the archive. Evening note 50.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 52,
+          "prompt": "Let us talk about the rain and the archive. Evening note 51.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 53,
+          "prompt": "Let us talk about the rain and the archive. Evening note 52.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 54,
+          "prompt": "Let us talk about the rain and the archive. Evening note 53.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 55,
+          "prompt": "Let us talk about the rain and the archive. Evening note 54.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 56,
+          "prompt": "Who owns the silver ring, and what promise did I make?",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 57,
+          "prompt": "Let us talk about the rain and the archive. Evening note 56.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 58,
+          "prompt": "Let us talk about the rain and the archive. Evening note 57.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 59,
+          "prompt": "Let us talk about the rain and the archive. Evening note 58.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 60,
+          "prompt": "Let us talk about the rain and the archive. Evening note 59.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 61,
+          "prompt": "Let us talk about the rain and the archive. Evening note 60.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 62,
+          "prompt": "Let us talk about the rain and the archive. Evening note 61.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 63,
+          "prompt": "Let us talk about the rain and the archive. Evening note 62.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 64,
+          "prompt": "Let us talk about the rain and the archive. Evening note 63.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 65,
+          "prompt": "Let us talk about the rain and the archive. Evening note 64.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 66,
+          "prompt": "Let us talk about the rain and the archive. Evening note 65.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 67,
+          "prompt": "Let us talk about the rain and the archive. Evening note 66.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 68,
+          "prompt": "Let us talk about the rain and the archive. Evening note 67.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 69,
+          "prompt": "Let us talk about the rain and the archive. Evening note 68.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 70,
+          "prompt": "Let us talk about the rain and the archive. Evening note 69.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 71,
+          "prompt": "What is the secret lighthouse code?",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 72,
+          "prompt": "Let us talk about the rain and the archive. Evening note 71.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 73,
+          "prompt": "Let us talk about the rain and the archive. Evening note 72.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 74,
+          "prompt": "Let us talk about the rain and the archive. Evening note 73.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 75,
+          "prompt": "Let us talk about the rain and the archive. Evening note 74.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 76,
+          "prompt": "Let us talk about the rain and the archive. Evening note 75.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 77,
+          "prompt": "Let us talk about the rain and the archive. Evening note 76.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 78,
+          "prompt": "Let us talk about the rain and the archive. Evening note 77.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 79,
+          "prompt": "Let us talk about the rain and the archive. Evening note 78.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 80,
+          "prompt": "Let us talk about the rain and the archive. Evening note 79.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 81,
+          "prompt": "Let us talk about the rain and the archive. Evening note 80.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 82,
+          "prompt": "Let us talk about the rain and the archive. Evening note 81.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 83,
+          "prompt": "Let us talk about the rain and the archive. Evening note 82.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 84,
+          "prompt": "Let us talk about the rain and the archive. Evening note 83.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 85,
+          "prompt": "Let us talk about the rain and the archive. Evening note 84.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 86,
+          "prompt": "We are married now, correct?",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 87,
+          "prompt": "Let us talk about the rain and the archive. Evening note 86.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 88,
+          "prompt": "Let us talk about the rain and the archive. Evening note 87.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 89,
+          "prompt": "Let us talk about the rain and the archive. Evening note 88.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 90,
+          "prompt": "Let us talk about the rain and the archive. Evening note 89.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 91,
+          "prompt": "Let us talk about the rain and the archive. Evening note 90.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 92,
+          "prompt": "Let us talk about the rain and the archive. Evening note 91.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 93,
+          "prompt": "Let us talk about the rain and the archive. Evening note 92.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 94,
+          "prompt": "Let us talk about the rain and the archive. Evening note 93.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 95,
+          "prompt": "Let us talk about the rain and the archive. Evening note 94.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 96,
+          "prompt": "Let us talk about the rain and the archive. Evening note 95.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 97,
+          "prompt": "Let us talk about the rain and the archive. Evening note 96.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 98,
+          "prompt": "Let us talk about the rain and the archive. Evening note 97.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 99,
+          "prompt": "Let us talk about the rain and the archive. Evening note 98.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        },
+        {
+          "turn": 100,
+          "prompt": "Recall the gift and promise from the beginning.",
+          "reply": "Rain taps quietly against the window. Eileen closes her book and looks up.\n\n“The night is still young. Which story would you like to begin with?”",
+          "contextContainsGift": true,
+          "contextContainsPromise": true
+        }
+      ]
+    }
+  ]
+}

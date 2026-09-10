@@ -1,0 +1,12 @@
+import {db,worlds,backgrounds,putAsset,assets,characters,personas,chats} from '../storage/db.ts';
+import {persistWorld,resolvePending} from '../storage/runtime.ts';
+import {authorEntity,setAtmosphere} from '../runtime/author.ts';
+import {refresh} from './service.ts';
+import {useApp} from './store.ts';
+import {newId,type Particle,type Expression} from '../domain/types.ts';
+export async function defineItem(name:string,description:string){const id=useApp.getState().activeChatId;if(!id)return;await db.transaction('rw',worlds,db.table('world_facts'),async()=>{const w=await worlds.get(id);if(w)await persistWorld(authorEntity(w,{id:newId(),name,description,type:'item',owner:'player',location:'player'}))});await refresh()}
+export async function atmosphere(weather:Particle){const id=useApp.getState().activeChatId;if(!id)return;await db.transaction('rw',worlds,db.table('world_facts'),async()=>{const w=await worlds.get(id);if(w)await persistWorld(setAtmosphere(w,weather))});await refresh()}
+export async function setBackground(file:File){if(file.size>64*1024*1024)throw new Error('fileTooLarge');if(!/^image\/(png|jpeg|webp|gif)$|^video\/(webm|mp4)$/.test(file.type))throw new Error('invalidCard');const id=useApp.getState().activeChatId;if(!id)return;const asset=await putAsset(file,file.name,'background');await db.transaction('rw',worlds,db.table('world_facts'),async()=>{const w=await worlds.get(id);if(!w)return;w.entities[w.location].backgroundId=asset.id;w.revision++;await persistWorld(w)});await refresh()}
+export async function setExpressionAsset(file:File,expression:Expression){if(file.size>16*1024*1024)throw new Error('fileTooLarge');if(!/^image\/(png|jpeg|webp|gif)$/.test(file.type))throw new Error('invalidCard');const id=useApp.getState().selectedCharacterId;if(!id)return;const asset=await putAsset(file,file.name,'expression',id);await db.transaction('rw',characters,async()=>{const c=await characters.get(id);if(c)await characters.update(id,{expressions:{...c.expressions,[expression]:asset.id}})});await refresh()}
+export async function savePersona(name:string,description:string){const id=useApp.getState().activeChatId;if(!id)return;const chat=await chats.get(id);if(!chat)return;const personaId=chat.personaId??newId();await db.transaction('rw',personas,chats,async()=>{await personas.put({id:personaId,name,description});await chats.update(id,{personaId})});await refresh()}
+export async function decidePending(id:string,accept:boolean){await resolvePending(id,accept?'ACCEPT':'REJECT');await refresh()}

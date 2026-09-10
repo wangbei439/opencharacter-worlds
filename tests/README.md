@@ -1,18 +1,38 @@
-# Testing strategy
+# Tests
 
-当前只验证依赖、浏览器与格式读取能力，不把环境探针算作产品功能验收。
+Current local acceptance is recorded in `docs/ACCEPTANCE.md`. Earlier environment probes are retained as preparation evidence; they are not substitutes for product browser tests.
 
-| 目录 | 正式开发后的责任 |
-| --- | --- |
-| unit | 纯函数、schema、上下文构建、语言 key 完整性 |
-| runtime | 事务验证、Commit/Reject/Pending、NO_CHANGE、幂等、并发版本、原子回滚 |
-| compatibility | V2/V3 PNG/JSON、Lorebook、中文/英文、长文本/最小/损坏卡、资源、未知扩展及原字节哈希往返 |
-| e2e | 真实浏览器操作、响应式、导入/导出、流式回复、持久化、控制台与截图、离线 shell |
+## Reproduce
 
-fixtures/characters 使用自建合成数据，没有用户卡、聊天或真实 key。禁止将第三方 parser 的自生成往返视为独立兼容性证明：正式阶段应另加规范/真实来源并确认许可的 PNG，覆盖 chara/ccv3 优先级、重复块、损坏 CRC、zTXt、大文件、资源缺失及 URI 安全。
+```sh
+npm ci
+npm test
+npm run build
+npm run preview -- --port 4173
+```
 
-fixtures/runtime 预留 Item Transfer、Promise、Knowledge、NO_CHANGE、Hallucinated Item：只有经过事实存在性与规则验证的候选才可 Commit；承诺不是已经执行的事实，模型声称拥有不存在物品不得生成该物品。
+In a second terminal, at the repository root:
 
-MockProviderAdapter 必须具备普通回复、逐段流式、API Error、429、结构化候选、可取消超时。Runtime fixture 预期是规范意图，正式字段待产品规范。真实 API 集成只少量运行，不作为免费重复 E2E 的依赖。
+```sh
+npm run test:e2e
+node scripts/fetch-real-card.mjs
+npm run test:real-card
+npm run benchmark
+```
 
-完整验收流程（正式开发后实现）：打开网站 → 切换中文 → 导入卡 → 配置 Mock → 创建聊天 → 发送消息 → 收到流式回复 → 触发 World Event → 打开 WORLD 验证 Fact/Event → 刷新验证持久化 → 导出 Save 并验证内容。桌面和移动 viewport 都执行；增加拒绝/待定/NO_CHANGE、刷新离线读取、存档恢复、Console Error 和截图 QA。
+The two product tests use installed Edge on Windows, or Playwright Chromium otherwise. Install it with `npx playwright install chromium`; `PW_CHANNEL=chromium` forces it on Windows. Browser state is isolated and discarded after each test. Downloads go into ignored `test-results/`, while reproducible screenshots and non-secret summaries go into `evidence/product/`.
+
+## Coverage
+
+- `tests/runtime/engine.test.mjs`: accepted/rejected/deferred transactions, nonexistent items, ownership, locks, knowledge, version checks, time bounds, ordinary-chat NO_CHANGE, and old-event retrieval across long and multilingual histories.
+- `tests/unit/provider.test.mjs`: byte-split UTF-8 SSE, completion markers, interruption with partial text, secret redaction, endpoint restrictions, and non-streaming fallback.
+- `tests/unit/save.test.mjs`: schema/reference failures and identifier remapping without changing authored text. `fixtures/runtime/save-v1.json` is an exported synthetic example, not user data.
+- `tests/e2e/product-smoke.mjs`: production UI at desktop/mobile sizes, wizard, mock chat, gift, local reload, save roundtrip, regeneration, causal edit rewind, structured actions, branch, particle canvas, language switch and service-worker offline reload.
+- `tests/e2e/real-card-provider.mjs`: actual upstream Seraphina PNG import, immutable original bytes/text, direct provider transport contract, encrypted credentials, reload and credential-free save export. The endpoint is intercepted by Playwright; **this is not a live provider test**.
+- `scripts/benchmark.mjs`: same-card/same-model two-group 100-turn harness. Default MockProvider mode tests mechanisms only. `--real` needs explicitly supplied local environment credentials and does not claim semantic quality without transcript review.
+
+`tests/compatibility/` contains the earlier Foundry PNG/JSON/CharX, malformed-input and browser persistence probes. These use synthetic fixtures; the separate public-card test provides an independent ecosystem example.
+
+## Pending external acceptance
+
+A live BYOK streaming conversation, real-model benchmark review, public Cloudflare URL flow, and physical Android install require the user's provider/account/device. CI configuration is present but has not run remotely because this repository has no remote configured.

@@ -1,0 +1,3 @@
+import fs from 'node:fs/promises';import {createHash} from 'node:crypto';
+const source=JSON.parse(await fs.readFile('evidence/product/real-card-source.json','utf8'));
+const response=await fetch(source.url,{signal:AbortSignal.timeout(60000)});if(!response.ok)throw new Error('Public fixture download failed');const bytes=new Uint8Array(await response.arrayBuffer());if(createHash('sha256').update(bytes).digest('hex')!==source.sha256)throw new Error('Upstream fixture changed; review before updating the recorded hash.');await fs.mkdir('test-results',{recursive:true});await fs.writeFile('test-results/real-card.png',bytes);console.log('Verified public character fixture downloaded for local testing.');

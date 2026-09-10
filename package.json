@@ -1,6 +1,6 @@
 {
   "name": "opencharacter-worlds",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": true,
   "type": "module",
   "engines": {
@@ -13,7 +13,12 @@
     "test:environment": "node tests/e2e/browser-environment.mjs",
     "test:compatibility": "node tests/compatibility/probe.mjs",
     "test:compatibility:browser": "node tests/compatibility/browser.mjs",
-    "test:mock": "node --test tests/unit/mock-provider.test.mjs"
+    "test:mock": "node --test tests/unit/mock-provider.test.mjs",
+    "test": "node --test tests/unit/*.test.mjs tests/runtime/*.test.mjs",
+    "test:e2e": "node tests/e2e/product-smoke.mjs",
+    "test:real-card": "node tests/e2e/real-card-provider.mjs",
+    "benchmark": "node scripts/benchmark.mjs",
+    "benchmark:real": "node scripts/benchmark.mjs --real"
   },
   "dependencies": {
     "@character-foundry/character-foundry": "0.5.0",

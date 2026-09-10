@@ -1,0 +1,2 @@
+import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs/promises';
+test('Chinese and English expose the same UI translation keys',async()=>{const [zh,en]=await Promise.all(['zh-CN','en-US'].map(async lang=>JSON.parse(await fs.readFile(`locales/${lang}/common.json`,'utf8'))));assert.deepEqual(Object.keys(zh).sort(),Object.keys(en).sort());for(const locale of [zh,en])assert.ok(Object.values(locale).every(text=>typeof text==='string'&&text.trim()))});
