@@ -1,3 +1,4 @@
+import {holderOf,itemLocation} from './possession.ts';
 import type {WorldState,Character,Candidate,Decision,Transaction,WorldEvent,Fact,TransactionKind} from '../domain/types.ts';
 export function initialWorld(id:string,character:Pick<Character,'id'|'name'|'builtin'>):WorldState{
  const entities:WorldState['entities']={player:{id:'player',name:'Player',description:'',type:'person',location:'scene',alive:true},[character.id]:{id:character.id,name:character.name,description:'',type:'person',location:'scene',alive:true},scene:{id:'scene',name:character.builtin?'潮汐档案馆 · The Tidal Archive':'Scene',description:'',type:'place'}};
@@ -5,7 +6,7 @@ export function initialWorld(id:string,character:Pick<Character,'id'|'name'|'bui
  return {id,revision:0,day:1,minutes:20*60+42,weather:'dust',location:'scene',participants:['player',character.id],entities,promises:{},relationships:{[character.id]:'stranger'}};
 }
 export function projectFacts(world:WorldState):Fact[]{
- const rows:Fact[]=[];for(const entity of Object.values(world.entities))for(const predicate of ['owner','location','alive','knownBy','consumed','locked'] as const){const value=entity[predicate];if(value!==undefined)rows.push({id:`${world.id}:${entity.id}:${predicate}`,worldId:world.id,subject:entity.id,predicate,value,description:entity.description});}return rows;
+ const rows:Fact[]=[];for(const entity of Object.values(world.entities))for(const predicate of ['owner','holder','location','alive','knownBy','consumed','locked'] as const){const value=entity[predicate];if(value!==undefined&&value!==null)rows.push({id:`${world.id}:${entity.id}:${predicate}`,worldId:world.id,subject:entity.id,predicate,value,description:entity.description});}return rows;
 }
 const softKinds:TransactionKind[]=['MAKE_PROMISE','ACCEPT_PROMISE','BREAK_PROMISE','ACCEPT_INVITATION','REJECT_INVITATION','REVEAL_INFORMATION','LEARN_INFORMATION','ACCEPT_CLAIM','REJECT_CLAIM','RELATIONSHIP_MILESTONE'];
 export function resolveTransaction(world:WorldState,c:Candidate,decision:Decision='UNCLEAR',now=Date.now()):{world:WorldState;transaction:Transaction;event?:WorldEvent}{
@@ -16,11 +17,15 @@ export function resolveTransaction(world:WorldState,c:Candidate,decision:Decisio
  if(c.confidence<0.9)return unchanged('unclear','pending');
  if(c.target&&(!world.entities[c.target]||world.entities[c.target].alive===false))return unchanged('target');
  const item=c.entityId?world.entities[c.entityId]:undefined;
- if(['TRANSFER_ITEM','USE_ITEM','TAKE_ITEM','DROP_ITEM'].includes(c.kind)){
+ if(['STORE_ITEM','RETURN_ITEM','TRANSFER_ITEM','USE_ITEM','TAKE_ITEM','DROP_ITEM'].includes(c.kind)){
   if(!item||item.type!=='item')return unchanged('missingItem');
   if(item.consumed)return unchanged('consumed');
-  if(c.kind==='TAKE_ITEM'){if(item.owner||item.location!==world.entities[c.actor].location)return unchanged('notAvailable');}
-  else if(item.owner!==c.actor)return unchanged('notOwner');
+  const holder=holderOf(world,item);
+  if(c.kind==='TAKE_ITEM'){if(holder||(item.owner&&item.owner!==c.actor)||itemLocation(world,item)!==world.entities[c.actor].location)return unchanged('notAvailable');}
+  else if(c.kind==='RETURN_ITEM'){if(!item.owner||!holder||holder===item.owner||!c.target||!((holder===c.actor&&item.owner===c.target)||(holder===c.target&&item.owner===c.actor)))return unchanged('notAvailable');}
+  else if(holder!==c.actor)return unchanged('notHolder');
+  if(['TRANSFER_ITEM','STORE_ITEM','USE_ITEM'].includes(c.kind)&&item.owner!==c.actor)return unchanged('notOwner');
+  if(c.target&&world.entities[c.target].location!==world.entities[c.actor].location)return unchanged('notPresent');
  }
  if(c.requiresConsent){
   if(!c.target||!world.participants.includes(c.target))return unchanged('notPresent');
@@ -31,19 +36,23 @@ export function resolveTransaction(world:WorldState,c:Candidate,decision:Decisio
  switch(c.kind){
   case 'TRANSFER_ITEM':
    if(!c.target||next.entities[c.target].type!=='person'||!next.participants.includes(c.target))return unchanged('target');
-   entity!.owner=c.target;entity!.location=c.target;break;
-  case 'TAKE_ITEM':entity!.owner=c.actor;entity!.location=c.actor;break;
-  case 'DROP_ITEM':delete entity!.owner;entity!.location=next.entities[c.actor].location;break;
+   entity!.owner=c.target;entity!.holder=c.target;entity!.location=next.entities[c.target].location;break;
+  case 'STORE_ITEM':
+   if(!c.target||next.entities[c.target].type!=='person'||!next.participants.includes(c.target))return unchanged('target');
+   entity!.holder=c.target;entity!.location=next.entities[c.target].location;break;
+  case 'RETURN_ITEM':entity!.holder=entity!.owner;entity!.location=next.entities[entity!.owner!].location;break;
+  case 'TAKE_ITEM':entity!.owner??=c.actor;entity!.holder=c.actor;entity!.location=next.entities[c.actor].location;break;
+  case 'DROP_ITEM':entity!.holder=null;entity!.location=next.entities[c.actor].location;break;
   case 'USE_ITEM':{
    if(!entity!.usable)return unchanged('notUsable');
    if(c.destination){const door=next.entities[c.destination];if(door?.type!=='place'||door.keyId!==entity!.id||!door.locked)return unchanged('notUsable');door.locked=false;}
-   else{entity!.consumed=true;delete entity!.owner;}break;
+   else{entity!.consumed=true;entity!.holder=null;}break;
   }
   case 'MOVE':case 'CHANGE_LOCATION':{
    const destination=c.destination?next.entities[c.destination]:undefined;
    if(destination?.type!=='place'||destination.locked)return unchanged('location');
    if(next.entities[c.actor].location===destination.id)return unchanged('noChange');
-   next.entities[c.actor].location=destination.id;if(c.actor==='player'){next.location=destination.id;next.participants=Object.values(next.entities).filter(e=>e.type==='person'&&e.location===destination.id&&e.alive!==false).map(e=>e.id);}break;
+   for(const carried of Object.values(next.entities))if(carried.type==='item'&&holderOf(world,carried)===c.actor){carried.holder=c.actor;carried.location=destination.id;}next.entities[c.actor].location=destination.id;if(c.actor==='player'){next.location=destination.id;next.participants=Object.values(next.entities).filter(e=>e.type==='person'&&e.location===destination.id&&e.alive!==false).map(e=>e.id);}break;
   }
   case 'TIME_ADVANCE':{
    if(c.origin!=='structured'||!Number.isInteger(c.minutes)||c.minutes!<=0||c.minutes!>1440)return unchanged('time');
@@ -83,6 +92,9 @@ export function makeCandidate(world:WorldState,kind:TransactionKind,sourceMessag
 // Deliberately narrow. Hypotheticals, negations and ordinary chatter do not become transactions.
 export function detectCandidate(text:string,world:WorldState,target:string,sourceMessageId:string):Candidate|undefined{
  const s=text.trim();if(/[?？]|\b(if|pretend|imagine|not|never|don't|didn't)\b|如果|假如|假装|没有|不想|不会|不送/i.test(s))return;
+ const storage=/^(?:请替我保管|我把)(.{1,60}?)(?:交给你保管|交给你暂存)?[。！!]*$/.exec(s);
+ if(storage&&(s.startsWith('请替我保管')||/交给你(?:保管|暂存)[。！!]*$/.test(s))){const name=storage[1].toLowerCase();const item=Object.values(world.entities).find(e=>e.type==='item'&&e.name.toLowerCase().split(' · ').some(n=>n===name));return makeCandidate(world,'STORE_ITEM',sourceMessageId,{entityId:item?.id??`unknown:${name}`,target,text:s,origin:'language',requiresConsent:true,confidence:0.98})}
+ const returning=/^请把(.{1,60}?)还给我[。！!]*$/.exec(s);if(returning){const name=returning[1].toLowerCase();const item=Object.values(world.entities).find(e=>e.type==='item'&&e.name.toLowerCase().split(' · ').some(n=>n===name));return makeCandidate(world,'RETURN_ITEM',sourceMessageId,{entityId:item?.id??`unknown:${name}`,target,text:s,origin:'language',requiresConsent:true,confidence:0.98})}
  const gift=/^(?:我把|我将)(.{1,60}?)(?:送给你|给你|赠给你)[。！!\s]*$/.exec(s)||/^I (?:give|offer) you (?:the |my |a )?(.{1,60}?)[.!\s]*$/i.exec(s);
  if(gift){const name=gift[1].toLowerCase();const item=Object.values(world.entities).find(e=>e.type==='item'&&e.name.toLowerCase().split(' · ').some(n=>n===name));return makeCandidate(world,'TRANSFER_ITEM',sourceMessageId,{entityId:item?.id??`unknown:${name}`,target,origin:'language',requiresConsent:true,confidence:0.98});}
  if(/^(?:我(?:答应|保证|承诺)|I promise\b)/i.test(s)&&s.length<300)return makeCandidate(world,'MAKE_PROMISE',sourceMessageId,{target,text:s,origin:'language',requiresConsent:true,confidence:0.95});

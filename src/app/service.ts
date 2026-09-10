@@ -8,10 +8,10 @@ import {createProvider,ProviderError,type ProviderAdapter} from '../providers/ad
 import {useApp,patchApp} from './store.ts';
 import {newId,type Character,type Chat,type Message,type Candidate,type Decision,type ProviderConfig,type Settings,type Expression,type TransactionKind} from '../domain/types.ts';
 import {importCharacter,createExample} from '../compatibility/character.ts';
-let controller:AbortController|undefined;
+let controller:AbortController|undefined;let groupCancelled=false;
 export async function refresh(chatId=useApp.getState().activeChatId){
  const [allCharacters,allChats,allPersonas]=await Promise.all([characters.toArray(),chats.orderBy('updatedAt').reverse().toArray(),personas.toArray()]);
- const chat=allChats.find(c=>c.id===chatId),character=allCharacters.find(c=>c.id===chat?.characterId);
+ const chat=allChats.find(c=>c.id===chatId),character=allCharacters.find(c=>c.id===(chat?.speakerId??chat?.characterId));
  const [ms,world,es,txs,bks]=await Promise.all([chat?messages.where('chatId').equals(chat.id).sortBy('createdAt'):[],chat?worlds.get(chat.id):undefined,chat?events.where('worldId').equals(chat.id).sortBy('timestamp'):[],chat?transactions.where('worldId').equals(chat.id).sortBy('createdAt'):[],character?books.bulkGet(character.worldbookIds).then(rows=>rows.filter((b):b is NonNullable<typeof b>=>!!b)):[]]);
  patchApp({characters:allCharacters,chats:allChats,personas:allPersonas,messages:ms,world,events:es,transactions:txs,books:bks,activeChatId:chat?.id,selectedCharacterId:character?.id??useApp.getState().selectedCharacterId});
 }
@@ -36,12 +36,12 @@ async function narrowResolve(provider:ProviderAdapter,candidate:Candidate,reply:
  const result=await provider.chat({purpose:'resolver',maxTokens:Math.min(configuredResolverBudget(),1024),messages:[{role:'system',content:resolverInstruction},{role:'user',content:JSON.stringify({action:candidate.kind,target:candidate.target,request:candidate.text,reply})}]},signal);
  return parseDecision(result.text);
 }
-async function generate(chat:Chat,character:Character,user:Message,action?:Partial<Candidate>,replace?:Message,continuation=false){
- const config=useApp.getState().provider,provider=createProvider(config);controller=new AbortController();const signal=controller.signal;patchApp({sending:true,streamText:'',error:undefined});
+async function generate(chat:Chat,character:Character,user:Message,action?:Partial<Candidate>,replace?:Message,continuation=false,groupTurn=false){
+ const config=useApp.getState().provider,provider=createProvider(config);controller=new AbortController();const signal=controller.signal;patchApp({sending:true,speakingCharacterId:character.id,streamText:'',error:undefined});
  let reply='',resultExpression:Expression='normal';let candidate:Candidate|undefined;let assistant:Message|undefined;
  try{
   let world=await worlds.get(chat.id);if(!world)throw new Error('worldMissing');
-  candidate=continuation?undefined:action?makeCandidate(world,action.kind!,user.id,{text:user.content,...action}):detectCandidate(user.content,world,character.id,user.id);
+  candidate=continuation||groupTurn?undefined:action?makeCandidate(world,action.kind!,user.id,{text:user.content,...action}):detectCandidate(user.content,world,character.id,user.id);
   if(candidate){if(candidate.requiresConsent){await transactions.put({...candidate,status:'pending',reason:'awaitingActor',createdAt:Date.now()})}else{const outcome=await commitCandidate(candidate);if(outcome.status==='rejected')patchApp({notice:'rejected'});candidate=undefined;world=(await worlds.get(chat.id))!}}
   const history=await messages.where('chatId').equals(chat.id).sortBy('createdAt');const filtered=replace?history.filter(m=>m.id!==replace.id):history;
   const ledger=await events.where('worldId').equals(chat.id).toArray();const worldbooks=(await books.bulkGet(character.worldbookIds)).filter((b):b is NonNullable<typeof b>=>!!b);const persona=chat.personaId?await personas.get(chat.personaId):undefined;
@@ -51,28 +51,29 @@ async function generate(chat:Chat,character:Character,user:Message,action?:Parti
   const expressionMatch=/^\[expression:(normal|happy|angry|sad|surprised|shy|fear|injured)\]\s*/.exec(reply);if(expressionMatch){resultExpression=expressionMatch[1] as Expression;reply=reply.slice(expressionMatch[0].length)}
   if(!reply.trim())throw new ProviderError('response');
   if(replace){const variants=[...replace.variants,reply];assistant={...replace,content:reply,variants,selected:variants.length-1,status:'complete',expression:resultExpression};await messages.put(assistant)}else assistant=await addMessage(chat.id,'assistant',reply);
+  assistant.speakerId=character.id;assistant.groupTurn=groupTurn;await messages.put(assistant);
   if(candidate){candidate={...candidate,sourceMessageId:assistant.id};await transactions.update(candidate.id,{sourceMessageId:assistant.id});try{const decision=await narrowResolve(provider,candidate,reply,signal);await commitCandidate(candidate.kind==='ACCEPT_INVITATION'&&decision==='REJECT'?{...candidate,kind:'REJECT_INVITATION',requiresConsent:false}:candidate,decision)}catch(e){if(signal.aborted)throw e;patchApp({notice:'resolverPending'})}}
   patchApp({expression:resultExpression});await chats.update(chat.id,{updatedAt:Date.now()});
  }catch(e){
-  if(reply&&!assistant){if(replace){const variants=[...replace.variants,reply];await messages.put({...replace,variants,selected:variants.length-1,content:reply,status:'interrupted'})}else{const row=await addMessage(chat.id,'assistant',reply);await messages.update(row.id,{status:'interrupted'})}}
+  if(reply&&!assistant){if(replace){const variants=[...replace.variants,reply];await messages.put({...replace,variants,selected:variants.length-1,content:reply,status:'interrupted'})}else{const row=await addMessage(chat.id,'assistant',reply);await messages.update(row.id,{status:'interrupted',speakerId:character.id})}}
   throw e;
  }finally{controller=undefined;await refresh(chat.id);patchApp({streamText:''})}
 }
 async function sendMessageInternal(text:string,action?:Partial<Candidate>){
- if(!text.trim())return;const id=useApp.getState().activeChatId,chat=id?await chats.get(id):undefined;if(!chat)return;const character=await characters.get(chat.characterId);if(!character)return;
+ if(!text.trim())return;const id=useApp.getState().activeChatId,chat=id?await chats.get(id):undefined;if(!chat)return;const character=await characters.get(chat.speakerId??chat.characterId);if(!character||((chat.mutedIds?.includes(character.id)||!(await worlds.get(chat.id))?.participants.includes(character.id))&&(!action||action.requiresConsent)))throw new Error('notPresent');
  if(useApp.getState().provider.kind!=='mock'&&!navigator.onLine)throw new ProviderError('offline');
  const user=await addMessage(chat.id,'user',text.trim());await refresh(chat.id);await generate(chat,character,user,action);
 }
-export function cancelGeneration(){controller?.abort(new DOMException('Cancelled','AbortError'))}
+export function cancelGeneration(){groupCancelled=true;controller?.abort(new DOMException('Cancelled','AbortError'))}
 async function regenerateInternal(messageId:string){
  const m=await messages.get(messageId);if(!m||m.role!=='assistant')return;const list=await messages.where('chatId').equals(m.chatId).sortBy('createdAt');const index=list.findIndex(x=>x.id===m.id);const user=list.slice(0,index).reverse().find(x=>x.role==='user');if(!user)return;
  const causal=[user.id,...list.slice(index).map(x=>x.id)];
  const prior=(await transactions.where('worldId').equals(m.chatId).toArray()).find(t=>t.sourceMessageId===m.id||t.sourceMessageId===user.id);
  const action=prior?(({kind,actor,target,entityId,destination,text,minutes,confidence,origin,requiresConsent})=>({kind,actor,target,entityId,destination,text,minutes,confidence,origin,requiresConsent}))(prior):undefined;
  await db.transaction('rw',[messages,worlds,db.table('world_facts'),events,transactions],async()=>{await rewindFrom(m.chatId,causal);await messages.bulkDelete(list.slice(index+1).map(x=>x.id))});
- const chat=(await chats.get(m.chatId))!,character=(await characters.get(chat.characterId))!;await generate(chat,character,user,action,m);
+ const chat=(await chats.get(m.chatId))!,character=(await characters.get(m.speakerId??chat.characterId))!;await generate(chat,character,user,action,m,false,!!m.groupTurn);
 }
-async function continueReplyInternal(){const id=useApp.getState().activeChatId;if(!id)return;const chat=(await chats.get(id))!,character=(await characters.get(chat.characterId))!;const last=(await messages.where('chatId').equals(id).sortBy('createdAt')).at(-1);if(last)await generate(chat,character,last,undefined,undefined,true)}
+async function continueReplyInternal(){const id=useApp.getState().activeChatId;if(!id)return;const chat=(await chats.get(id))!;const last=(await messages.where('chatId').equals(id).sortBy('createdAt')).at(-1);const character=(await characters.get(last?.speakerId??chat.speakerId??chat.characterId))!;if(last&&character)await generate(chat,character,last,undefined,undefined,true)}
 async function editMessageInternal(id:string,text:string){
  const message=await messages.get(id);if(!message)return;const all=await messages.where('chatId').equals(message.chatId).sortBy('createdAt');const index=all.findIndex(m=>m.id===id);const previousUser=all.slice(0,index).reverse().find(m=>m.role==='user');
  await rewindFrom(message.chatId,[...all.slice(index).map(m=>m.id),...(message.role==='assistant'&&previousUser?[previousUser.id]:[])]);await messages.bulkDelete(all.slice(index+1).map(m=>m.id));const variants=[...message.variants];variants[message.selected]=text;await messages.update(id,{content:text,variants,status:'complete'});
@@ -90,7 +91,7 @@ export async function structuredAction(kind:TransactionKind,fields:Partial<Candi
 export async function exportOriginal(character:Character){const asset=await assets.get(character.originalAssetId);if(!asset)throw new Error('assetMissing');download(asset.blob,asset.name)}
 export function download(blob:Blob,name:string){const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),10000)}
 
-async function locked(operation:()=>Promise<void>){if(useApp.getState().sending)return;patchApp({sending:true});try{await operation()}finally{patchApp({sending:false,streamText:''})}}
+async function locked(operation:()=>Promise<void>){if(useApp.getState().sending)return;patchApp({sending:true});try{await operation()}finally{patchApp({sending:false,speakingCharacterId:undefined,streamText:''})}}
 export const sendMessage=(text:string,action?:Partial<Candidate>)=>locked(()=>sendMessageInternal(text,action));
 export const regenerate=(id:string)=>locked(()=>regenerateInternal(id));
 export const continueReply=()=>locked(continueReplyInternal);
@@ -98,3 +99,10 @@ const historyTables=[messages,worlds,db.table('world_facts'),events,transactions
 export const editMessage=(id:string,text:string)=>locked(async()=>{await db.transaction('rw',historyTables,()=>editMessageInternal(id,text));await refresh()});
 export const deleteMessage=(id:string)=>locked(async()=>{await db.transaction('rw',historyTables,()=>deleteMessageInternal(id));await refresh()});
 export const swipeMessage=(id:string,index:number)=>locked(async()=>{await db.transaction('rw',historyTables,()=>swipeMessageInternal(id,index));await refresh()});
+
+export const sendGroupMessage=(text:string)=>locked(async()=>{
+ if(!text.trim())return;const state=useApp.getState(),chat=state.activeChatId?await chats.get(state.activeChatId):undefined;if(!chat)return;const world=await worlds.get(chat.id);if(!world)return;groupCancelled=false;
+ const ids=(chat.memberIds??[chat.characterId]).filter(id=>!chat.mutedIds?.includes(id)&&world.participants.includes(id));if(!ids.length)throw Error('notPresent');
+ const user=await addMessage(chat.id,'user',text.trim());await refresh(chat.id);
+ for(const id of ids){if(groupCancelled)break;const character=await characters.get(id);if(character)await generate(chat,character,user,undefined,undefined,false,true);}
+});

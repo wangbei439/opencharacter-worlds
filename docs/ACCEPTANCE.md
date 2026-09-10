@@ -4,8 +4,8 @@ This is a working local implementation, not a completed public V0.1 release.
 
 | Area | Evidence | Result |
 |---|---|---|
-| TypeScript + production build | `npm run build` | Pass; main script ~152 KB gzip; parser and save modules load on demand |
-| Runtime/provider/save unit tests | `npm test` | 33 passed |
+| TypeScript + production build | `npm run build` | Pass; main script ~158 KB gzip; parser and save modules load on demand |
+| Runtime/provider/save unit tests | `npm test` | 46 passed |
 | Desktop + mobile | `evidence/product/smoke.json`, screenshots | 1440×960, 360×800; no horizontal overflow |
 | Chinese + English | Browser switch, English screenshot | Pass; character text remains unchanged |
 | Chat and world | Example, send, gift, event, refresh | Pass using offline mock |
@@ -18,7 +18,7 @@ This is a working local implementation, not a completed public V0.1 release.
 | Long-term event retrieval | Unit test + `evidence/benchmark/mock-100-turn.json` | Two 100-turn mock groups; includes old-event retrieval and conservative runtime checks |
 | Manual creator and media | `evidence/product/studio.json`, studio screenshots | Creation/editing, prompt/worldview/lore, decoded WebM, timed rotation, audio playback/switch, media save roundtrip and immutable original; desktop/mobile passed |
 | Six provider presets | `tests/unit/provider-presets.test.mjs` | Native Claude request/stream and OpenAI budget contracts verified with fixtures; live accounts unverified |
-| Live BYOK | No configured user credential | Pending |
+| Live BYOK | User-supplied GLM-5.2 custom-provider report: 9 actor turns, 2 resolver calls | Completed small live run; semantic issues documented and locally fixed, fixes need live acceptance |
 | Public HTTPS URL and full public flow | No Cloudflare account / remote repository configured | Pending |
 | Android installation on a physical device | Manifest/SW provided; no physical device session | Pending |
 
@@ -37,3 +37,9 @@ Public test card: SillyTavern `default/content/default_Seraphina.png`, source UR
 `PREPARATION.md` records the earlier dependency outage. Dependencies are now installed and locked; its “build blocked” conclusion is historical.
 
 See [implementation status](IMPLEMENTATION-STATUS.md) for the creator expansion and release gaps. The MDN CC0 video fixture source and SHA-256 are in `evidence/product/video-source.json`; it is not bundled with the app.
+
+## Custody, groups and compatibility expansion
+
+`evidence/product/group-custody.json` records the new production-browser flow: independent member definition and lore, saved speaker identity, one reply per member in list order, custody with unchanged ownership, return/drop/pickup, export with two immutable originals, import with remapped holder/member identifiers, reload and 360px layout. Requests use an intercepted fixture, not the user’s live account. Existing product smoke, studio and real-card browser checks were also rerun successfully during this expansion.
+
+See `FEATURE-COMPLETION.md` for supported rules and remaining boundaries. Forty-six unit/runtime tests cover old-save compatibility plus custody, physical location, conservative natural-language candidates and bounded lore matching. No full SillyTavern compatibility claim is made.

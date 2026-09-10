@@ -43,6 +43,14 @@ Open http://127.0.0.1:4173. Use the same address and port for the same local dat
 
 详见[产品规范差距与本轮补充](docs/IMPLEMENTATION-STATUS.md)。
 
+## 物品与多角色
+
+物品分别显示所有者、当前持有人和所在位置。快捷操作新增“寄存”和“归还／取回”；放下不会放弃所有权，寄存中的物品不能隔空使用。旧存档仍可读取。
+
+输入区上方的“多角色管理”可添加已导入角色、选择发言者、排序、暂停发言和移除成员。“依次回复”每名在场且未暂停的成员调用一次模型，不无限自动续聊；每个角色使用自己的设定和世界书。多角色存档包含成员原始卡片，导入后仍保留发言身份和持有人关联。
+
+世界书编辑可设置附加条件、大小写、完整词、前后插入位置、扫描深度、预算和最多四轮递归。CharX 可在导入入口选择；扩展脚本与复杂正则不执行，不支持的规则会提示。详见[本轮功能及边界](docs/FEATURE-COMPLETION.md)。
+
 ## Data and privacy
 
 - Original character files remain immutable Blobs with SHA-256. Export Original returns those bytes. Normalized fields and lorebook edits are stored separately.

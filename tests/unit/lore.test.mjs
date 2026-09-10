@@ -1,0 +1,6 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import {selectLore,keyMatch} from '../../src/context/lore.ts';
+const entry=(id,keys,content,extra={})=>({id,keys,secondaryKeys:[],content,enabled:true,constant:false,selective:false,caseSensitive:false,priority:1,position:'before_char',...extra});const book=entries=>({entries,tokenBudget:1024,recursive:true});
+test('bounded recursive lore activates dependencies and terminates cycles',()=>{const rows=selectLore(book([entry('a',['harbor'],'lighthouse'),entry('b',['lighthouse'],'harbor')]),'harbor',s=>s);assert.equal(rows.filter(r=>r.included).length,2)});
+test('secondary filters and whole words distinguish related terms',()=>{assert.equal(keyMatch('cat','cathedral',{caseSensitive:false,wholeWords:true}),false);const rows=selectLore(book([entry('a',['cat'],'ok',{selective:true,secondaryKeys:['rain'],secondaryLogic:'notAny'})]),'cat in rain',s=>s);assert.equal(rows[0].reason,'secondaryMissing')});
+test('unsafe regex and unsupported lore stay inactive',()=>{assert.equal(keyMatch('/(a+)+$/','aaa',{caseSensitive:false}),undefined);assert.equal(keyMatch('/^rain$/i','RAIN',{caseSensitive:false}),true);assert.equal(selectLore(book([entry('a',['rain'],'secret',{unsupported:true})]),'rain',s=>s)[0].reason,'unsupported')});

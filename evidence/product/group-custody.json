@@ -1,0 +1,16 @@
+{
+  "independentCharacterContext": true,
+  "ownLore": true,
+  "speakerIdentity": true,
+  "orderedRound": true,
+  "custodyKeepsOwnership": true,
+  "return": true,
+  "dropKeepsOwnership": true,
+  "pickup": true,
+  "groupSaveOriginals": true,
+  "remappedHolder": true,
+  "reload": true,
+  "mobile360": true,
+  "transport": "intercepted fixture; no live API",
+  "errors": []
+}
