@@ -116,3 +116,5 @@ Character Foundry 0.5.0 handles card parsing. Its published loader declaration i
 Writing controls: open 对话写作设置 above the composer. See [feature boundaries](docs/FEATURE-COMPLETION.md). Run `npm run test:writing` against the local preview for its isolated browser checks.
 
 Dependency changes must follow [the license policy](docs/DEPENDENCY-POLICY.md) and pass `npm run check:licenses` before installation. SillyTavern source copying is prohibited.
+
+Advanced plugins, macro programs and embedding retrieval: [usage and SDK](docs/ADVANCED-FEATURES.md), [original MIT sample plugin](examples/quiet-narration.ocw-plugin.json). Run `npm run test:advanced` for isolated integration checks.

@@ -3,6 +3,7 @@ import {browserOptions} from '../support/browser.mjs';
 import fs from 'node:fs/promises';
 import assert from 'node:assert/strict';
 const zh=JSON.parse(await fs.readFile('locales/zh-CN/common.json','utf8'));
+await fs.mkdir('test-results',{recursive:true});await fs.mkdir('evidence/product',{recursive:true});
 const browser=await chromium.launch(browserOptions());
 try {
  const page=await browser.newPage({viewport:{width:1440,height:960}}), requests=[],errors=[];
@@ -16,9 +17,9 @@ try {
  for(const [key,value] of [['prompt','WRITING_MARKER 简短描写。'],['scenario','SCENARIO_MARKER 雨夜车站。'],['note','NOTE_MARKER 保持悬念。']])await page.getByLabel(zh['writing.'+key],{exact:true}).fill(value);
  await page.getByLabel(zh['writing.frequency'],{exact:true}).fill('2');await page.getByLabel(zh['writing.position'],{exact:true}).selectOption('history');await page.getByLabel(zh['writing.depth'],{exact:true}).fill('1');
  await page.getByRole('button',{name:zh['writing.addReply'],exact:true}).click();await page.getByLabel(zh['writing.label']+' 1',{exact:true}).fill('询问近况');await page.getByLabel(zh['writing.replyText']+' 1',{exact:true}).fill('{{char}}，最近好吗？');
- await page.locator('.writing-panel summary').click();await page.getByLabel(zh['writing.presetName'],{exact:true}).fill('雨夜预设');await page.getByRole('button',{name:zh['writing.storePreset'],exact:true}).click();await page.getByLabel(zh['writing.choosePreset'],{exact:true}).locator('option').nth(1).waitFor({state:'attached'});
+ await page.locator('.writing-panel summary').first().click();await page.getByLabel(zh['writing.presetName'],{exact:true}).fill('雨夜预设');await page.getByRole('button',{name:zh['writing.storePreset'],exact:true}).click();await page.getByLabel(zh['writing.choosePreset'],{exact:true}).locator('option').nth(1).waitFor({state:'attached'});
  const dl=page.waitForEvent('download');await page.getByRole('button',{name:zh['writing.exportPreset'],exact:true}).click();await (await dl).saveAs('test-results/writing-preset.json');const preset=JSON.parse(await fs.readFile('test-results/writing-preset.json','utf8'));assert.equal(preset.format,'ocw-writing');assert.equal(preset.writing.noteEvery,2);
- await page.getByRole('button',{name:zh['writing.deletePreset'],exact:true}).click();await page.locator('.writing-panel input[type=file]').setInputFiles('test-results/writing-preset.json');await page.getByLabel(zh['writing.choosePreset'],{exact:true}).locator('option').nth(1).waitFor({state:'attached'});
+ await page.getByRole('button',{name:zh['writing.deletePreset'],exact:true}).click();await page.locator('.writing-panel input[type=file]').first().setInputFiles('test-results/writing-preset.json');await page.getByLabel(zh['writing.choosePreset'],{exact:true}).locator('option').nth(1).waitFor({state:'attached'});
  await page.getByRole('dialog').getByRole('button',{name:zh['common.save'],exact:true}).click();await page.getByRole('dialog').waitFor({state:'hidden'});
  const before=requests.length;await page.locator('.quick-replies button').click();assert.equal(requests.length,before);assert.equal(await page.getByRole('textbox',{name:zh['chat.placeholder']}).inputValue(),original[0].name+'，最近好吗？');
  const send=async text=>{const count=await page.locator('[data-testid=message-assistant]').count();if(text)await page.getByRole('textbox',{name:zh['chat.placeholder']}).fill(text);await page.getByRole('button',{name:zh['chat.send'],exact:true}).click();await page.locator('[data-testid=message-assistant]').nth(count).waitFor();await page.locator('.streaming').waitFor({state:'hidden'})};

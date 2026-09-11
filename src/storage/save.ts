@@ -1,3 +1,4 @@
+import {importedWriting} from '../domain/writing.ts';
 import {remapWorld} from './remap.ts';
 import {db,characters,assets,books,chats,messages,worlds,events,transactions,personas,backgrounds,sha256} from './db.ts';
 import {persistWorld} from './runtime.ts';
@@ -24,7 +25,7 @@ export async function importSave(file:File){
  await db.transaction('rw',[characters,assets,books,chats,messages,worlds,db.table('world_facts'),events,transactions,personas,backgrounds,db.table('save_metadata')],async()=>{
   await characters.bulkPut([character,...(save.additionalCharacters??[]).map(remapCharacter)]);for(const asset of decoded){const target={...asset,id:ids.get(asset.id)!,characterId:asset.characterId?ids.get(asset.characterId):undefined};await (asset.kind==='background'?backgrounds:assets).put(target)}
   await books.bulkPut(save.worldbooks.map(b=>({...b,id:ids.get(b.id)!,characterId:b.characterId?ids.get(b.characterId):undefined})));
-  if(save.persona)await personas.put({...save.persona,id:ids.get(save.persona.id)!});await chats.put({...save.chat,id:chatId,characterId,memberIds:save.chat.memberIds?.map(id=>ids.get(id)!),speakerId:save.chat.speakerId?ids.get(save.chat.speakerId):undefined,mutedIds:save.chat.mutedIds?.map(id=>ids.get(id)!),personaId:save.persona?ids.get(save.persona.id):undefined,parentId:undefined,updatedAt:Date.now()});
+  if(save.persona)await personas.put({...save.persona,id:ids.get(save.persona.id)!});await chats.put({...save.chat,writing:save.chat.writing?importedWriting(save.chat.writing):undefined,id:chatId,characterId,memberIds:save.chat.memberIds?.map(id=>ids.get(id)!),speakerId:save.chat.speakerId?ids.get(save.chat.speakerId):undefined,mutedIds:save.chat.mutedIds?.map(id=>ids.get(id)!),personaId:save.persona?ids.get(save.persona.id):undefined,parentId:undefined,updatedAt:Date.now()});
   await messages.bulkPut(save.messages.map(m=>({...m,id:ids.get(m.id)!,chatId,speakerId:m.speakerId?ids.get(m.speakerId):undefined})));await persistWorld(world);
   await events.bulkPut(save.events.map(e=>({...e,id:ids.get(e.id)!,worldId:chatId,source_message_id:ids.get(e.source_message_id)!,transactionId:ids.get(e.transactionId)!,participants:e.participants.map(id=>ids.get(id)??id),entities:e.entities.map(id=>ids.get(id)??id)})));
   await transactions.bulkPut(save.transactions.map(t=>({...t,id:ids.get(t.id)!,worldId:chatId,actor:ids.get(t.actor)??t.actor,target:t.target?ids.get(t.target)??t.target:undefined,sourceMessageId:ids.get(t.sourceMessageId)!,entityId:t.entityId?ids.get(t.entityId)??t.entityId:undefined,destination:t.destination?ids.get(t.destination)??t.destination:undefined,before:t.before?remapWorld(t.before,ids):undefined})));

@@ -29,4 +29,6 @@ jobs:
             sleep 1
           done
           npm run test:e2e
+          npm run test:writing
+          npm run test:advanced
       - run: npm run benchmark

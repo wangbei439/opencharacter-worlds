@@ -59,3 +59,8 @@ The production build succeeds; its approximately 502 kB initial JS chunk still t
 
 
 Writing toggles: 52 unit/runtime tests pass. The writing browser test additionally verifies disabled instructions, scenario overrides and notes are absent from actual intercepted requests; reload retains disabled state and source text. Build succeeds with the existing approximately 505 kB chunk advisory. License inventory check remains unchanged at 449 packages.
+
+
+## Advanced modules V1
+
+57 unit/runtime tests pass. `test:advanced` verifies a real plugin worker hook reaching the actor prompt; CSP network blocking and opaque-origin storage blocking; timeout recovery; actual intercepted embedding requests with cached event vectors and pre-request privacy filtering; advanced macros in the prompt; and save import disabling plugins and embedding calls. `test:writing`, `test:group`, and product smoke provide regressions. Evidence: `evidence/product/advanced.json`. Mock vectors prove integration, not semantic quality of a real model. No real API calls or new dependencies. Build retains the approximately 510 kB initial-chunk advisory.

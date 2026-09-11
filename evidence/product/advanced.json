@@ -1,0 +1,15 @@
+{
+  "macroProgramInRequest": true,
+  "pluginInstalledDisabled": true,
+  "pluginPrompt": true,
+  "pluginNetworkBlocked": true,
+  "pluginStorageBlocked": true,
+  "pluginTimeoutContinues": true,
+  "vectorAPICalled": true,
+  "vectorCache": true,
+  "vectorFailureFallsBack": true,
+  "privateEventsExcluded": true,
+  "importDisablesPluginsAndEmbeddings": true,
+  "mobile360": true,
+  "transport": "intercepted fixtures; no live API"
+}
