@@ -1,3 +1,4 @@
+import {groupSchedule} from '../domain/group-schedule.ts';
 import {directActionDecision,parseDecision,resolverInstruction} from '../runtime/decision.ts';
 import {remapWorld} from '../storage/remap.ts';
 import {db,characters,chats,messages,worlds,events,transactions,books,personas,assets,loadSettings,saveSettings,loadProvider,saveProvider} from '../storage/db.ts';
@@ -102,7 +103,7 @@ export const swipeMessage=(id:string,index:number)=>locked(async()=>{await db.tr
 
 export const sendGroupMessage=(text:string)=>locked(async()=>{
  if(!text.trim())return;const state=useApp.getState(),chat=state.activeChatId?await chats.get(state.activeChatId):undefined;if(!chat)return;const world=await worlds.get(chat.id);if(!world)return;groupCancelled=false;
- const ids=(chat.memberIds??[chat.characterId]).filter(id=>!chat.mutedIds?.includes(id)&&world.participants.includes(id));if(!ids.length)throw Error('notPresent');
+ const ids=groupSchedule(chat.memberIds??[chat.characterId],chat.mutedIds??[],world.participants,chat.groupRounds??1,chat.groupOrder??'ordered');if(!ids.length)throw Error('notPresent');
  const user=await addMessage(chat.id,'user',text.trim());await refresh(chat.id);
- for(const id of ids){if(groupCancelled)break;const character=await characters.get(id);if(character)await generate(chat,character,user,undefined,undefined,false,true);}
+ for(const id of ids){if(groupCancelled)break;const currentWorld=await worlds.get(chat.id);if(!currentWorld?.participants.includes(id))continue;const character=await characters.get(id);if(character)await generate(chat,character,user,undefined,undefined,false,true);}
 });

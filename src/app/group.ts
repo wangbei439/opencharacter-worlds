@@ -10,3 +10,5 @@ export async function changeMembers(memberIds:string[],mutedIds:string[]=[]){
  world.revision++;await persistWorld(world);await chats.update(chat.id,{memberIds:ids,mutedIds:mutedIds.filter(id=>ids.includes(id)),speakerId:ids.includes(chat.speakerId??'')&&!mutedIds.includes(chat.speakerId!)?chat.speakerId:chat.characterId});});await refresh(chat.id);
 }
 export async function chooseSpeaker(id:string){const state=useApp.getState();if(state.sending||!state.activeChatId)return;const chat=await chats.get(state.activeChatId),world=await worlds.get(state.activeChatId);if(!chat||!(chat.memberIds??[chat.characterId]).includes(id)||chat.mutedIds?.includes(id)||!world?.participants.includes(id))return;await chats.update(chat.id,{speakerId:id});await refresh(chat.id)}
+
+export async function configureGroup(rounds:number,order:'ordered'|'shuffle'){if(!Number.isInteger(rounds)||rounds<1||rounds>3||!['ordered','shuffle'].includes(order))throw Error('invalidGroupSchedule');const s=useApp.getState();if(s.sending||!s.activeChatId)return;await chats.update(s.activeChatId,{groupRounds:rounds,groupOrder:order});await refresh(s.activeChatId)}

@@ -51,3 +51,8 @@ See `FEATURE-COMPLETION.md` for supported rules and remaining boundaries. Forty-
 The production build succeeds; its approximately 502 kB initial JS chunk still triggers Vite's 500 kB advisory. The writing editor and validation schema load separately. This is not a performance or real-device acceptance claim.
 
 `npm run check:licenses` checks 449 existing locked packages against a recorded baseline. Existing nonpermissive/other declarations remain marked for review; this does not certify distribution compliance. No dependency or locked version was added in this change.
+
+
+## Bounded group scheduling
+
+51 unit/runtime tests pass. The group/custody browser test now verifies two complete rounds, stable speaker order, cancellation preventing subsequent requests, a 503 stopping the schedule, and saved schedule restoration. Randomized scheduling is covered by a deterministic unit test for per-round membership and boundary repetition. All API traffic is intercepted. Build succeeds with the existing initial-chunk advisory (approximately 504 kB). No dependencies changed.

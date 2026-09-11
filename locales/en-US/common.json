@@ -351,7 +351,7 @@
   "event.STORE_ITEM": "{{actor}} entrusted {{item}} to {{target}}; ownership unchanged.",
   "event.RETURN_ITEM": "{{item}} was returned to its owner.",
   "group.title": "Group members",
-  "group.hint": "Send uses the selected speaker. Reply in order makes one call per active member without automatic action commits. Each uses their own definition and lore. Removing members preserves history and world entities. Up to 12.",
+  "group.hint": "Send addresses the selected speaker. Start group chat uses the rounds and order below. Group replies do not commit actions such as gifts. Each member uses their own definition and lore. Removing a member preserves history and world records. Up to 12 members.",
   "group.speaker": "Current speaker",
   "group.add": "Add imported character",
   "group.mute": "Mute",
@@ -368,7 +368,7 @@
   "lore.reason.secondaryMissing": "Secondary condition not met",
   "lore.reason.budget": "Lore budget exceeded",
   "lore.reason.contextBudget": "Context budget exceeded",
-  "group.round": "Reply in order (once each)",
+  "group.round": "Start group chat",
   "lore.options": "Lore rules",
   "lore.scanDepth": "Recent messages to scan",
   "lore.tokenBudget": "Lore token budget",
@@ -414,5 +414,11 @@
   "context.authorNote": "Author’s note",
   "context.authorNoteInChat": "Author’s note",
   "error.invalidPreset": "Invalid preset. Use an ocw-writing file.",
-  "error.presetLimit": "Up to 50 presets. Remove an unused preset first."
+  "error.presetLimit": "Up to 50 presets. Remove an unused preset first.",
+  "group.rounds": "Conversation rounds",
+  "group.order": "Speaking order",
+  "group.ordered": "Member order",
+  "group.shuffle": "Shuffle each round",
+  "group.scheduleHint": "Starting group chat generates up to {{count}} replies, once per member per round, using the current API. Stop anytime. Errors stop the run; reload never resumes it.",
+  "error.invalidGroupSchedule": "Invalid group schedule."
 }

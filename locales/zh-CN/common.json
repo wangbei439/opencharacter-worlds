@@ -351,7 +351,7 @@
   "event.STORE_ITEM": "{{actor}}将{{item}}交给{{target}}保管，所有权不变。",
   "event.RETURN_ITEM": "{{item}}已交回所有者。",
   "group.title": "多角色管理",
-  "group.hint": "发送由选定角色回复；“依次回复”按成员顺序每人调用一次，不自动提交赠礼等动作。各角色使用独立设定和世界书。移出成员不抹除历史或世界人物。最多12名。",
+  "group.hint": "发送由选定角色回复；「开始群聊」按下方轮数与顺序让成员接话。群聊不自动提交赠礼等动作。每名角色使用独立设定和世界书；移出成员不抹除历史或世界人物。最多 12 名。",
   "group.speaker": "当前发言角色",
   "group.add": "添加已导入角色",
   "group.mute": "暂停发言",
@@ -368,7 +368,7 @@
   "lore.reason.secondaryMissing": "附加条件未满足",
   "lore.reason.budget": "世界书预算不足",
   "lore.reason.contextBudget": "上下文预算不足",
-  "group.round": "依次回复（每人一次）",
+  "group.round": "开始群聊",
   "lore.options": "世界书规则",
   "lore.scanDepth": "扫描最近消息数",
   "lore.tokenBudget": "世界书预算",
@@ -414,5 +414,11 @@
   "context.authorNote": "作者备注",
   "context.authorNoteInChat": "作者备注",
   "error.invalidPreset": "预设格式无效，请使用 ocw-writing 文件。",
-  "error.presetLimit": "预设已达50个，请先删除不需要的预设。"
+  "error.presetLimit": "预设已达50个，请先删除不需要的预设。",
+  "group.rounds": "连续对话轮数",
+  "group.order": "发言顺序",
+  "group.ordered": "按成员顺序",
+  "group.shuffle": "每轮随机排列",
+  "group.scheduleHint": "点击开始群聊后，最多生成 {{count}} 条回复，每人每轮一次，会使用当前 API。可随时停止；出错即停，刷新后不会自动继续。",
+  "error.invalidGroupSchedule": "群聊轮数或顺序设置无效。"
 }
