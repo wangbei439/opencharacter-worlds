@@ -1,5 +1,7 @@
 {
   "presetRoundTrip": true,
+  "disabledSectionsExcluded": true,
+  "togglesPersistWithoutErasing": true,
   "quickReplyDoesNotSend": true,
   "macroExpansion": true,
   "requestInstructions": true,

@@ -56,3 +56,6 @@ The production build succeeds; its approximately 502 kB initial JS chunk still t
 ## Bounded group scheduling
 
 51 unit/runtime tests pass. The group/custody browser test now verifies two complete rounds, stable speaker order, cancellation preventing subsequent requests, a 503 stopping the schedule, and saved schedule restoration. Randomized scheduling is covered by a deterministic unit test for per-round membership and boundary repetition. All API traffic is intercepted. Build succeeds with the existing initial-chunk advisory (approximately 504 kB). No dependencies changed.
+
+
+Writing toggles: 52 unit/runtime tests pass. The writing browser test additionally verifies disabled instructions, scenario overrides and notes are absent from actual intercepted requests; reload retains disabled state and source text. Build succeeds with the existing approximately 505 kB chunk advisory. License inventory check remains unchanged at 449 packages.

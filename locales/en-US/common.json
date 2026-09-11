@@ -420,5 +420,8 @@
   "group.ordered": "Member order",
   "group.shuffle": "Shuffle each round",
   "group.scheduleHint": "Starting group chat generates up to {{count}} replies, once per member per round, using the current API. Stop anytime. Errors stop the run; reload never resumes it.",
-  "error.invalidGroupSchedule": "Invalid group schedule."
+  "error.invalidGroupSchedule": "Invalid group schedule.",
+  "writing.promptEnabled": "Enable writing instructions",
+  "writing.scenarioEnabled": "Enable scenario override",
+  "writing.noteEnabled": "Enable author note"
 }

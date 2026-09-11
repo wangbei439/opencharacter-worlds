@@ -420,5 +420,8 @@
   "group.ordered": "按成员顺序",
   "group.shuffle": "每轮随机排列",
   "group.scheduleHint": "点击开始群聊后，最多生成 {{count}} 条回复，每人每轮一次，会使用当前 API。可随时停止；出错即停，刷新后不会自动继续。",
-  "error.invalidGroupSchedule": "群聊轮数或顺序设置无效。"
+  "error.invalidGroupSchedule": "群聊轮数或顺序设置无效。",
+  "writing.promptEnabled": "启用补充写作要求",
+  "writing.scenarioEnabled": "启用场景覆盖",
+  "writing.noteEnabled": "启用作者备注"
 }
