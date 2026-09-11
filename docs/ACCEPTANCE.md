@@ -43,3 +43,11 @@ See [implementation status](IMPLEMENTATION-STATUS.md) for the creator expansion 
 `evidence/product/group-custody.json` records the new production-browser flow: independent member definition and lore, saved speaker identity, one reply per member in list order, custody with unchanged ownership, return/drop/pickup, export with two immutable originals, import with remapped holder/member identifiers, reload and 360px layout. Requests use an intercepted fixture, not the user’s live account. Existing product smoke, studio and real-card browser checks were also rerun successfully during this expansion.
 
 See `FEATURE-COMPLETION.md` for supported rules and remaining boundaries. Forty-six unit/runtime tests cover old-save compatibility plus custody, physical location, conservative natural-language candidates and bounded lore matching. No full SillyTavern compatibility claim is made.
+
+## Writing controls and dependency inventory
+
+49 unit/runtime tests pass. `npm run test:writing` verifies preset import/export, quick replies without automatic requests, macro expansion, actual request instructions, author-note frequency/depth, immutable original cards, reload, full-save round trip and 360px layout. Evidence: `evidence/product/writing.json` and `writing-mobile.png`. It uses intercepted fixture responses, not a live API.
+
+The production build succeeds; its approximately 502 kB initial JS chunk still triggers Vite's 500 kB advisory. The writing editor and validation schema load separately. This is not a performance or real-device acceptance claim.
+
+`npm run check:licenses` checks 449 existing locked packages against a recorded baseline. Existing nonpermissive/other declarations remain marked for review; this does not certify distribution compliance. No dependency or locked version was added in this change.

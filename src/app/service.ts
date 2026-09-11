@@ -45,7 +45,7 @@ async function generate(chat:Chat,character:Character,user:Message,action?:Parti
   if(candidate){if(candidate.requiresConsent){await transactions.put({...candidate,status:'pending',reason:'awaitingActor',createdAt:Date.now()})}else{const outcome=await commitCandidate(candidate);if(outcome.status==='rejected')patchApp({notice:'rejected'});candidate=undefined;world=(await worlds.get(chat.id))!}}
   const history=await messages.where('chatId').equals(chat.id).sortBy('createdAt');const filtered=replace?history.filter(m=>m.id!==replace.id):history;
   const ledger=await events.where('worldId').equals(chat.id).toArray();const worldbooks=(await books.bulkGet(character.worldbookIds)).filter((b):b is NonNullable<typeof b>=>!!b);const persona=chat.personaId?await personas.get(chat.personaId):undefined;
-  const ctx=buildContext(character,filtered,world,ledger,worldbooks,persona,config.contextLimit,config.maxTokens,candidate);
+  const ctx=buildContext(character,filtered,world,ledger,worldbooks,persona,config.contextLimit,config.maxTokens,candidate,chat.writing);
   if(continuation)ctx.messages.push({role:'user',content:'Continue the previous character reply without repeating it. Do not speak for the player.'});patchApp({context:ctx});
   for await(const e of provider.streamChat({messages:ctx.messages},signal)){if(e.type==='delta'){reply+=e.text;patchApp({streamText:reply})}else if(e.result.expression)resultExpression=e.result.expression}
   const expressionMatch=/^\[expression:(normal|happy|angry|sad|surprised|shy|fear|injured)\]\s*/.exec(reply);if(expressionMatch){resultExpression=expressionMatch[1] as Expression;reply=reply.slice(expressionMatch[0].length)}

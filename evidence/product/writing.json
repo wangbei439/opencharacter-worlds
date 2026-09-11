@@ -1,0 +1,13 @@
+{
+  "presetRoundTrip": true,
+  "quickReplyDoesNotSend": true,
+  "macroExpansion": true,
+  "requestInstructions": true,
+  "noteFrequencyAndDepth": true,
+  "originalUnchanged": true,
+  "reload": true,
+  "saveRoundTrip": true,
+  "mobile360": true,
+  "transport": "intercepted fixture; no live API",
+  "errors": []
+}

@@ -20,7 +20,9 @@
     "benchmark": "node scripts/benchmark.mjs",
     "benchmark:real": "node scripts/benchmark.mjs --real",
     "test:studio": "node tests/e2e/studio.mjs",
-    "test:group": "node tests/e2e/group-custody.mjs"
+    "test:writing": "node tests/e2e/writing.mjs",
+    "test:group": "node tests/e2e/group-custody.mjs",
+    "check:licenses": "node scripts/check-licenses.mjs --check"
   },
   "dependencies": {
     "@character-foundry/character-foundry": "0.5.0",

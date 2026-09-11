@@ -1,3 +1,4 @@
+import type {WritingSettings} from './writing.ts';
 export type Lang = 'zh-CN' | 'en-US';
 export type Mode = 'simple' | 'advanced' | 'expert';
 export type Expression = 'normal'|'happy'|'angry'|'sad'|'surprised'|'shy'|'fear'|'injured';
@@ -11,7 +12,7 @@ export interface Character { id:string; name:string; description:string; persona
 export interface LoreEntry { id:string; keys:string[]; secondaryKeys:string[]; content:string; enabled:boolean; constant:boolean; selective:boolean; caseSensitive:boolean; priority:number; position:'before_char'|'after_char'; secondaryLogic?:'any'|'all'|'notAny'|'notAll'; wholeWords?:boolean; excludeRecursion?:boolean; preventRecursion?:boolean; unsupported?:boolean; }
 export interface Worldbook { id:string; characterId?:string; name:string; entries:LoreEntry[]; raw:string; scanDepth:number; tokenBudget:number; recursive?:boolean; }
 export interface Persona { id:string; name:string; description:string; }
-export interface Chat { id:string; characterId:string; name:string; createdAt:number; updatedAt:number; personaId?:string; parentId?:string; memberIds?:string[]; speakerId?:string; mutedIds?:string[]; }
+export interface Chat { id:string; characterId:string; name:string; createdAt:number; updatedAt:number; personaId?:string; parentId?:string; memberIds?:string[]; speakerId?:string; mutedIds?:string[]; writing?:WritingSettings; }
 export interface Message { id:string; chatId:string; role:'user'|'assistant'; content:string; variants:string[]; selected:number; createdAt:number; status:'complete'|'interrupted'; expression?:Expression; speakerId?:string; groupTurn?:boolean; }
 export interface Entity { id:string; type:'person'|'item'|'place'|'information'; name:string; description:string; owner?:string; holder?:string|null; location?:string; alive?:boolean; knownBy?:string[]; usable?:boolean; consumed?:boolean; locked?:boolean; keyId?:string; backgroundId?:string; }
 export interface WorldState { id:string; revision:number; day:number; minutes:number; weather:Particle; location:string; participants:string[]; entities:Record<string,Entity>; promises:Record<string,{text:string;actor:string;target:string;status:'made'|'accepted'|'broken'}>; relationships:Record<string,string>; }

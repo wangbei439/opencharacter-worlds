@@ -112,3 +112,7 @@ GitHub CI is provided for build, unit tests and browser smoke checks. No remote 
 - [Earlier preparation report](PREPARATION.md) — historical environment findings, superseded by current acceptance status.
 
 Character Foundry 0.5.0 handles card parsing. Its published loader declaration is missing, so the compatibility layer contains a narrow local declaration matching the consumed API. The library is loaded only on import. No SillyTavern parser code is copied.
+
+Writing controls: open 对话写作设置 above the composer. See [feature boundaries](docs/FEATURE-COMPLETION.md). Run `npm run test:writing` against the local preview for its isolated browser checks.
+
+Dependency changes must follow [the license policy](docs/DEPENDENCY-POLICY.md) and pass `npm run check:licenses` before installation. SillyTavern source copying is prohibited.
