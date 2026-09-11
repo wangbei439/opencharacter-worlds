@@ -438,9 +438,9 @@
   "advanced.exportPlugin": "Export plugin",
   "advanced.vectors": "Semantic vector retrieval",
   "advanced.vectorsEnable": "Enable embedding API retrieval",
-  "advanced.vectorsHint": "Uses /embeddings on the current API endpoint with its credentials; enter an embedding model separately. Sends the current character’s latest 100 committed event summaries and current input (up to 2000 characters each). Additional charges may apply. Other characters’ private events are excluded. Recalls up to 4 events; errors fall back to existing retrieval. Cache lasts only until reload. Native Claude endpoints are unsupported.",
+  "advanced.vectorsHint": "Uses /embeddings on the current endpoint with its credentials; enter an embedding model. Sends this character’s latest 100 committed event summaries and current input, optionally 50 older complete replies and active documents below. Chunks are capped at 2,000 characters; up to 4 are recalled. Additional charges may apply. Other speakers and player replies are not indexed. Failures preserve existing retrieval. Up to 256 vectors persist in this browser across reloads and can be cleared. Native Claude endpoints are unsupported.",
   "advanced.embeddingModel": "Embedding model name",
-  "advanced.clearIndex": "Clear vector cache",
+  "advanced.clearIndex": "Clear local vector index",
   "context.plugin": "Plugin prompt",
   "context.vectorMemory": "Vector-recalled events",
   "notice.pluginSkipped": "Some plugins failed or timed out and were skipped.",
@@ -449,5 +449,11 @@
   "error.pluginDuplicate": "Duplicate plugin ID or the 8-plugin limit was reached.",
   "error.macroLimit": "Macro size, repetition or nesting limit exceeded.",
   "error.macroSyntax": "Invalid macro syntax; check variable names and block endings.",
-  "advanced.sample": "Download original sample plugin"
+  "advanced.sample": "Download original sample plugin",
+  "advanced.dialogue": "Retrieve this character’s older complete replies",
+  "advanced.docsHint": "Import TXT / Markdown references shared by all members of this story. Up to 8 documents, 16,000 characters each, split into 2,000-character chunks. View, edit, disable or delete them. When vector retrieval is enabled, active document chunks are sent to the embedding API. Documents and dialogue are references, not committed world facts.",
+  "advanced.importDoc": "Import story reference",
+  "advanced.docText": "View or edit reference",
+  "context.vectorReference": "Vector-recalled references",
+  "error.invalidMemoryDoc": "Use a nonempty TXT / Markdown file, up to 16,000 characters; maximum 8 documents."
 }

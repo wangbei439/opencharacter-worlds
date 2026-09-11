@@ -64,3 +64,8 @@ Writing toggles: 52 unit/runtime tests pass. The writing browser test additional
 ## Advanced modules V1
 
 57 unit/runtime tests pass. `test:advanced` verifies a real plugin worker hook reaching the actor prompt; CSP network blocking and opaque-origin storage blocking; timeout recovery; actual intercepted embedding requests with cached event vectors and pre-request privacy filtering; advanced macros in the prompt; and save import disabling plugins and embedding calls. `test:writing`, `test:group`, and product smoke provide regressions. Evidence: `evidence/product/advanced.json`. Mock vectors prove integration, not semantic quality of a real model. No real API calls or new dependencies. Build retains the approximately 510 kB initial-chunk advisory.
+
+
+## Retrieval references and persistent index
+
+61 unit/runtime tests cover source ownership, interrupted/recent reply exclusion, document limits and Unicode chunk boundaries. The advanced browser flow verifies document import and save round trip, reference-only context labels, cache reuse after reload, disabled document exclusion, hash/vector-only persisted records and rebuilding after clearing the index. API traffic remains intercepted; real-model relevance is unverified. No dependencies changed. Build succeeds with the existing approximately 512 kB initial chunk advisory.

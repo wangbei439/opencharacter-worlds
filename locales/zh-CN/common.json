@@ -438,9 +438,9 @@
   "advanced.exportPlugin": "导出插件",
   "advanced.vectors": "语义向量检索",
   "advanced.vectorsEnable": "启用嵌入 API 检索",
-  "advanced.vectorsHint": "使用当前 API 地址和凭据的 /embeddings 接口，模型需单独填写嵌入模型名称。启用后会发送当前角色参与的最近 100 条已提交事件摘要及本次输入（各限 2000 字），可能产生额外费用。不发送其他角色的私有事件。最多召回 4 条；失败时保留原关键词检索。缓存仅存本次页面会话，刷新后重建。原生 Claude 接口不适用。",
+  "advanced.vectorsHint": "使用当前 API 地址和凭据的 /embeddings 接口，需单独填写嵌入模型。发送当前角色参与的最近 100 条已提交事件摘要及本次输入；可选较早的 50 条该角色完整回复和下方资料。文本分段限 2,000 字，最多召回 4 段，可能产生额外费用。不索引其他角色或玩家发言。失败时保留原检索。索引保存在本浏览器，最多 256 条，刷新可复用；可手动清除。原生 Claude 接口不适用。",
   "advanced.embeddingModel": "嵌入模型名称",
-  "advanced.clearIndex": "清除向量缓存",
+  "advanced.clearIndex": "清除本地向量索引",
   "context.plugin": "插件补充提示词",
   "context.vectorMemory": "向量召回事件",
   "notice.pluginSkipped": "部分插件执行失败或超时，已跳过；对话继续。",
@@ -449,5 +449,11 @@
   "error.pluginDuplicate": "插件 ID 重复或已达到 8 个上限。",
   "error.macroLimit": "宏展开超过大小、次数或嵌套限制。",
   "error.macroSyntax": "宏语法有误，请检查变量名和条件块。",
-  "advanced.sample": "下载原创示例插件"
+  "advanced.sample": "下载原创示例插件",
+  "advanced.dialogue": "检索当前角色较早的完整回复",
+  "advanced.docsHint": "可导入 TXT / Markdown 故事资料，供本故事所有成员检索。最多 8 份、每份 16,000 字，按 2,000 字分段；可查看、编辑、停用或删除。启用向量检索后，启用的资料段落也会发送给嵌入 API。资料与历史对白只作参考，不自动创建世界事实。",
+  "advanced.importDoc": "导入故事资料",
+  "advanced.docText": "查看或编辑资料",
+  "context.vectorReference": "向量召回参考资料",
+  "error.invalidMemoryDoc": "资料须为非空 TXT / Markdown，每份最多 16,000 字，总数最多 8 份。"
 }
