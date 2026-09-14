@@ -22,6 +22,13 @@ export function resolverOptions(config:ProviderConfig,request:ChatRequest){
  if(host==='open.bigmodel.cn')return {thinking:{type:'disabled'}};
  return {};
 }
+// Aliyun Kimi K3 uses provider defaults; explicit generic sampling values are rejected.
+// Reference: https://help.aliyun.com/zh/model-studio/kimi-api
+export function usesProviderSamplingDefaults(config:ProviderConfig){
+ if(config.kind==='openai'&&/^(gpt-[56]|o[134])/.test(config.model))return true;
+ if(!/^(?:kimi\/)?kimi-k3$/i.test(config.model))return false;
+ try{const host=new URL(config.baseUrl).hostname;return host.endsWith('.maas.aliyuncs.com')||['dashscope.aliyuncs.com','dashscope-intl.aliyuncs.com','dashscope-us.aliyuncs.com'].includes(host)}catch{return false}
+}
 export class CompatibleProvider implements ProviderAdapter {
  config:ProviderConfig;constructor(config:ProviderConfig){this.config=config}
  supportsStructuredOutput(){return this.config.structuredOutput}
@@ -38,7 +45,7 @@ export class CompatibleProvider implements ProviderAdapter {
  }
  async listModels(signal?:AbortSignal){const response=await this.request('/models',{method:'GET'},signal);const data=await response.json();if(!Array.isArray(data.data))throw new ProviderError('models');return data.data.filter((m:unknown):m is {id:string;name?:string}=>!!m&&typeof (m as {id?:unknown}).id==='string').map((m:{id:string;name?:string})=>({id:m.id,name:m.name??(m as {display_name?:string}).display_name??m.id}))}
  async testConnection(signal?:AbortSignal){await this.chat({messages:[{role:'user',content:'Reply OK.'}],maxTokens:64},signal);return true}
- body(request:ChatRequest,stream:boolean){const nativeOpenAI=this.config.kind==='openai',restricted=nativeOpenAI&&/^(gpt-[56]|o[134])/.test(this.config.model);return JSON.stringify({model:this.config.model,messages:request.messages,stream,...resolverOptions(this.config,request),...(!restricted?{temperature:request.purpose==='resolver'?0:this.config.temperature,top_p:this.config.topP}:{}),[nativeOpenAI?'max_completion_tokens':'max_tokens']:request.maxTokens??this.config.maxTokens,...(request.purpose==='resolver'&&this.supportsStructuredOutput()?{response_format:{type:'json_object'}}:{})})}
+ body(request:ChatRequest,stream:boolean){const nativeOpenAI=this.config.kind==='openai',restricted=usesProviderSamplingDefaults(this.config);return JSON.stringify({model:this.config.model,messages:request.messages,stream,...resolverOptions(this.config,request),...(!restricted?{temperature:request.purpose==='resolver'?0:this.config.temperature,top_p:this.config.topP}:{}),[nativeOpenAI?'max_completion_tokens':'max_tokens']:request.maxTokens??this.config.maxTokens,...(request.purpose==='resolver'&&this.supportsStructuredOutput()?{response_format:{type:'json_object'}}:{})})}
  async chat(request:ChatRequest,signal?:AbortSignal):Promise<ChatResult>{const res=await this.request('/chat/completions',{method:'POST',body:this.body(request,false)},signal);const data=await res.json();const text=data.choices?.[0]?.message?.content;if(data.choices?.[0]?.finish_reason==='length')throw outputError('outputLimit','length',data.usage);if(typeof text!=='string'||!text.trim())throw outputError('emptyResponse',data.choices?.[0]?.finish_reason,data.usage);return {text,usage:data.usage}}
  async *streamChat(request:ChatRequest,signal?:AbortSignal):AsyncIterable<StreamEvent>{
   if(!this.config.streaming){const result=await this.chat(request,signal);yield {type:'delta',text:result.text};yield {type:'done',result};return}

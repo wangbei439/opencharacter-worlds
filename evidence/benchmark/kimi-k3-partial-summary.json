@@ -1,0 +1,20 @@
+{
+  "model": "kimi-k3",
+  "status": "stopped",
+  "completedNormalTurns": 22,
+  "attemptedActorCalls": 23,
+  "runtimeStarted": false,
+  "reason": "timeout",
+  "failedTurn": 23,
+  "settings": {
+    "temperature": null,
+    "topP": null,
+    "sampling": "provider-defaults",
+    "contextLimit": 16000,
+    "maxTokens": 4096
+  },
+  "reportedTokensCompletedCalls": 84674,
+  "reportedUsageCalls": 22,
+  "notes": "Usage excludes any unreported failed request. Not a completed 100-turn comparison. No quota error received.",
+  "details": "docs/BENCHMARK-KIMI-2026-09-15.md"
+}

@@ -1,3 +1,4 @@
+import {usesProviderSamplingDefaults} from '../providers/adapter.ts';
 import {providerPresets,normalizeProvider} from '../providers/presets.ts';
 import {useEffect,useState} from 'react';
 import {useTranslation} from 'react-i18next';
@@ -10,7 +11,7 @@ export function ProviderForm({onSaved}:{onSaved?:()=>void}){
  const set=(changes:Partial<ProviderConfig>)=>{setConfig(c=>({...c,...changes}));setConnected(false)};
  const choose=(kind:ProviderConfig['kind'])=>{setConfig({...defaultProvider,kind,baseUrl:providerPresets.find(p=>p.kind===kind)?.baseUrl??'',protocol:kind==='claude'?'anthropic':'openai',model:kind==='mock'?'demo-primary':'',apiKey:''});setHeaders('{}');setModels([]);setConnected(false)};
  const loadModels=async()=>{if(modelLoading||config.kind==='mock')return;setModelLoading(true);try{setModels(await modelList(validated()))}catch{patchApp({notice:undefined});reportError(new Error('models'))}finally{setModelLoading(false)}};
- const nativeClaude=config.kind==='claude'||config.protocol==='anthropic',sampling=!nativeClaude&&!(config.kind==='openai'&&/^(gpt-[56]|o[134])/.test(config.model));
+ const nativeClaude=config.kind==='claude'||config.protocol==='anthropic',sampling=!nativeClaude&&!usesProviderSamplingDefaults(config);
  const validated=()=>{let parsed;try{parsed=JSON.parse(headers);if(!parsed||Array.isArray(parsed)||typeof parsed!=='object'||Object.values(parsed).some(v=>typeof v!=='string'))throw Error()}catch{throw new Error('headerJson')}return {...config,headers:parsed as Record<string,string>,contextLimit:Math.max(2048,Math.min(1000000,config.contextLimit)),maxTokens:Math.max(32,Math.min(16384,config.maxTokens))}};
  return <form className="provider-form" onSubmit={e=>{e.preventDefault();void run(async()=>{await configureProvider(validated());onSaved?.();if(!onSaved)patchApp({notice:'saved'})})}}>
   <label>{t('provider.kind')}<select value={config.kind} onChange={e=>choose(e.target.value as ProviderConfig['kind'])}>{providerPresets.map(p=><option key={p.kind} value={p.kind}>{p.kind==='mock'?t('provider.demo'):p.kind==='custom'?t('provider.custom'):p.name}</option>)}</select></label>

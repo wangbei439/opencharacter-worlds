@@ -589,5 +589,6 @@
     }
   ],
   "latestLiveReview": "docs/LIVE-ACCEPTANCE-2026-09-14.md",
-  "benchmarkProtocol": "docs/BENCHMARK-PROTOCOL.md"
+  "benchmarkProtocol": "docs/BENCHMARK-PROTOCOL.md",
+  "latestBenchmarkReview": "docs/BENCHMARK-KIMI-2026-09-15.md"
 }

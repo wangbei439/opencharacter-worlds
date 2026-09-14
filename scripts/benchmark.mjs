@@ -1,10 +1,12 @@
 import fs from 'node:fs/promises';
-import {createProvider,MockProvider,safeDetail} from '../src/providers/adapter.ts';
+import {createProvider,MockProvider,safeDetail,usesProviderSamplingDefaults} from '../src/providers/adapter.ts';
 import {defaultProvider} from '../src/domain/types.ts';
 import {initialWorld,detectCandidate,resolveTransaction} from '../src/runtime/engine.ts';
 import {directActionDecision,parseDecision,resolverRequest} from '../src/runtime/decision.ts';
 import {buildContext,estimateTokens} from '../src/context/builder.ts';
 const real=process.argv.includes('--real');
+const selectedArm=process.argv.find(a=>a.startsWith('--arm='))?.slice(6)??'both';
+if(!['both','normal','runtime'].includes(selectedArm))throw Error('Invalid --arm; use both, normal or runtime.');
 if(real&&(!process.env.OC_BENCHMARK_KEY||!process.env.OC_BENCHMARK_MODEL||!process.env.OC_BENCHMARK_ENDPOINT))throw Error('Set OC_BENCHMARK_KEY, OC_BENCHMARK_MODEL and OC_BENCHMARK_ENDPOINT locally. Never commit them.');
 function integer(name,fallback,min,max){const n=Number(process.env[name]??fallback);if(!Number.isInteger(n)||n<min||n>max)throw Error('Invalid '+name);return n}
 const config={...defaultProvider,kind:'custom',baseUrl:process.env.OC_BENCHMARK_ENDPOINT??'',apiKey:process.env.OC_BENCHMARK_KEY??'',model:process.env.OC_BENCHMARK_MODEL??'offline-demo',temperature:0,contextLimit:integer('OC_BENCHMARK_CONTEXT',16000,2048,1000000),maxTokens:integer('OC_BENCHMARK_OUTPUT',real?4096:1024,64,16384)};
@@ -16,12 +18,12 @@ const prompts=Array.from({length:100},(_,i)=>i===0?'I give you the silver ring.'
 // The normal arm has chat history but no live world ledger or transaction hints.
 const baselineSystem=`Play only ${character.name}. Preserve player agency; speak naturally.\n${[character.description,character.personality,character.scenario,character.examples,character.systemPrompt,character.postHistory].filter(Boolean).join('\n\n')}\nInitial authored setting (at the start of the conversation, not an assertion about later turns): Player owns the silver ring and brass key. No dragon egg has been introduced. The lighthouse code has not been told to Eileen. Eileen and Player have just met.`;
 function normalContext(history){const messages=[],available=config.contextLimit-config.maxTokens-256;let total=estimateTokens(baselineSystem);for(const m of [...history].reverse()){const cost=estimateTokens(m.content)+8;if(total+cost>available)break;messages.unshift({role:m.role,content:m.content});total+=cost}if(!messages.length)throw Error('context');return {messages:[{role:'system',content:baselineSystem},...messages],trimmedMessages:history.length-messages.length}}
-const report={protocolVersion:2,createdAt:new Date().toISOString(),status:'running',model:config.model,realProvider:real,settings:{temperature:config.temperature,contextLimit:config.contextLimit,maxTokens:config.maxTokens},limits:'Single authored fixture, two 100-turn arms, fixed model, no retries or fallbacks. Shares production adapter, context builder and decision helpers; does not exercise browser persistence, streaming, plugins, vectors, full card import or multi-character UI. Same total token budget, not identical retained history. Semantic quality needs human review. Mock output is only a mechanism check.',characterFixture:'fixtures/characters/v2-en.json',sameCharacter:true,sameModel:true,outputs:[]};
-const outDir=real?'test-results/benchmark':'evidence/benchmark';await fs.mkdir(outDir,{recursive:true});const outPath=`${outDir}/${real?'live-'+new Date().toISOString().replace(/[:.]/g,'-'):'mock'}-100-turn.json`;
+const report={protocolVersion:2,selectedArm,createdAt:new Date().toISOString(),status:'running',model:config.model,realProvider:real,settings:{temperature:usesProviderSamplingDefaults(config)?null:config.temperature,topP:usesProviderSamplingDefaults(config)?null:config.topP,sampling:usesProviderSamplingDefaults(config)?'provider-defaults':'explicit',contextLimit:config.contextLimit,maxTokens:config.maxTokens},limits:'Single authored fixture, two 100-turn arms, fixed model, no retries or fallbacks. Shares production adapter, context builder and decision helpers; does not exercise browser persistence, streaming, plugins, vectors, full card import or multi-character UI. Same total token budget, not identical retained history. Semantic quality needs human review. Mock output is only a mechanism check.',characterFixture:'fixtures/characters/v2-en.json',sameCharacter:true,sameModel:true,outputs:[]};
+const outDir=real?'test-results/benchmark':'evidence/benchmark';await fs.mkdir(outDir,{recursive:true});const outPath=`${outDir}/${real?'live-'+new Date().toISOString().replace(/[:.]/g,'-'):'mock'+(selectedArm==='both'?'':'-'+selectedArm)}-100-turn.json`;
 async function save(){const text=JSON.stringify(report,null,2);if(config.apiKey&&text.includes(config.apiKey))throw Error('credentialInReport');await fs.writeFile(outPath+'.tmp',text);await fs.rename(outPath+'.tmp',outPath)}
 let position={mode:'configuration',turn:0,stage:'setup'};
 try{
- for(const mode of ['normal','runtime']){
+ for(const mode of (selectedArm==='both'?['normal','runtime']:[selectedArm])){
   const provider=real?createProvider(config):new MockProvider();let world=structuredClone(initial),ledger=[],history=[];
   const output={mode,turns:0,actorCalls:0,resolverCalls:0,estimatedInputTokens:0,reportedTotalTokens:null,usageReportedCalls:0,metrics:{},transcript:[]};report.outputs.push(output);
   function usage(result){if(result.usage){output.reportedTotalTokens=(output.reportedTotalTokens??0)+result.usage.total_tokens;output.usageReportedCalls++}}
