@@ -7,7 +7,7 @@ export function normalizeBook(raw:Record<string,unknown>,characterId?:string):Wo
  const entries=(Array.isArray(raw.entries)?raw.entries:Object.values((raw.entries??{}) as Record<string,unknown>)).slice(0,10000).map((item,index)=>{const source=item as Record<string,unknown>;const e={...((source.extensions??{}) as Record<string,unknown>),...source};return {id:String(e.id??index),keys:stringArray(e.keys??e.key),secondaryKeys:stringArray(e.secondary_keys??e.keysecondary),content:asString(e.content),enabled:e.enabled!==false&&e.disable!==true,constant:e.constant===true,selective:e.selective===true,caseSensitive:e.case_sensitive===true||e.caseSensitive===true,wholeWords:e.matchWholeWords===true,secondaryLogic:({0:'any',1:'notAll',2:'notAny',3:'all'} as const)[Number(e.selectiveLogic) as 0|1|2|3]??'any',excludeRecursion:e.excludeRecursion===true,preventRecursion:e.preventRecursion===true,unsupported:(typeof e.position==='number'&&e.position>1)||e.useProbability===true||Number(e.sticky)>0||Number(e.cooldown)>0||Number(e.delay)>0||!!e.automationId||!!e.vectorized,priority:Number(e.priority??e.insertion_order??e.order??0),position:e.position==='after_char'||e.position===1?'after_char':'before_char'} as LoreEntry});
  return {id:newId(),characterId,name:asString(raw.name)||'World Book',entries,raw:JSON.stringify(raw),recursive:raw.recursive_scanning===true,scanDepth:Math.max(1,Math.min(100,Number(raw.scan_depth)||4)),tokenBudget:Math.max(128,Math.min(8192,Number(raw.token_budget)||1024))};
 }
-export async function importCharacter(file:File):Promise<Character>{
+export async function prepareCharacter(file:File){
  if(file.size>32*1024*1024)throw new Error('fileTooLarge');if(/\.webp$/i.test(file.name))throw new Error('webpCard');
  const {parseCard}=await import('@character-foundry/character-foundry/loader');
  let parsed;try{parsed=parseCard(new Uint8Array(await file.arrayBuffer()))}catch{throw new Error('invalidCard')}
@@ -23,7 +23,11 @@ export async function importCharacter(file:File):Promise<Character>{
  }
  if(!character.portraitId&&/\.png$/i.test(file.name)){character.portraitId=originalId;}
  const book=data.character_book?normalizeBook(data.character_book as unknown as Record<string,unknown>,id):undefined;if(book){character.worldbookIds.push(book.id);if(book.entries.some(e=>e.unsupported||[...e.keys,...e.secondaryKeys].some(k=>k.startsWith('/'))))character.compatibilityWarnings?.push('lore');}
- await db.transaction('rw',characters,assets,books,async()=>{await assets.bulkPut([original,...extracted]);if(book)await books.put(book);await characters.put(character)});return character;
+ return {character,assets:[original,...extracted],book};
+}
+export async function importCharacter(file:File):Promise<Character>{
+ const prepared=await prepareCharacter(file);
+ await db.transaction('rw',characters,assets,books,async()=>{await assets.bulkPut(prepared.assets);if(prepared.book)await books.put(prepared.book);await characters.put(prepared.character)});return prepared.character;
 }
 export async function importWorldbook(file:File,characterId:string){
  if(file.size>16*1024*1024)throw new Error('fileTooLarge');const {parseLorebook}=await import('@character-foundry/character-foundry/loader');

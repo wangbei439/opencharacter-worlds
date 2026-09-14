@@ -1,0 +1,82 @@
+import {chromium} from 'playwright';
+import {browserOptions} from '../support/browser.mjs';
+import fs from 'node:fs/promises';
+import assert from 'node:assert/strict';
+import {createHash} from 'node:crypto';
+const zh=JSON.parse(await fs.readFile('locales/zh-CN/common.json','utf8'));
+const browser=await chromium.launch(browserOptions()),requests=[],errors=[];
+try{
+ const page=await browser.newPage({viewport:{width:1440,height:960}});
+ page.on('pageerror',e=>errors.push(e.message));
+ await page.route('https://fixture.example.test/**',async route=>{
+  const body=route.request().postDataJSON();if(!body)return route.fulfill({json:{data:[]}});requests.push(body);
+  await route.fulfill({contentType:'text/event-stream',body:'data: '+JSON.stringify({choices:[{delta:{content:'我接受。'},finish_reason:'stop'}]})+'\n\ndata: [DONE]\n\n'});
+ });
+ const read=()=>page.evaluate(async()=>{
+  const db=await new Promise((resolve,reject)=>{const r=indexedDB.open('opencharacter-worlds');r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error)});
+  const all=n=>new Promise((resolve,reject)=>{const r=db.transaction(n).objectStore(n).getAll();r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error)});
+  return {worlds:await all('world_states'),chats:await all('chats'),messages:await all('messages'),characters:await all('characters'),books:await all('worldbooks'),assets:await all('character_assets'),configs:await all('provider_configs')};
+ });
+ const setup=async group=>{
+  await page.goto('http://127.0.0.1:4173/?acceptance');
+  await page.locator(`input[value="${group}"]`).check();
+  const before=requests.length;
+  await page.getByRole('button',{name:'创建新的验收故事',exact:true}).click();
+  await page.getByRole('status').waitFor();
+  assert.equal(requests.length,before);
+  assert.equal(await page.getByRole('button',{name:'创建新的验收故事',exact:true}).isDisabled(),true);
+ };
+ await setup('B');let state=await read();
+ const originalChat=state.chats[0],ids=originalChat.memberIds;
+ assert.equal(ids.length,4);assert.equal(new Set(ids).size,4);
+ assert.deepEqual(state.characters.map(c=>c.name).sort(),['沈砚','叶青','洛砂','顾霜'].sort());
+ assert.equal(state.books.length,4);assert.equal(state.worlds[0].entities.ring.owner,'player');
+ for(const asset of state.assets){const bytes=await fs.readFile('fixtures/acceptance/'+asset.name);assert.equal(asset.sha256,createHash('sha256').update(bytes).digest('hex'))}
+ await page.getByRole('link',{name:'进入游戏测试',exact:true}).click();await page.locator('.conversation-main').waitFor();
+ await page.getByRole('button',{name:zh['nav.settings'],exact:true}).click();
+ await page.getByRole('dialog').getByRole('button',{name:zh['provider.title'],exact:true}).click();
+ await page.locator('.provider-form select').first().selectOption('custom');
+ await page.locator('.provider-form input[type=url]').fill('https://fixture.example.test/v1');
+ await page.locator('input[list=provider-models]').fill('fixture-model');await page.locator('input[type=password]').fill('fixture-only');
+ await page.locator('.provider-form button[type=submit]').click();
+ await page.getByRole('dialog').getByRole('button',{name:zh['common.close'],exact:true}).click();
+ const before=await page.locator('[data-testid=message-assistant]').count();
+ await page.getByRole('textbox',{name:zh['chat.placeholder']}).fill('四城渡船地契药材，请分别说明职责。');
+ await page.getByRole('button',{name:zh['group.round'],exact:true}).click();
+ await page.locator('[data-testid=message-assistant]').nth(before+3).waitFor();await page.locator('.streaming').waitFor({state:'hidden'});
+ state=await read();const replies=state.messages.filter(m=>m.role==='assistant'&&m.speakerId);
+ assert.deepEqual(replies.sort((a,b)=>a.createdAt-b.createdAt).map(m=>m.speakerId),ids);
+ assert.equal(requests.length,4);
+ for(let i=0;i<4;i++){const c=state.characters.find(c=>c.id===ids[i]);assert.ok(JSON.stringify(requests[i]).includes(c.description))}
+ const count=await page.locator('[data-testid=message-assistant]').count();
+ await page.locator('.quick-actions').getByRole('button',{name:zh['action.store'],exact:true}).click();
+ await page.getByRole('dialog').locator('select').selectOption('ring');
+ await page.getByRole('dialog').getByRole('button',{name:zh['common.confirm'],exact:true}).click();
+ await page.locator('[data-testid=message-assistant]').nth(count).waitFor();await page.locator('.streaming').waitFor({state:'hidden'});
+ state=await read();assert.equal(state.worlds[0].entities.ring.owner,'player');assert.equal(state.worlds[0].entities.ring.holder,originalChat.characterId);
+ await page.getByRole('button',{name:zh['nav.settings'],exact:true}).click();
+ await page.getByRole('dialog').getByRole('button',{name:zh['settings.data'],exact:true}).click();
+ const dl=page.waitForEvent('download');await page.getByRole('dialog').getByRole('button',{name:zh['settings.exportSave'],exact:true}).click();
+ await fs.mkdir('test-results',{recursive:true});await (await dl).saveAs('test-results/acceptance.ocwsave');
+ const saved=JSON.parse(await fs.readFile('test-results/acceptance.ocwsave','utf8'));assert.equal(saved.additionalCharacters.length,3);assert.equal(saved.assets.filter(a=>a.kind==='original').length,4);
+ await page.getByRole('dialog').locator('input[type=file]').setInputFiles('test-results/acceptance.ocwsave');await page.getByRole('status').waitFor();
+ await page.reload();await page.locator('.conversation-main').waitFor();state=await read();
+ const clone=state.chats.find(c=>c.id!==originalChat.id);assert.equal(clone.memberIds.length,4);
+ assert.equal(state.worlds.find(w=>w.id===clone.id).entities.ring.holder,clone.characterId);
+ const beforeExtra=JSON.stringify({worlds:state.worlds,chats:state.chats,messages:state.messages,configs:state.configs});
+ await page.goto('http://127.0.0.1:4173/?acceptance');
+ const snapshot=JSON.stringify(await read());
+ await page.evaluate(()=>{const original=IDBObjectStore.prototype.put;window.restoreAcceptancePut=()=>{IDBObjectStore.prototype.put=original};IDBObjectStore.prototype.put=function(value,...args){if(this.name==='world_states'&&value.entities?.ring)throw Error('fixture write failure');return original.call(this,value,...args)}});
+ await page.getByRole('button',{name:'创建新的验收故事',exact:true}).click();await page.getByRole('alert').waitFor();
+ assert.equal(JSON.stringify(await read()),snapshot);
+ await page.evaluate(()=>window.restoreAcceptancePut());
+ await setup('A');await setup('C');state=await read();
+ const existingIds=[originalChat.id,clone.id];
+ assert.equal(JSON.stringify({worlds:state.worlds.filter(w=>existingIds.includes(w.id)),chats:state.chats.filter(c=>existingIds.includes(c.id)),messages:state.messages.filter(m=>existingIds.includes(m.chatId)),configs:state.configs}),beforeExtra);
+ const mystery=state.chats.find(c=>c.name.startsWith('[Acceptance C]'));assert.deepEqual(state.worlds.find(w=>w.id===mystery.id).entities.privateCode.knownBy,['player']);
+ await page.setViewportSize({width:360,height:800});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
+ await page.locator('select').selectOption('en-US');assert.equal(await page.getByRole('heading',{name:'Multi-card acceptance setup'}).count(),1);
+ assert.deepEqual(errors,[]);
+ await fs.writeFile('evidence/product/acceptance-setup.json',JSON.stringify({mode:'intercepted fixture, not live API',setupMakesNoRequests:true,failedSetupRollsBack:true,fourIndependentMembers:true,ownProfiles:true,originalHashes:true,groupCalls:4,custodyKeepsOwner:true,fourCardSaveRoundtrip:true,existingStoriesAndProviderPreserved:true,privateFixture:true,mobile360:true,english:true,errors},null,2)+'\n');
+ console.log('Acceptance setup and four-card production flows passed (fixture provider).');
+}finally{await browser.close()}

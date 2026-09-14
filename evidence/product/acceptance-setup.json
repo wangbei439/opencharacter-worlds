@@ -1,0 +1,16 @@
+{
+  "mode": "intercepted fixture, not live API",
+  "setupMakesNoRequests": true,
+  "failedSetupRollsBack": true,
+  "fourIndependentMembers": true,
+  "ownProfiles": true,
+  "originalHashes": true,
+  "groupCalls": 4,
+  "custodyKeepsOwner": true,
+  "fourCardSaveRoundtrip": true,
+  "existingStoriesAndProviderPreserved": true,
+  "privateFixture": true,
+  "mobile360": true,
+  "english": true,
+  "errors": []
+}

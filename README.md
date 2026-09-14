@@ -22,6 +22,10 @@ npm run preview -- --port 4173
 
 Open http://127.0.0.1:4173. Use the same address and port for the same local data; a different origin has a separate browser database.
 
+## 多卡验收
+
+打开 [本地验收准备页](http://127.0.0.1:4173/?acceptance)，选择单角色、四人独立群聊或悬疑场景，一键创建独立测试故事。准备过程不调用 API；进入正常游戏后再按 [60步验收方案](docs/MULTICARD-ACCEPTANCE.md) 执行。它不会自动跑完验收或限制调用次数。
+
 ## 开始使用
 
 1. 点击顶部“＋”打开角色创作室，手动创建角色；也可导入 PNG / JSON V2、V3 角色卡，或选择原创示例角色艾琳。
