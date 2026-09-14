@@ -1,0 +1,591 @@
+{
+  "format": "ocw-acceptance-matrix",
+  "version": 1,
+  "codeBaseline": "c0d8b2599523321c02cf93808735050239a89bba",
+  "source": "docs/PRODUCT-SPEC-V0.1.md",
+  "counts": {
+    "部分完成": 30,
+    "已完成": 28,
+    "待验证": 11,
+    "明确后置": 2,
+    "未完成": 1
+  },
+  "items": [
+    {
+      "id": "S01",
+      "sourceSection": 1,
+      "title": "产品定义",
+      "status": "部分完成",
+      "evidence": "src/runtime/engine.ts",
+      "boundary": "核心职责隔离已有；长期角色与世界稳定性仍需实测。"
+    },
+    {
+      "id": "S02",
+      "sourceSection": 2,
+      "title": "产品定位",
+      "status": "部分完成",
+      "evidence": "docs/ADVANCED-FEATURES.md",
+      "boundary": "具备角色世界运行器主流程，尚未达到完整酒馆能力上限。"
+    },
+    {
+      "id": "S03",
+      "sourceSection": 3,
+      "title": "V0.1 北极星原则",
+      "status": "部分完成",
+      "evidence": "src/ui/App.tsx",
+      "boundary": "原文保留、保守提交和单模型默认已有；低操作门槛待新用户验收。"
+    },
+    {
+      "id": "S04",
+      "sourceSection": 4,
+      "title": "用户类型",
+      "status": "部分完成",
+      "evidence": "src/ui/Creator.tsx",
+      "boundary": "玩家与创作室可用；自定义规则、Schema、World Pack 不完整。"
+    },
+    {
+      "id": "S05",
+      "sourceSection": 5,
+      "title": "V0.1 用户主流程",
+      "status": "已完成",
+      "evidence": "tests/e2e/product-smoke.mjs",
+      "boundary": "三步导入、模型、进入世界本地流程通过；五分钟新人测试另列。"
+    },
+    {
+      "id": "S06",
+      "sourceSection": 6,
+      "title": "主界面结构",
+      "status": "已完成",
+      "evidence": "tests/e2e/product-smoke.mjs",
+      "boundary": "桌面三栏、移动单栏与底部导航已测。"
+    },
+    {
+      "id": "S07",
+      "sourceSection": 7,
+      "title": "Desktop Layout",
+      "status": "已完成",
+      "evidence": "src/ui/App.tsx",
+      "boundary": "角色侧栏、会话、场景、对话与 WORLD 面板具备。"
+    },
+    {
+      "id": "S08",
+      "sourceSection": 8,
+      "title": "Mobile Layout",
+      "status": "待验证",
+      "evidence": "evidence/product/mobile-chat.png",
+      "boundary": "360px 自动浏览器检查通过；实体手机单手操作和键盘遮挡未验收。"
+    },
+    {
+      "id": "S09",
+      "sourceSection": 9,
+      "title": "自由对话",
+      "status": "已完成",
+      "evidence": "tests/e2e/product-smoke.mjs",
+      "boundary": "发送、重生成、候选切换、编辑、删除、续写、复制、分支、改名、自动保存已实现。"
+    },
+    {
+      "id": "S10",
+      "sourceSection": 10,
+      "title": "三种操作方式",
+      "status": "部分完成",
+      "evidence": "src/runtime/engine.ts",
+      "boundary": "三种入口具备；自由语言为有限模式，不能泛化到任意世界动作。"
+    },
+    {
+      "id": "S11",
+      "sourceSection": 11,
+      "title": "Quick Actions",
+      "status": "部分完成",
+      "evidence": "src/ui/App.tsx",
+      "boundary": "基础行动按状态启停；世界作者自定义动作注册/编辑尚缺。"
+    },
+    {
+      "id": "S12",
+      "sourceSection": 12,
+      "title": "Runtime 核心结构",
+      "status": "已完成",
+      "evidence": "src/storage/db.ts",
+      "boundary": "聊天、世界状态与重要事件分层保存。"
+    },
+    {
+      "id": "S13",
+      "sourceSection": 13,
+      "title": "Transaction Engine",
+      "status": "已完成",
+      "evidence": "src/app/service.ts",
+      "boundary": "候选、窄判定、校验与提交链路已实现，不做每轮全量状态抽取。"
+    },
+    {
+      "id": "S14",
+      "sourceSection": 14,
+      "title": "Transaction 类型",
+      "status": "部分完成",
+      "evidence": "src/runtime/engine.ts",
+      "boundary": "列出的事务有处理分支；若干软事务缺完整玩家入口，邀请等主要记录事件，不能当通用行动完成。"
+    },
+    {
+      "id": "S15",
+      "sourceSection": 15,
+      "title": "Resolver 原则",
+      "status": "已完成",
+      "evidence": "src/runtime/decision.ts",
+      "boundary": "共享四值决策、必要时当前模型窄判定；真实语义精度另验收。"
+    },
+    {
+      "id": "S16",
+      "sourceSection": 16,
+      "title": "Model Call 原则",
+      "status": "已完成",
+      "evidence": "src/app/service.ts",
+      "boundary": "默认单 Actor；必要时 Resolver。用户显式启用群聊/向量会增加调用。"
+    },
+    {
+      "id": "S17",
+      "sourceSection": 17,
+      "title": "Context Builder",
+      "status": "已完成",
+      "evidence": "src/context/builder.ts",
+      "boundary": "角色、世界书、相关事实、事件与近期聊天按预算组装。"
+    },
+    {
+      "id": "S18",
+      "sourceSection": 18,
+      "title": "Context Inspector",
+      "status": "部分完成",
+      "evidence": "src/ui/panels.tsx",
+      "boundary": "可看实际上下文和条目原因；并非可任意拖排的完整提示词管理器。"
+    },
+    {
+      "id": "S19",
+      "sourceSection": 19,
+      "title": "Event Memory",
+      "status": "已完成",
+      "evidence": "src/runtime/engine.ts",
+      "boundary": "重要事件具备因果来源和状态；寒暄不生成事件的机制测试通过。"
+    },
+    {
+      "id": "S20",
+      "sourceSection": 20,
+      "title": "World Facts",
+      "status": "已完成",
+      "evidence": "src/runtime/possession.ts",
+      "boundary": "实体事实与人类说明分开；所有者、持有人、物理位置已区分。"
+    },
+    {
+      "id": "S21",
+      "sourceSection": 21,
+      "title": "World Compiler",
+      "status": "明确后置",
+      "evidence": "docs/PRODUCT-SPEC-V0.1.md",
+      "boundary": "原规范明确完整 World Compiler 不阻塞首发；当前无作者审阅后编译工作流。"
+    },
+    {
+      "id": "S22",
+      "sourceSection": 22,
+      "title": "视觉系统",
+      "status": "部分完成",
+      "evidence": "src/scene/SceneRenderer.tsx",
+      "boundary": "图片/GIF/视频与地点背景引用已有；全部编码、Animated WebP 与全设备兼容未验收。"
+    },
+    {
+      "id": "S23",
+      "sourceSection": 23,
+      "title": "Layered Background",
+      "status": "部分完成",
+      "evidence": "src/scene/SceneRenderer.tsx",
+      "boundary": "已有轻量指针视差；完整多层背景资产格式和手机触摸适配不完整。"
+    },
+    {
+      "id": "S24",
+      "sourceSection": 24,
+      "title": "Particle System",
+      "status": "待验证",
+      "evidence": "src/scene/particles.ts",
+      "boundary": "七种粒子、三级质量、慢帧自动减量已实现；低端实机效果与帧率未验收。"
+    },
+    {
+      "id": "S25",
+      "sourceSection": 25,
+      "title": "World State 驱动视觉",
+      "status": "部分完成",
+      "evidence": "src/scene/SceneRenderer.tsx",
+      "boundary": "时间、地点、天气驱动已有；角色粒子覆盖世界天气时的优先级需专项验收。"
+    },
+    {
+      "id": "S26",
+      "sourceSection": 26,
+      "title": "Character Visual",
+      "status": "部分完成",
+      "evidence": "src/scene/SceneRenderer.tsx",
+      "boundary": "表情立绘与瞬时状态已有；抖动、眨眼等全部命名动画未逐项完成。"
+    },
+    {
+      "id": "S27",
+      "sourceSection": 27,
+      "title": "中文 / 英文国际化",
+      "status": "部分完成",
+      "evidence": "src/ui/AdvancedWriting.tsx",
+      "boundary": "双语字典键一致；高级宏示例仍有中文文字硬编码，不能宣称英文所有界面完成。"
+    },
+    {
+      "id": "S28",
+      "sourceSection": 28,
+      "title": "Character Content 不自动翻译",
+      "status": "已完成",
+      "evidence": "src/compatibility/character.ts",
+      "boundary": "界面切换不翻译导入卡原文。"
+    },
+    {
+      "id": "S29",
+      "sourceSection": 29,
+      "title": "Tutorial System",
+      "status": "部分完成",
+      "evidence": "src/ui/panels.tsx",
+      "boundary": "WORLD/Event/Action 提示和关闭保存已有；全部首次情境高亮未逐条验收。"
+    },
+    {
+      "id": "S30",
+      "sourceSection": 30,
+      "title": "Help Center",
+      "status": "部分完成",
+      "evidence": "src/ui/panels.tsx",
+      "boundary": "内置双语简要帮助已有；原规范全部分类与高级新功能帮助仍需整理。"
+    },
+    {
+      "id": "S31",
+      "sourceSection": 31,
+      "title": "三层设置复杂度",
+      "status": "部分完成",
+      "evidence": "src/ui/panels.tsx",
+      "boundary": "三档模式存在；新增高级区域的渐进隐藏和普通玩家易用性未完整验收。"
+    },
+    {
+      "id": "S32",
+      "sourceSection": 32,
+      "title": "Provider Adapter",
+      "status": "已完成",
+      "evidence": "src/providers/adapter.ts",
+      "boundary": "提供统一适配接口；当前六类供应商按后续用户要求调整。"
+    },
+    {
+      "id": "S33",
+      "sourceSection": 33,
+      "title": "OpenAI-Compatible",
+      "status": "已完成",
+      "evidence": "src/ui/ProviderForm.tsx",
+      "boundary": "兼容端点、模型、请求头和生成参数已实现；各真实服务兼容性不能由模拟测试代替。"
+    },
+    {
+      "id": "S34",
+      "sourceSection": 34,
+      "title": "API Key 安全",
+      "status": "待验证",
+      "evidence": "src/storage/db.ts",
+      "boundary": "凭据本地加密、日志脱敏、存档不带 Key 有检查；公開部署后的数据流仍需验收。"
+    },
+    {
+      "id": "S35",
+      "sourceSection": 35,
+      "title": "Local-first 数据",
+      "status": "已完成",
+      "evidence": "src/storage/db.ts",
+      "boundary": "核心数据在 IndexedDB，本地索引也已持久化；无服务器数据库。"
+    },
+    {
+      "id": "S36",
+      "sourceSection": 36,
+      "title": "Save / Export",
+      "status": "已完成",
+      "evidence": "src/storage/save.ts",
+      "boundary": "原始卡、聊天 JSON/Markdown、完整存档往返通过；World Pack 为后续格式。"
+    },
+    {
+      "id": "S37",
+      "sourceSection": 37,
+      "title": "Privacy",
+      "status": "待验证",
+      "evidence": "src/ui/App.tsx",
+      "boundary": "本地与第三方 API 的区别有说明；公开地址上的网络流量需再核查。"
+    },
+    {
+      "id": "S38",
+      "sourceSection": 38,
+      "title": "不做账号",
+      "status": "已完成",
+      "evidence": "src/storage/db.ts",
+      "boundary": "没有产品账号和用户资料服务。GitHub 开发者登录不等于产品账号。"
+    },
+    {
+      "id": "S39",
+      "sourceSection": 39,
+      "title": "不做社区",
+      "status": "已完成",
+      "evidence": "docs/PRODUCT-SPEC-V0.1.md",
+      "boundary": "未加入社区、角色广场或用户内容托管；代码公开不等于托管玩家存档。"
+    },
+    {
+      "id": "S40",
+      "sourceSection": 40,
+      "title": "不提供官方 AI 额度",
+      "status": "已完成",
+      "evidence": "src/providers/adapter.ts",
+      "boundary": "BYOK 直连，默认不提供官方推理服务；Mock 只是演示。"
+    },
+    {
+      "id": "S41",
+      "sourceSection": 41,
+      "title": "Web 技术栈",
+      "status": "已完成",
+      "evidence": "package.json",
+      "boundary": "采用 React/TS/Vite、Dexie、Zod、i18n 与 Canvas；推荐项不是强制逐包安装。"
+    },
+    {
+      "id": "S42",
+      "sourceSection": 42,
+      "title": "推荐目录",
+      "status": "已完成",
+      "evidence": "src/runtime/engine.ts",
+      "boundary": "Runtime、Provider、存储、上下文、场景与 UI 分目录；结构与推荐目录不必逐字相同。"
+    },
+    {
+      "id": "S43",
+      "sourceSection": 43,
+      "title": "PWA",
+      "status": "待验证",
+      "evidence": "vite.config.ts",
+      "boundary": "Manifest、图标、SW 和离线浏览自动检查通过；Android 实体安装和升级待验收。"
+    },
+    {
+      "id": "S44",
+      "sourceSection": 44,
+      "title": "免费部署",
+      "status": "未完成",
+      "evidence": "README.md",
+      "boundary": "GitHub 公开仓库与 CI 已完成；尚无公开 HTTPS 应用部署。"
+    },
+    {
+      "id": "S45",
+      "sourceSection": 45,
+      "title": "SEO / Landing",
+      "status": "部分完成",
+      "evidence": "src/ui/App.tsx",
+      "boundary": "Landing、BYOK、本地与隐私说明已有；公开 GitHub 入口及完整 SEO 文案未完成验收。"
+    },
+    {
+      "id": "S46",
+      "sourceSection": 46,
+      "title": "V0.1 明确不做",
+      "status": "明确后置",
+      "evidence": "docs/PRODUCT-SPEC-V0.1.md",
+      "boundary": "账号、社区、支付、TTS/STT、完整编译器和插件市场均不列为首发缺陷；后来新增范围另列。"
+    },
+    {
+      "id": "S47",
+      "sourceSection": 47,
+      "title": "V0.1 必须做",
+      "status": "部分完成",
+      "evidence": "docs/ACCEPTANCE.md",
+      "boundary": "核心 P0 多数已实现，部署/实机/最终验收未完成；Provider 清单以后续要求为准。"
+    },
+    {
+      "id": "S48",
+      "sourceSection": 48,
+      "title": "Runtime 最小测试集",
+      "status": "已完成",
+      "evidence": "tests/runtime/engine.test.mjs",
+      "boundary": "物品、虚构物品、承诺、知识隔离、长期事件与 NO_CHANGE 已有机制测试。"
+    },
+    {
+      "id": "S49",
+      "sourceSection": 49,
+      "title": "Benchmark",
+      "status": "部分完成",
+      "evidence": "scripts/benchmark.mjs",
+      "boundary": "存在 Mock 100轮对照；脚本仍有旧直接判定与64-token Resolver，须与正式流程对齐后再跑真实对照。"
+    },
+    {
+      "id": "S50",
+      "sourceSection": 50,
+      "title": "UX 验收标准",
+      "status": "待验证",
+      "evidence": "tests/e2e/product-smoke.mjs",
+      "boundary": "本地自动操作通过；新用户五分钟、全英文界面及实机体验不能据此判定完成。"
+    },
+    {
+      "id": "S51",
+      "sourceSection": 51,
+      "title": "性能标准",
+      "status": "待验证",
+      "evidence": "src/scene/particles.ts",
+      "boundary": "动态关闭、低性能模式与慢帧减量已有；初始 JS 约512kB提示和中低端性能未验收。"
+    },
+    {
+      "id": "S52",
+      "sourceSection": 52,
+      "title": "错误处理",
+      "status": "部分完成",
+      "evidence": "src/providers/adapter.ts",
+      "boundary": "常见错误和脱敏有测试；全部真实供应商的跨域、限流、断流路径未验收。"
+    },
+    {
+      "id": "S53",
+      "sourceSection": 53,
+      "title": "产品视觉方向",
+      "status": "待验证",
+      "evidence": "evidence/product/desktop-chat.png",
+      "boundary": "视觉小说风格已有；按真实设备和新用户反馈验收，不能用截图代替体验。"
+    },
+    {
+      "id": "S54",
+      "sourceSection": 54,
+      "title": "UI Theme",
+      "status": "已完成",
+      "evidence": "src/ui/App.tsx",
+      "boundary": "Dark/Light/System 已实现；自定义 Accent 为后续项。"
+    },
+    {
+      "id": "S55",
+      "sourceSection": 55,
+      "title": "动画原则",
+      "status": "部分完成",
+      "evidence": "src/ui/style.css",
+      "boundary": "基础过渡已有；原规范全部动画效果与时长需要专项对照。"
+    },
+    {
+      "id": "S56",
+      "sourceSection": 56,
+      "title": "视觉优先级",
+      "status": "待验证",
+      "evidence": "evidence/product/mobile-chat.png",
+      "boundary": "角色/场景优先布局已有；新增设置占用与阅读空间需实机检查。"
+    },
+    {
+      "id": "S57",
+      "sourceSection": 57,
+      "title": "教程原则",
+      "status": "部分完成",
+      "evidence": "src/ui/panels.tsx",
+      "boundary": "基础提示使用玩家语言；高级功能帮助尚需补齐。"
+    },
+    {
+      "id": "S58",
+      "sourceSection": 58,
+      "title": "产品名",
+      "status": "已完成",
+      "evidence": "src/app/brand.ts",
+      "boundary": "有集中品牌配置；新代码仍须持续避免散落硬编码。"
+    },
+    {
+      "id": "S59",
+      "sourceSection": 59,
+      "title": "第一阶段开发顺序",
+      "status": "部分完成",
+      "evidence": "docs/ACCEPTANCE.md",
+      "boundary": "开发已到阶段6验收；不因高级功能增加跳过长程测试和发布。"
+    },
+    {
+      "id": "S60",
+      "sourceSection": 60,
+      "title": "完成定义",
+      "status": "部分完成",
+      "evidence": "docs/ACCEPTANCE.md",
+      "boundary": "公开URL、真实長程对照、实机等未满足，不能宣称V0.1完成。"
+    },
+    {
+      "id": "S61",
+      "sourceSection": 61,
+      "title": "Astra 工作方式要求",
+      "status": "部分完成",
+      "evidence": "tests/e2e/product-smoke.mjs",
+      "boundary": "实现/运行/浏览器/修复循环已有；公开URL的完整真实流程还未做。"
+    },
+    {
+      "id": "S62",
+      "sourceSection": 62,
+      "title": "最重要的产品判断",
+      "status": "待验证",
+      "evidence": "docs/PRODUCT-SPEC-V0.1.md",
+      "boundary": "需由真实可玩性、成本和新用户体验验证产品判断，不能仅据模块数判定。"
+    },
+    {
+      "id": "U01",
+      "sourceSection": "后续用户要求",
+      "title": "手动卡片设计与媒体",
+      "status": "已完成",
+      "evidence": "tests/e2e/studio.mjs",
+      "boundary": "新建编辑、世界观/Prompt/世界书、图片视频背景、轮换和音乐；所有编码/实机仍待验证。"
+    },
+    {
+      "id": "U02",
+      "sourceSection": "后续用户要求",
+      "title": "六类 Provider 替换原列表",
+      "status": "已完成",
+      "evidence": "src/providers/presets.ts",
+      "boundary": "以后续要求的 OpenAI/Claude/DeepSeek/GLM/Qwen/Custom 为准；不因旧列表不同标为遗漏。"
+    },
+    {
+      "id": "U03",
+      "sourceSection": "后续用户要求",
+      "title": "多卡和大世界验证",
+      "status": "待验证",
+      "evidence": "docs/LIVE-REVIEW-2026-09-10.md",
+      "boundary": "旧三卡9轮报告有实际API证据与已发现问题；不是当前多角色/检索新版本20–100轮验收。"
+    },
+    {
+      "id": "U04",
+      "sourceSection": "后续用户要求",
+      "title": "所有者、持有人、当前地点",
+      "status": "已完成",
+      "evidence": "tests/e2e/group-custody.mjs",
+      "boundary": "寄存/归还/放下/拾取及存档重映射已测；真实自然语言泛化仍需验收。"
+    },
+    {
+      "id": "U05",
+      "sourceSection": "后续用户要求",
+      "title": "继续完善酒馆能力",
+      "status": "部分完成",
+      "evidence": "docs/ADVANCED-FEATURES.md",
+      "boundary": "基础对话、写作预设、有限群聊已做；完整提示词管理与世界书高级触发仍缺。"
+    },
+    {
+      "id": "U06",
+      "sourceSection": "后续用户要求",
+      "title": "不复制AGPL源码、记录依赖许可",
+      "status": "部分完成",
+      "evidence": "docs/DEPENDENCY-POLICY.md",
+      "boundary": "独立实现和449项锁定台账已建立；既有非优选声明及实际分发许可说明仍需复核。"
+    },
+    {
+      "id": "U07",
+      "sourceSection": "后续用户要求",
+      "title": "插件系统",
+      "status": "部分完成",
+      "evidence": "src/extensions/sandbox.ts",
+      "boundary": "已有提示词插件安装/启停/隔离执行；并非酒馆插件兼容、任意UI或世界写入系统。"
+    },
+    {
+      "id": "U08",
+      "sourceSection": "后续用户要求",
+      "title": "复杂宏",
+      "status": "部分完成",
+      "evidence": "src/context/program.ts",
+      "boundary": "有界变量/条件/循环已做；没有永久全局状态和完整酒馆语法。"
+    },
+    {
+      "id": "U09",
+      "sourceSection": "后续用户要求",
+      "title": "向量检索",
+      "status": "部分完成",
+      "evidence": "src/app/retrieval.ts",
+      "boundary": "事件、本角色旧回复、TXT/MD和本地索引已做；缺独立嵌入配置、PDF/Word和真实语义质量验收。"
+    },
+    {
+      "id": "U10",
+      "sourceSection": "后续用户要求",
+      "title": "上传wangbei439公开GitHub",
+      "status": "已完成",
+      "evidence": "README.md",
+      "boundary": "远端main=c0d8b2599523321c02cf93808735050239a89bba，首次CI成功；不是网站部署。"
+    }
+  ]
+}

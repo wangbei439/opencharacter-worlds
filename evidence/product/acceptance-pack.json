@@ -1,0 +1,55 @@
+{
+  "codeBaseline": "c0d8b25",
+  "mode": "isolated-browser-import-only",
+  "realProviderCalls": 0,
+  "results": [
+    {
+      "file": "single-keeper.json",
+      "name": "岑晚",
+      "preview": true,
+      "persisted": true,
+      "worldbookLinked": true,
+      "originalBytesPreserved": true
+    },
+    {
+      "file": "world-shen.json",
+      "name": "沈砚",
+      "preview": true,
+      "persisted": true,
+      "worldbookLinked": true,
+      "originalBytesPreserved": true
+    },
+    {
+      "file": "world-ye.json",
+      "name": "叶青",
+      "preview": true,
+      "persisted": true,
+      "worldbookLinked": true,
+      "originalBytesPreserved": true
+    },
+    {
+      "file": "world-luo.json",
+      "name": "洛砂",
+      "preview": true,
+      "persisted": true,
+      "worldbookLinked": true,
+      "originalBytesPreserved": true
+    },
+    {
+      "file": "world-gu.json",
+      "name": "顾霜",
+      "preview": true,
+      "persisted": true,
+      "worldbookLinked": true,
+      "originalBytesPreserved": true
+    },
+    {
+      "file": "mystery-investigator.json",
+      "name": "闻舟",
+      "preview": true,
+      "persisted": true,
+      "worldbookLinked": true,
+      "originalBytesPreserved": true
+    }
+  ]
+}

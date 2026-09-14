@@ -2,7 +2,7 @@
 
 Local-first character roleplay with a small, deterministic world runtime. React + TypeScript + Vite, Chinese / English, desktop and mobile, BYOK, IndexedDB storage, and an offline-readable PWA.
 
-**Status: working local V0.1 implementation; not yet a completed public release.** The local production build and browser flows pass. A live BYOK model connection, Cloudflare public deployment, public-URL acceptance flow, and physical Android installation remain unverified. See [acceptance evidence](docs/ACCEPTANCE.md).
+**Status: working local V0.1 implementation; not yet a completed public release.** The code is public on GitHub and the baseline CI passed. Earlier live BYOK checks confirmed connectivity but found semantic issues; current multi-card and long-run model quality remain unverified. Public HTTPS deployment and physical Android acceptance are pending. See the [unified acceptance matrix](docs/ACCEPTANCE-MATRIX.md) and [multi-card acceptance plan](docs/MULTICARD-ACCEPTANCE.md).
 
 ## Run
 

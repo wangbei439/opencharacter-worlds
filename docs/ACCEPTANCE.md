@@ -1,5 +1,7 @@
 # V0.1 acceptance evidence — 2026-09-10
 
+> 历史阶段记录：本页测试数量与待办反映当时版本。当前进度以 [统一验收清单](ACCEPTANCE-MATRIX.md) 为准；GitHub 公开上传已完成，网站部署仍待完成。
+
 This is a working local implementation, not a completed public V0.1 release.
 
 | Area | Evidence | Result |

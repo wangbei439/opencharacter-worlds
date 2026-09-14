@@ -1,0 +1,37 @@
+{
+  "format": "ocw-acceptance-pack",
+  "version": 1,
+  "provenance": "Original synthetic fixtures; no third-party character content or code.",
+  "cards": [
+    {
+      "file": "single-keeper.json",
+      "name": "岑晚",
+      "sha256": "fff5588a4b5e9b01f5e656a4429cdd72f82cf0ab67700c1be0164339aba0489d"
+    },
+    {
+      "file": "world-shen.json",
+      "name": "沈砚",
+      "sha256": "22599156abf76a2aff3ac07864397f05945e03977194bbffb7a0b6650bda0c0f"
+    },
+    {
+      "file": "world-ye.json",
+      "name": "叶青",
+      "sha256": "6809acfcc4dd8b44d009a6db0cdb0b3d828f8a368c51494f62284584c5d4e7ee"
+    },
+    {
+      "file": "world-luo.json",
+      "name": "洛砂",
+      "sha256": "9bab93bcf65e989f3994046f632473baa58b08aab472ff20e6c509a3e8d6a178"
+    },
+    {
+      "file": "world-gu.json",
+      "name": "顾霜",
+      "sha256": "52971fb5d6c0aa0ccb378b8d3cc5d81b8f052c5e9f1af1e0eb5c302b5f376f86"
+    },
+    {
+      "file": "mystery-investigator.json",
+      "name": "闻舟",
+      "sha256": "94f4dc795378530724207c8b4cae60979aa57b7c33e8ad6ce73e63fd6781cb4a"
+    }
+  ]
+}
