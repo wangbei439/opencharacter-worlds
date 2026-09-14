@@ -44,7 +44,7 @@ try{
  await page.getByRole('textbox',{name:zh['chat.placeholder']}).fill('四城渡船地契药材，请分别说明职责。');
  await page.getByRole('button',{name:zh['group.round'],exact:true}).click();
  await page.locator('[data-testid=message-assistant]').nth(before+3).waitFor();await page.locator('.streaming').waitFor({state:'hidden'});
- state=await read();const replies=state.messages.filter(m=>m.role==='assistant'&&m.speakerId);
+ state=await read();const replies=state.messages.filter(m=>m.role==='assistant'&&m.groupTurn);
  assert.deepEqual(replies.sort((a,b)=>a.createdAt-b.createdAt).map(m=>m.speakerId),ids);
  assert.equal(requests.length,4);
  for(let i=0;i<4;i++){const c=state.characters.find(c=>c.id===ids[i]);assert.ok(JSON.stringify(requests[i]).includes(c.description))}

@@ -1,0 +1,36 @@
+{
+  "mode": "real-provider, production browser UI",
+  "date": "2026-09-14",
+  "model": "glm-5.2",
+  "modelSwitch": false,
+  "actorCalls": 15,
+  "resolverCalls": 3,
+  "http200": 18,
+  "groups": [
+    "four independent characters",
+    "single keeper",
+    "mystery investigator"
+  ],
+  "checks": {
+    "currentSpeakerIdentity": "passed-targeted-sample",
+    "otherCharacterHolderAttribution": "passed-targeted-sample",
+    "noSaidWrappers": "passed-targeted-sample",
+    "dropAndTakeNarration": "passed-targeted-sample",
+    "privateCodeExcluded": "passed-targeted-sample",
+    "saveRoundtrip": 3
+  },
+  "remaining": [
+    "mechanical record/relationship wording",
+    "handover stage wording",
+    "full 60-step acceptance",
+    "100-turn comparison"
+  ],
+  "sourceSha256": {
+    "src/context/builder.ts": "3d5cf1e0f1ddbbbc5f4cc3fe373549aed42f50aee7977454fd1ecb7252ccb87d",
+    "src/app/service.ts": "00f33378acb9025319f42e7a1f5119fd40292c400f9d576d1c91dd062434d7c3",
+    "src/app/group.ts": "155e0a01d6341a6e6e99d7224041b9a71d9fd90aff30ff5e0cbc23ddc6fdb6ed",
+    "src/ui/GroupPanel.tsx": "5b4458fbd4f90887ddc77004042f29f760a863b4120212d79ec130f88189f78e"
+  },
+  "details": "docs/LIVE-ACCEPTANCE-2026-09-14.md",
+  "rawTranscripts": "local ignored test-results only"
+}

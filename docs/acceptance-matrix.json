@@ -4,9 +4,9 @@
   "codeBaseline": "c0d8b2599523321c02cf93808735050239a89bba",
   "source": "docs/PRODUCT-SPEC-V0.1.md",
   "counts": {
-    "部分完成": 30,
+    "部分完成": 31,
     "已完成": 28,
-    "待验证": 11,
+    "待验证": 10,
     "明确后置": 2,
     "未完成": 1
   },
@@ -527,9 +527,9 @@
       "id": "U03",
       "sourceSection": "后续用户要求",
       "title": "多卡和大世界验证",
-      "status": "待验证",
-      "evidence": "docs/LIVE-REVIEW-2026-09-10.md",
-      "boundary": "旧三卡9轮报告有实际API证据与已发现问题；不是当前多角色/检索新版本20–100轮验收。"
+      "status": "部分完成",
+      "evidence": "docs/LIVE-ACCEPTANCE-2026-09-14.md",
+      "boundary": "三类场景两轮50条完整真实回复；身份与动作问题定向回归通过，措辞及完整短程/百轮验收仍待完成。"
     },
     {
       "id": "U04",
@@ -587,5 +587,6 @@
       "evidence": "README.md",
       "boundary": "远端main=c0d8b2599523321c02cf93808735050239a89bba，首次CI成功；不是网站部署。"
     }
-  ]
+  ],
+  "latestLiveReview": "docs/LIVE-ACCEPTANCE-2026-09-14.md"
 }

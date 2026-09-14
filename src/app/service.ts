@@ -7,7 +7,7 @@ import {initialWorld,makeCandidate,detectCandidate,directDecision} from '../runt
 import {buildContext} from '../context/builder.ts';
 import {createProvider,ProviderError,type ProviderAdapter} from '../providers/adapter.ts';
 import {useApp,patchApp} from './store.ts';
-import {newId,type Character,type Chat,type Message,type Candidate,type Decision,type ProviderConfig,type Settings,type Expression,type TransactionKind} from '../domain/types.ts';
+import {newId,type Character,type Chat,type Message,type Candidate,type Decision,type ProviderConfig,type Settings,type Expression,type TransactionKind,type Transaction} from '../domain/types.ts';
 import {importCharacter,createExample} from '../compatibility/character.ts';
 let controller:AbortController|undefined;let groupCancelled=false;
 export async function refresh(chatId=useApp.getState().activeChatId){
@@ -27,7 +27,7 @@ export async function example(){const c=await createExample();await refresh();pa
 export async function newChat(characterId:string){
  if(useApp.getState().sending)return;const character=await characters.get(characterId);if(!character)throw new Error('invalidCard');
  const now=Date.now(),chat:Chat={id:newId(),characterId,name:character.name,createdAt:now,updatedAt:now};const world=initialWorld(chat.id,character);
- await db.transaction('rw',chats,messages,worlds,db.table('world_facts'),async()=>{await chats.put(chat);await persistWorld(world);if(character.greetings[0])await messages.put({id:newId(),chatId:chat.id,role:'assistant',content:character.greetings[0],variants:[...character.greetings],selected:0,createdAt:now,status:'complete'})});await selectChat(chat.id);
+ await db.transaction('rw',chats,messages,worlds,db.table('world_facts'),async()=>{await chats.put(chat);await persistWorld(world);if(character.greetings[0])await messages.put({id:newId(),chatId:chat.id,role:'assistant',speakerId:character.id,content:character.greetings[0],variants:[...character.greetings],selected:0,createdAt:now,status:'complete'})});await selectChat(chat.id);
 }
 export async function renameChat(id:string,name:string){if(name.trim()){await chats.update(id,{name:name.trim().slice(0,100)});await refresh()}}
 async function addMessage(chatId:string,role:Message['role'],content:string){const last=(await messages.where('chatId').equals(chatId).sortBy('createdAt')).at(-1);const row:Message={id:newId(),chatId,role,content,variants:[content],selected:0,createdAt:Math.max(Date.now(),(last?.createdAt??0)+1),status:'complete'};await messages.put(row);return row}
@@ -39,18 +39,18 @@ async function narrowResolve(provider:ProviderAdapter,candidate:Candidate,reply:
 }
 async function generate(chat:Chat,character:Character,user:Message,action?:Partial<Candidate>,replace?:Message,continuation=false,groupTurn=false){
  const config=useApp.getState().provider,provider=createProvider(config);controller=new AbortController();const signal=controller.signal;patchApp({sending:true,speakingCharacterId:character.id,streamText:'',error:undefined});
- let reply='',resultExpression:Expression='normal';let candidate:Candidate|undefined;let assistant:Message|undefined;
+ let reply='',resultExpression:Expression='normal';let candidate:Candidate|undefined;let assistant:Message|undefined;let actionResult:Transaction|undefined;
  try{
   let world=await worlds.get(chat.id);if(!world)throw new Error('worldMissing');
   candidate=continuation||groupTurn?undefined:action?makeCandidate(world,action.kind!,user.id,{text:user.content,...action}):detectCandidate(user.content,world,character.id,user.id);
-  if(candidate){if(candidate.requiresConsent){await transactions.put({...candidate,status:'pending',reason:'awaitingActor',createdAt:Date.now()})}else{const outcome=await commitCandidate(candidate);if(outcome.status==='rejected')patchApp({notice:'rejected'});candidate=undefined;world=(await worlds.get(chat.id))!}}
+  if(candidate){if(candidate.requiresConsent){await transactions.put({...candidate,status:'pending',reason:'awaitingActor',createdAt:Date.now()})}else{const outcome=await commitCandidate(candidate);actionResult=outcome;if(outcome.status==='rejected')patchApp({notice:'rejected'});candidate=undefined;world=(await worlds.get(chat.id))!}}
   const history=await messages.where('chatId').equals(chat.id).sortBy('createdAt');const filtered=replace?history.filter(m=>m.id!==replace.id):history;
   const ledger=await events.where('worldId').equals(chat.id).toArray();const worldbooks=(await books.bulkGet(character.worldbookIds)).filter((b):b is NonNullable<typeof b>=>!!b);const persona=chat.personaId?await personas.get(chat.personaId):undefined;
   const extras:{name:string;content:string}[]=[];
   for(const plugin of chat.writing?.plugins??[]){if(!plugin.enabled)continue;try{const {runPlugin}=await import('../extensions/sandbox.ts');const content=await runPlugin(plugin.code,{character:character.name,user:persona?.name??'Player',message:user.content.slice(0,8000)},signal);if(content)extras.push({name:'plugin',content:plugin.name+'\n'+content})}catch(e){if(signal.aborted)throw e;patchApp({notice:'pluginSkipped'})}}
   if(chat.writing?.vectorsEnabled){try{const {recallVectors}=await import('./retrieval.ts');const {memorySources}=await import('../context/memory-sources.ts');const sources=memorySources(ledger,character.id,filtered,chat.characterId,chat.writing.vectorDialogue,chat.writing.memoryDocs);const recalled=await recallVectors(config,chat.writing.embeddingModel,sources,user.content,signal);for(const kind of ['event','dialogue','document'] as const){const selected=recalled.filter(r=>r.kind===kind);if(selected.length)extras.push({name:kind==='event'?'vectorMemory':'vectorReference',content:(kind==='event'?'COMMITTED_EVENTS':'REFERENCE_ONLY: prior dialogue and documents are not committed world facts')+'\n'+selected.map(r=>r.label+' / '+r.id+' ['+r.score.toFixed(3)+'] '+r.content).join('\n')})}}catch(e){if(signal.aborted)throw e;patchApp({notice:'vectorFallback'})}}
   if(signal.aborted)throw signal.reason;
-  const ctx=buildContext(character,filtered,world,ledger,worldbooks,persona,config.contextLimit,config.maxTokens,candidate,chat.writing,extras);
+  const ctx=buildContext(character,filtered,world,ledger,worldbooks,persona,config.contextLimit,config.maxTokens,candidate,chat.writing,extras,{primaryCharacterId:chat.characterId,actionResult});
   if(continuation)ctx.messages.push({role:'user',content:'Continue the previous character reply without repeating it. Do not speak for the player.'});patchApp({context:ctx});
   for await(const e of provider.streamChat({messages:ctx.messages},signal)){if(e.type==='delta'){reply+=e.text;patchApp({streamText:reply})}else if(e.result.expression)resultExpression=e.result.expression}
   const expressionMatch=/^\[expression:(normal|happy|angry|sad|surprised|shy|fear|injured)\]\s*/.exec(reply);if(expressionMatch){resultExpression=expressionMatch[1] as Expression;reply=reply.slice(expressionMatch[0].length)}
