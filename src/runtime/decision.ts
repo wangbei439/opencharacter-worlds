@@ -6,7 +6,12 @@ export function parseDecision(text:string):Decision{
  try{const value=JSON.parse(fenced?fenced[1]:trimmed);return value&&['ACCEPT','REJECT','DEFER','UNCLEAR'].includes(value.decision)?value.decision:'UNCLEAR'}catch{return 'UNCLEAR'}
 }
 export function directActionDecision(candidate:Pick<Candidate,'kind'>,reply:string):Decision|undefined{
- // Ambiguous possession is never promoted to ownership. Custody has no separate ledger field yet.
+ // Ambiguous possession is never promoted to ownership.
  if(candidate.kind==='TRANSFER_ITEM'&&/(?:暂存|只是保管|替.{0,12}保管|随时.{0,8}(?:取|拿回)|safekeeping|hold.{0,12}for you|take it back)/i.test(reply))return 'UNCLEAR';
  return directDecision(reply);
+}
+
+export function resolverBudget(maxTokens:number){return Math.min(Math.max(64,maxTokens),1024)}
+export function resolverRequest(candidate:Candidate,reply:string,maxTokens:number){
+ return {purpose:'resolver' as const,maxTokens:resolverBudget(maxTokens),messages:[{role:'system' as const,content:resolverInstruction},{role:'user' as const,content:JSON.stringify({action:candidate.kind,target:candidate.target,request:candidate.text,reply})}]};
 }

@@ -122,3 +122,5 @@ Writing controls: open 对话写作设置 above the composer. See [feature bound
 Dependency changes must follow [the license policy](docs/DEPENDENCY-POLICY.md) and pass `npm run check:licenses` before installation. SillyTavern source copying is prohibited.
 
 Advanced plugins, macro programs and embedding retrieval: [usage and SDK](docs/ADVANCED-FEATURES.md), [original MIT sample plugin](examples/quiet-narration.ocw-plugin.json). Run `npm run test:advanced` for isolated integration checks.
+
+百轮测试的配置、输出目录与解释边界见 [百轮对照协议 V2](docs/BENCHMARK-PROTOCOL.md)。

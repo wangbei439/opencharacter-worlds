@@ -529,7 +529,7 @@
       "title": "多卡和大世界验证",
       "status": "部分完成",
       "evidence": "docs/LIVE-ACCEPTANCE-2026-09-14.md",
-      "boundary": "三类场景两轮50条完整真实回复；身份与动作问题定向回归通过，措辞及完整短程/百轮验收仍待完成。"
+      "boundary": "三类场景累计58条完整真实回复；身份与动作定向回归通过，措辞尝试失败已撤回，完整短程/百轮验收仍待完成。"
     },
     {
       "id": "U04",
@@ -588,5 +588,6 @@
       "boundary": "远端main=c0d8b2599523321c02cf93808735050239a89bba，首次CI成功；不是网站部署。"
     }
   ],
-  "latestLiveReview": "docs/LIVE-ACCEPTANCE-2026-09-14.md"
+  "latestLiveReview": "docs/LIVE-ACCEPTANCE-2026-09-14.md",
+  "benchmarkProtocol": "docs/BENCHMARK-PROTOCOL.md"
 }

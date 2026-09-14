@@ -1,5 +1,5 @@
 import {groupSchedule} from '../domain/group-schedule.ts';
-import {directActionDecision,parseDecision,resolverInstruction} from '../runtime/decision.ts';
+import {directActionDecision,parseDecision,resolverRequest} from '../runtime/decision.ts';
 import {remapWorld} from '../storage/remap.ts';
 import {db,characters,chats,messages,worlds,events,transactions,books,personas,assets,loadSettings,saveSettings,loadProvider,saveProvider} from '../storage/db.ts';
 import {persistWorld,commitCandidate,rewindFrom} from '../storage/runtime.ts';
@@ -31,10 +31,9 @@ export async function newChat(characterId:string){
 }
 export async function renameChat(id:string,name:string){if(name.trim()){await chats.update(id,{name:name.trim().slice(0,100)});await refresh()}}
 async function addMessage(chatId:string,role:Message['role'],content:string){const last=(await messages.where('chatId').equals(chatId).sortBy('createdAt')).at(-1);const row:Message={id:newId(),chatId,role,content,variants:[content],selected:0,createdAt:Math.max(Date.now(),(last?.createdAt??0)+1),status:'complete'};await messages.put(row);return row}
-function configuredResolverBudget(){return Math.max(64,useApp.getState().provider.maxTokens)}
 async function narrowResolve(provider:ProviderAdapter,candidate:Candidate,reply:string,signal:AbortSignal):Promise<Decision>{
  const direct=directActionDecision(candidate,reply);if(direct)return direct;
- const result=await provider.chat({purpose:'resolver',maxTokens:Math.min(configuredResolverBudget(),1024),messages:[{role:'system',content:resolverInstruction},{role:'user',content:JSON.stringify({action:candidate.kind,target:candidate.target,request:candidate.text,reply})}]},signal);
+ const result=await provider.chat(resolverRequest(candidate,reply,useApp.getState().provider.maxTokens),signal);
  return parseDecision(result.text);
 }
 async function generate(chat:Chat,character:Character,user:Message,action?:Partial<Candidate>,replace?:Message,continuation=false,groupTurn=false){
