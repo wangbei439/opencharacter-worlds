@@ -464,5 +464,6 @@
   "help.actions": "Quick actions",
   "help.actionsBody": "Gifting, safekeeping, returning, picking up and moving check current world conditions. Safekeeping does not transfer ownership; refusal or deferral does not complete a handover. The world panel shows owner, holder and location.",
   "help.export": "Import and export",
-  "help.exportBody": "Export a complete save from the data section in Settings for backup or transfer. It includes characters, messages and world records, but no API keys. Import creates a separate save without overwriting the original. Editing or deleting earlier messages can rewind later events, so back up first."
+  "help.exportBody": "Export a complete save from the data section in Settings for backup or transfer. It includes characters, messages and world records, but no API keys. Import creates a separate save without overwriting the original. Editing or deleting earlier messages can rewind later events, so back up first.",
+  "advanced.expertModeHint": "Macro, plugin and vector retrieval controls are available in Expert mode. Change the interface mode in Settings. Existing enabled configurations remain active; changing modes does not delete them."
 }

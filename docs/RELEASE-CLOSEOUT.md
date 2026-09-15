@@ -7,3 +7,5 @@ Completed this batch: translated advanced macro example (macro syntax preserved 
 Remaining: detailed advanced help, progressive settings visibility, scene/animation gaps, landing metadata and repository entry, dependency redistribution notices, public hosting, physical-device/new-user acceptance. Full two-arm live benchmark remains incomplete and paused, not passed or removed from the acceptance record.
 
 Local checkpoint for preceding memory/benchmark work: d98fbbe. Remote upload must be confirmed separately; a local commit is not evidence of successful publication.
+
+Progressive settings: Simple hides the writing configuration entry; Advanced retains writing presets; Expert exposes macro/plugin/vector controls. Existing enabled settings remain active and an Advanced-mode hint explains where to manage them. No live tests or browser suites rerun at user request; compilation only. Existing automated writing-flow tests will need to select the appropriate interface mode before execution.
