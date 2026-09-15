@@ -455,5 +455,14 @@
   "advanced.importDoc": "导入故事资料",
   "advanced.docText": "查看或编辑资料",
   "context.vectorReference": "向量召回参考资料",
-  "error.invalidMemoryDoc": "资料须为非空 TXT / Markdown，每份最多 16,000 字，总数最多 8 份。"
+  "error.invalidMemoryDoc": "资料须为非空 TXT / Markdown，每份最多 16,000 字，总数最多 8 份。",
+  "advanced.macroExample": "{{setvar::tone::quiet}}\n{{#if::tone::quiet}}简短回应{{else}}详细回应{{/if}}\n{{#repeat::3}}{{index}}{{/repeat}}",
+  "help.import": "导入角色",
+  "help.importBody": "从角色入口导入角色卡并查看预览，确认后进入世界。导入卡的原始文字不会随界面语言自动翻译；不支持的扩展请查看兼容性提示。也可以在卡片编辑界面自行填写设定。",
+  "help.connect": "连接模型",
+  "help.connectBody": "选择供应商，填写接口地址、模型名称和自己的 API Key。自定义服务需要选择对应协议。请求直接发往你配置的服务；是否收费由该服务决定。出现额度错误时先检查供应商账户。",
+  "help.actions": "快捷动作",
+  "help.actionsBody": "赠送、保管、归还、拾取和移动等动作会检查当前世界条件。保管不改变所有权；拒绝或暂缓不等于已经交接。你可以在世界面板查看所有者、持有人和位置。",
+  "help.export": "导入与导出",
+  "help.exportBody": "在设置的数据区域导出完整存档，用于备份或迁移。完整存档包含角色、消息和世界记录，不包含 API Key。导入会创建独立存档，不覆盖原存档。编辑或删除早期消息可能回滚后续事件，请先备份。"
 }

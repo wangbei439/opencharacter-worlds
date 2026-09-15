@@ -12,8 +12,8 @@
 
 - 产品是本地可用 MVP 和高级功能首版，尚未达到原规范第60章完成定义。
 - 公开代码仓库：[wangbei439/opencharacter-worlds](https://github.com/wangbei439/opencharacter-worlds)。应用公开 HTTPS 地址仍缺。
-- 当前61项单元/运行时测试与受控浏览器证据可复用；首次 GitHub [CI成功记录](https://github.com/wangbei439/opencharacter-worlds/actions/runs/34768719639)对应代码基线，不代表真实模型质量。
-- 优先阻塞：真实多卡短程验收 → 修复 → 对齐基准脚本后同卡同模型100轮对照；实体Android/五分钟新人验收；公开地址完整流程。
+- 最近80项单元/运行时测试与受控浏览器证据可复用；首次 GitHub [CI成功记录](https://github.com/wangbei439/opencharacter-worlds/actions/runs/34768719639)对应代码基线，不代表真实模型质量。
+- 按用户要求暂停继续测试；保留未完成对照的边界，优先收尾原规范中的界面、帮助与发布准备。实体Android/五分钟新人验收、公开地址完整流程仍未完成。
 - 同期修整：高级区双语/帮助、视觉动画对照、渐进设置、实际分发依赖许可说明。慢帧粒子减量已实现，缺的是实机验证。
 - **测试器差异须先处理**：旧 `?live-check` 只做三卡9轮、内存隔离；大世界为单叙事者扮演多个NPC，不等同独立成员群聊。旧百轮脚本已按 [V2协议](BENCHMARK-PROTOCOL.md) 对齐共享判定、预算与失败保存，离线两组100轮通过；新版真实百轮已启动但中断：GLM 普通组69轮后遇内容审核，Kimi 普通组22轮后超时，现已完成 Kimi Runtime 100轮（普通组仍未完成，不能视为完整双组对照），详见 [执行记录](BENCHMARK-KIMI-2026-09-15.md)。
 
@@ -47,10 +47,10 @@
 | S24 | §24 Particle System | 待验证 | [src/scene/particles.ts](../src/scene/particles.ts) — 七种粒子、三级质量、慢帧自动减量已实现；低端实机效果与帧率未验收。 |
 | S25 | §25 World State 驱动视觉 | 部分完成 | [src/scene/SceneRenderer.tsx](../src/scene/SceneRenderer.tsx) — 时间、地点、天气驱动已有；角色粒子覆盖世界天气时的优先级需专项验收。 |
 | S26 | §26 Character Visual | 部分完成 | [src/scene/SceneRenderer.tsx](../src/scene/SceneRenderer.tsx) — 表情立绘与瞬时状态已有；抖动、眨眼等全部命名动画未逐项完成。 |
-| S27 | §27 中文 / 英文国际化 | 部分完成 | [src/ui/AdvancedWriting.tsx](../src/ui/AdvancedWriting.tsx) — 双语字典键一致；高级宏示例仍有中文文字硬编码，不能宣称英文所有界面完成。 |
+| S27 | §27 中文 / 英文国际化 | 部分完成 | [src/ui/AdvancedWriting.tsx](../src/ui/AdvancedWriting.tsx) — 双语字典键一致；高级宏示例已接入双语；完整英文界面仍待最终人工验收。 |
 | S28 | §28 Character Content 不自动翻译 | 已完成 | [src/compatibility/character.ts](../src/compatibility/character.ts) — 界面切换不翻译导入卡原文。 |
 | S29 | §29 Tutorial System | 部分完成 | [src/ui/panels.tsx](../src/ui/panels.tsx) — WORLD/Event/Action 提示和关闭保存已有；全部首次情境高亮未逐条验收。 |
-| S30 | §30 Help Center | 部分完成 | [src/ui/panels.tsx](../src/ui/panels.tsx) — 内置双语简要帮助已有；原规范全部分类与高级新功能帮助仍需整理。 |
+| S30 | §30 Help Center | 部分完成 | [src/ui/panels.tsx](../src/ui/panels.tsx) — 内置双语帮助已覆盖原规范十类；高级新功能的详细帮助仍需继续整理。 |
 | S31 | §31 三层设置复杂度 | 部分完成 | [src/ui/panels.tsx](../src/ui/panels.tsx) — 三档模式存在；新增高级区域的渐进隐藏和普通玩家易用性未完整验收。 |
 | S32 | §32 Provider Adapter | 已完成 | [src/providers/adapter.ts](../src/providers/adapter.ts) — 提供统一适配接口；当前六类供应商按后续用户要求调整。 |
 | S33 | §33 OpenAI-Compatible | 已完成 | [src/ui/ProviderForm.tsx](../src/ui/ProviderForm.tsx) — 兼容端点、模型、请求头和生成参数已实现；各真实服务兼容性不能由模拟测试代替。 |
