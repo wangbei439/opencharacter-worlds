@@ -1,0 +1,25 @@
+{
+  "model": "kimi-k3",
+  "status": "stopped",
+  "createdAt": "2026-09-15T03:56:48.686Z",
+  "finishedAt": "2026-09-15T03:59:48.716Z",
+  "timeoutMs": 180000,
+  "completedNormalTurns": 22,
+  "newCompletedTurns": 0,
+  "cumulativeActorAttempts": 24,
+  "newActorAttempts": 1,
+  "reportedTotalTokens": 84674,
+  "failedRequestUsageUnknown": true,
+  "error": {
+    "code": "timeout",
+    "detail": "",
+    "position": {
+      "mode": "normal",
+      "turn": 23,
+      "stage": "actor"
+    }
+  },
+  "runtimeStarted": false,
+  "sourceReportHash": "9ac32c37bb750b470e0dcfc0836c167859a2f38a1001974d1cff25aef429ff0e",
+  "note": "Explicit legacy Normal resume retained 22 completed turns. Turn 23 timed out at 180 seconds. No automatic retry, fallback or further live requests."
+}

@@ -1,4 +1,8 @@
 {
+  "rollbackClearsInteractionMemory": true,
+  "refusedInteractionRecall": true,
+  "refusedMemoryReload": true,
+  "refusedMemoryImportedSave": true,
   "independentCharacterContext": true,
   "ownLore": true,
   "speakerIdentity": true,

@@ -39,3 +39,22 @@ Kimi 启动时发现接口拒绝 `top_p=1.0`。现在仅对受支持阿里云域
 依据：[阿里云 Kimi API 参数文档](https://help.aliyun.com/zh/model-studio/kimi-api)。默认值为 temperature 1.0、top_p 0.95；本次修复不添加第三方依赖，不关闭内容审核，不改变模型。
 
 最新真实运行结果见 [Kimi 执行记录](BENCHMARK-KIMI-2026-09-15.md)：普通组22轮后第23次请求超时；未进行 Runtime 组。
+
+## V3: explicit checkpoint resume (2026-09-15)
+
+The runner now saves pre-turn world state, ledger and full history, then advances the checkpoint only after a completed turn. If an actor reply was saved before a resolver failure, resume reuses that reply. Completed turns and their usage counters are retained. Failed attempts remain in the new report, and the source report is never overwritten. A failed request may have consumed provider tokens without returning usage; totals remain incomplete in that case.
+
+With the same locally supplied endpoint, key, model and token settings:
+
+```text
+node scripts/benchmark.mjs --real --resume=test-results/benchmark/<stopped-report>.json --dry-run
+node scripts/benchmark.mjs --real --resume=test-results/benchmark/<stopped-report>.json
+```
+
+Resume is explicit, not an automatic retry. Every provider error, including quota and moderation errors, still stops execution. Do not resume a quota/moderation failure without first resolving the cause. No model fallback is implemented. V3 checks model, endpoint hash, sampling/token settings and a fingerprint of the fixture, prompts and primary runtime/context/adapter sources before any request. Do not launch concurrent resumes of the same source report.
+
+`OC_BENCHMARK_TIMEOUT_MS` defaults to 180000 (3 minutes), accepts 1000–600000, and is recorded along with the previous timeout on resume. The application default remains 90000. Changing timeout is allowed; changing model or token/sampling configuration requires a new run.
+
+Legacy V2 migration requires `--allow-legacy-normal`. It accepts saved Normal progress only, reconstructing history from contiguous completed transcript rows. Old Runtime reports lack authoritative checkpoints and are rejected. The old endpoint and implementation cannot be verified; the migration records this provenance limitation. `--dry-run` validates and prints the resume position without making requests or writing a report.
+
+Validation: local HTTP fixtures exercised both 100-turn arms across interruptions, retained Normal turns, reused an actor reply after resolver failure, rejected model/budget changes before requests, and preserved source reports. The actual Kimi partial report was dry-run validated: 22 completed Normal turns, next request turn 23, timeout changed from 90 to 180 seconds. This is mechanism evidence, not a completed live benchmark.

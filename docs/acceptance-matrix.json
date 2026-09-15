@@ -401,7 +401,7 @@
       "title": "Benchmark",
       "status": "部分完成",
       "evidence": "scripts/benchmark.mjs",
-      "boundary": "存在 Mock 100轮对照；脚本仍有旧直接判定与64-token Resolver，须与正式流程对齐后再跑真实对照。"
+      "boundary": "已对齐正式判定并支持续跑；Kimi Runtime真实100轮完成，普通组仅22轮，完整双组对照与失败互动回忆仍待补齐。"
     },
     {
       "id": "S50",

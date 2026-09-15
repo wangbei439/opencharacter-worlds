@@ -1,0 +1,110 @@
+{
+  "createdAt": "2026-09-15T09:03:31.160Z",
+  "model": "kimi-k3",
+  "status": "completed-needs-review",
+  "liveInitialReplies": true,
+  "results": [
+    {
+      "character": "Eileen",
+      "status": "completed",
+      "reusedInitialReply": true,
+      "initialUsage": {
+        "prompt_tokens": 762,
+        "total_tokens": 1176,
+        "completion_tokens": 414,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "text_tokens": 762
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 315,
+          "text_tokens": 99
+        }
+      },
+      "resolverUsage": {
+        "prompt_tokens": 360,
+        "total_tokens": 712,
+        "completion_tokens": 352,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "text_tokens": 360
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 330,
+          "text_tokens": 22
+        }
+      },
+      "decision": "REJECT",
+      "trimmedMessages": 147,
+      "quoteIncluded": true,
+      "recallUsage": {
+        "prompt_tokens": 1721,
+        "total_tokens": 2632,
+        "completion_tokens": 911,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "text_tokens": 1721
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 789,
+          "text_tokens": 122
+        }
+      }
+    },
+    {
+      "character": "沈砚",
+      "status": "completed",
+      "reusedInitialReply": true,
+      "initialUsage": {
+        "prompt_tokens": 871,
+        "total_tokens": 1139,
+        "completion_tokens": 268,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "text_tokens": 871
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 208,
+          "text_tokens": 60
+        }
+      },
+      "resolverUsage": {
+        "prompt_tokens": 327,
+        "total_tokens": 466,
+        "completion_tokens": 139,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "text_tokens": 327
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 117,
+          "text_tokens": 22
+        }
+      },
+      "decision": "DEFER",
+      "trimmedMessages": 147,
+      "quoteIncluded": true,
+      "recallUsage": {
+        "prompt_tokens": 1797,
+        "total_tokens": 2240,
+        "completion_tokens": 443,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "text_tokens": 1797
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 371,
+          "text_tokens": 72
+        }
+      }
+    }
+  ],
+  "finishedAt": "2026-09-15T09:04:44.180Z",
+  "uniqueRequests": 6,
+  "totalTokens": 8365,
+  "limitations": [
+    "Initial decisions explicitly prompted; filler history synthetic.",
+    "Eileen falsely denied leaving future reconsideration open; excerpt policy subsequently changed, not live re-tested.",
+    "Shen accurately recalled DEFER and original words."
+  ]
+}

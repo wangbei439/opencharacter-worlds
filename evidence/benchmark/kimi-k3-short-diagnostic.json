@@ -1,0 +1,26 @@
+{
+  "createdAt": "2026-09-15T04:33:38.054Z",
+  "model": "kimi-k3",
+  "requestCount": 1,
+  "prompt": "Reply with OK.",
+  "maxTokens": 4096,
+  "timeoutMs": 180000,
+  "streaming": false,
+  "status": "completed",
+  "reply": "OK",
+  "usage": {
+    "prompt_tokens": 89,
+    "total_tokens": 141,
+    "completion_tokens": 52,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "text_tokens": 89
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 36,
+      "text_tokens": 16
+    }
+  },
+  "elapsedMs": 8882,
+  "finishedAt": "2026-09-15T04:33:46.936Z"
+}

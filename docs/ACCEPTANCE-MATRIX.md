@@ -15,7 +15,7 @@
 - 当前61项单元/运行时测试与受控浏览器证据可复用；首次 GitHub [CI成功记录](https://github.com/wangbei439/opencharacter-worlds/actions/runs/34768719639)对应代码基线，不代表真实模型质量。
 - 优先阻塞：真实多卡短程验收 → 修复 → 对齐基准脚本后同卡同模型100轮对照；实体Android/五分钟新人验收；公开地址完整流程。
 - 同期修整：高级区双语/帮助、视觉动画对照、渐进设置、实际分发依赖许可说明。慢帧粒子减量已实现，缺的是实机验证。
-- **测试器差异须先处理**：旧 `?live-check` 只做三卡9轮、内存隔离；大世界为单叙事者扮演多个NPC，不等同独立成员群聊。旧百轮脚本已按 [V2协议](BENCHMARK-PROTOCOL.md) 对齐共享判定、预算与失败保存，离线两组100轮通过；新版真实百轮已启动但中断：GLM 普通组69轮后遇内容审核，Kimi 普通组22轮后超时，均缺完整 Runtime 对照，详见 [执行记录](BENCHMARK-KIMI-2026-09-15.md)。
+- **测试器差异须先处理**：旧 `?live-check` 只做三卡9轮、内存隔离；大世界为单叙事者扮演多个NPC，不等同独立成员群聊。旧百轮脚本已按 [V2协议](BENCHMARK-PROTOCOL.md) 对齐共享判定、预算与失败保存，离线两组100轮通过；新版真实百轮已启动但中断：GLM 普通组69轮后遇内容审核，Kimi 普通组22轮后超时，现已完成 Kimi Runtime 100轮（普通组仍未完成，不能视为完整双组对照），详见 [执行记录](BENCHMARK-KIMI-2026-09-15.md)。
 
 ## 原规范逐章对照
 
@@ -69,7 +69,7 @@
 | S46 | §46 V0.1 明确不做 | 明确后置 | [docs/PRODUCT-SPEC-V0.1.md](../docs/PRODUCT-SPEC-V0.1.md) — 账号、社区、支付、TTS/STT、完整编译器和插件市场均不列为首发缺陷；后来新增范围另列。 |
 | S47 | §47 V0.1 必须做 | 部分完成 | [docs/ACCEPTANCE.md](../docs/ACCEPTANCE.md) — 核心 P0 多数已实现，部署/实机/最终验收未完成；Provider 清单以后续要求为准。 |
 | S48 | §48 Runtime 最小测试集 | 已完成 | [tests/runtime/engine.test.mjs](../tests/runtime/engine.test.mjs) — 物品、虚构物品、承诺、知识隔离、长期事件与 NO_CHANGE 已有机制测试。 |
-| S49 | §49 Benchmark | 部分完成 | [scripts/benchmark.mjs](../scripts/benchmark.mjs) — 存在 Mock 100轮对照；脚本仍有旧直接判定与64-token Resolver，须与正式流程对齐后再跑真实对照。 |
+| S49 | §49 Benchmark | 部分完成 | [scripts/benchmark.mjs](../scripts/benchmark.mjs) — 已对齐正式判定并支持续跑；Kimi Runtime真实100轮完成，普通组仅22轮，完整双组对照与失败互动回忆仍待补齐。 |
 | S50 | §50 UX 验收标准 | 待验证 | [tests/e2e/product-smoke.mjs](../tests/e2e/product-smoke.mjs) — 本地自动操作通过；新用户五分钟、全英文界面及实机体验不能据此判定完成。 |
 | S51 | §51 性能标准 | 待验证 | [src/scene/particles.ts](../src/scene/particles.ts) — 动态关闭、低性能模式与慢帧减量已有；初始 JS 约512kB提示和中低端性能未验收。 |
 | S52 | §52 错误处理 | 部分完成 | [src/providers/adapter.ts](../src/providers/adapter.ts) — 常见错误和脱敏有测试；全部真实供应商的跨域、限流、断流路径未验收。 |

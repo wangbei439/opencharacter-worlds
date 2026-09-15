@@ -1,0 +1,18 @@
+{
+  "createdAt": "2026-09-15T05:50:07.825Z",
+  "modelRequests": 0,
+  "dns": {
+    "status": "ok",
+    "elapsedMs": 10365,
+    "families": [
+      4,
+      4
+    ]
+  },
+  "tls": {
+    "status": "ok",
+    "elapsedMs": 11382,
+    "authorized": true,
+    "protocol": "TLSv1.3"
+  }
+}

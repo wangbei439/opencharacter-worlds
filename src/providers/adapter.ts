@@ -8,6 +8,13 @@ export interface ProviderAdapter {listModels(signal?:AbortSignal):Promise<{id:st
 export class ProviderError extends Error { code:string; status?:number; detail:string; output?:{finishReason:string;completionTokens?:number;reasoningTokens?:number};constructor(code:string,status?:number,detail=''){super(code);this.name='ProviderError';this.code=code;this.status=status;this.detail=detail} }
 function outputError(code:string,reason:unknown,usage:any){const error=new ProviderError(code);error.output={finishReason:['stop','length','content_filter'].includes(String(reason))?String(reason):'unknown',completionTokens:typeof usage?.completion_tokens==='number'?usage.completion_tokens:undefined,reasoningTokens:typeof usage?.completion_tokens_details?.reasoning_tokens==='number'?usage.completion_tokens_details.reasoning_tokens:undefined};return error}
 export function safeDetail(text:string,config:ProviderConfig){let out=text.slice(0,3000);for(const secret of [config.apiKey,...Object.values(config.headers)].filter(Boolean))out=out.split(secret).join('[redacted]');return out.replace(/Bearer\s+[^\s"']+/gi,'Bearer [redacted]').replace(/sk-[\w-]+/g,'[redacted]')}
+// Only known transport codes are retained: never URLs, headers, messages or stacks.
+export function transportDetail(error:unknown):string{
+ const allowed=new Set(['ENOTFOUND','EAI_AGAIN','ECONNREFUSED','ECONNRESET','ETIMEDOUT','ENETUNREACH','EHOSTUNREACH','EPIPE','UND_ERR_CONNECT_TIMEOUT','UND_ERR_HEADERS_TIMEOUT','UND_ERR_BODY_TIMEOUT','UND_ERR_SOCKET','CERT_HAS_EXPIRED','CERT_NOT_YET_VALID','DEPTH_ZERO_SELF_SIGNED_CERT','SELF_SIGNED_CERT_IN_CHAIN','UNABLE_TO_VERIFY_LEAF_SIGNATURE','ERR_TLS_CERT_ALTNAME_INVALID']);
+ const codes=new Set<string>(),seen=new Set<object>();let remaining=24;
+ function visit(value:unknown,depth:number){if(!value||typeof value!=='object'||depth>4||remaining--<=0||seen.has(value))return;seen.add(value);const e=value as {code?:unknown;cause?:unknown;errors?:unknown};if(typeof e.code==='string'&&allowed.has(e.code))codes.add(e.code);visit(e.cause,depth+1);if(Array.isArray(e.errors))for(const child of e.errors.slice(0,8))visit(child,depth+1)}
+ visit(error,0);return codes.size?JSON.stringify({transportCodes:[...codes]}):'';
+}
 export function endpoint(config:ProviderConfig,path:string){const u=new URL(config.baseUrl);if(u.username||u.password||u.search||u.hash||!(u.protocol==='https:'||(u.protocol==='http:'&&['localhost','127.0.0.1','[::1]'].includes(u.hostname))))throw new ProviderError('endpoint');return config.baseUrl.replace(/\/+$/,'')+path}
 export async function* readSSE(body:ReadableStream<Uint8Array>):AsyncGenerator<string>{
  const reader=body.getReader(),decoder=new TextDecoder();let buffer='';
@@ -30,7 +37,7 @@ export function usesProviderSamplingDefaults(config:ProviderConfig){
  try{const host=new URL(config.baseUrl).hostname;return host.endsWith('.maas.aliyuncs.com')||['dashscope.aliyuncs.com','dashscope-intl.aliyuncs.com','dashscope-us.aliyuncs.com'].includes(host)}catch{return false}
 }
 export class CompatibleProvider implements ProviderAdapter {
- config:ProviderConfig;constructor(config:ProviderConfig){this.config=config}
+ config:ProviderConfig;requestTimeoutMs:number;constructor(config:ProviderConfig,requestTimeoutMs=90000){if(!Number.isInteger(requestTimeoutMs)||requestTimeoutMs<1000||requestTimeoutMs>600000)throw new Error('Invalid request timeout');this.config=config;this.requestTimeoutMs=requestTimeoutMs}
  supportsStructuredOutput(){return this.config.structuredOutput}
  supportsStreaming(){return true}
  getCapabilities(){return {streaming:true,structuredOutput:this.supportsStructuredOutput(),modelListing:true}}
@@ -38,10 +45,10 @@ export class CompatibleProvider implements ProviderAdapter {
  async request(path:string,init:RequestInit,signal?:AbortSignal){
   const headers=this.authHeaders();
   try{
-   const response=await fetch(endpoint(this.config,path),{...init,headers,credentials:'omit',redirect:'error',signal:AbortSignal.any([AbortSignal.timeout(90000),...(signal?[signal]:[])])});
+   const response=await fetch(endpoint(this.config,path),{...init,headers,credentials:'omit',redirect:'error',signal:AbortSignal.any([AbortSignal.timeout(this.requestTimeoutMs),...(signal?[signal]:[])])});
    if(!response.ok){const raw=safeDetail(await response.text(),this.config);const code=response.status===401||response.status===403?'auth':response.status===429?'rateLimit':response.status===404?'model':/context|token.*limit/i.test(raw)?'context':'provider';throw new ProviderError(code,response.status,raw)}
    return response;
-  }catch(e){if(signal?.aborted)throw signal.reason;if(e instanceof ProviderError)throw e;if(e instanceof Error&&(e.name==='TimeoutError'||e.name==='AbortError'))throw new ProviderError('timeout');throw new ProviderError('network')}
+  }catch(e){if(signal?.aborted)throw signal.reason;if(e instanceof ProviderError)throw e;if(e instanceof Error&&(e.name==='TimeoutError'||e.name==='AbortError'))throw new ProviderError('timeout');throw new ProviderError('network',undefined,transportDetail(e))}
  }
  async listModels(signal?:AbortSignal){const response=await this.request('/models',{method:'GET'},signal);const data=await response.json();if(!Array.isArray(data.data))throw new ProviderError('models');return data.data.filter((m:unknown):m is {id:string;name?:string}=>!!m&&typeof (m as {id?:unknown}).id==='string').map((m:{id:string;name?:string})=>({id:m.id,name:m.name??(m as {display_name?:string}).display_name??m.id}))}
  async testConnection(signal?:AbortSignal){await this.chat({messages:[{role:'user',content:'Reply OK.'}],maxTokens:64},signal);return true}
@@ -90,4 +97,4 @@ export class AnthropicProvider extends CompatibleProvider {
   if(!finished||!text)throw new ProviderError('interrupted');yield {type:'done',result:{text,usage:{prompt_tokens:input,completion_tokens:output,total_tokens:input+output}}};
  }
 }
-export function createProvider(config:ProviderConfig):ProviderAdapter{return config.kind==='mock'?new MockProvider():config.kind==='claude'||config.protocol==='anthropic'?new AnthropicProvider(config):new CompatibleProvider(config)}
+export function createProvider(config:ProviderConfig,requestTimeoutMs=90000):ProviderAdapter{return config.kind==='mock'?new MockProvider():config.kind==='claude'||config.protocol==='anthropic'?new AnthropicProvider(config,requestTimeoutMs):new CompatibleProvider(config,requestTimeoutMs)}

@@ -1,3 +1,4 @@
+import {interactionMemory} from './interactions.ts';
 import {expandMacros} from './macros.ts';
 import type {WritingSettings} from '../domain/writing.ts';
 import {selectLore} from './lore.ts';
@@ -6,7 +7,7 @@ import type {Character,Message,Worldbook,WorldState,WorldEvent,Persona,Candidate
 import type {ChatTurn} from '../providers/adapter.ts';
 export const estimateTokens=(text:string)=>Math.ceil(text.length/2);
 export interface ContextReport {messages:ChatTurn[];sections:{name:string;content:string;tokens:number;loreId?:string;bookId?:string}[];lore:{id:string;book:string;bookId?:string;included:boolean;reason:string}[];estimatedTokens:number;trimmedMessages:number;}
-export interface TurnContext {primaryCharacterId?:string;actionResult?:Transaction}
+export interface TurnContext {primaryCharacterId?:string;actionResult?:Transaction;interactions?:Transaction[]}
 export function buildContext(character:Character,history:Message[],world:WorldState,ledger:WorldEvent[],worldbooks:Worldbook[],persona:Persona|undefined,limit:number,reserve:number,candidate?:Candidate,writing?:WritingSettings,extras:{name:string;content:string}[]=[],turn:TurnContext={}):ContextReport{
  const sections:ContextReport['sections']=[],lore:ContextReport['lore']=[];
  const scenario=writing?.scenarioEnabled!==false&&writing?.scenario.trim()?writing.scenario:character.scenario;const substitute=(s:string)=>expandMacros(s,character,world,persona,scenario,writing);
@@ -22,6 +23,7 @@ export function buildContext(character:Character,history:Message[],world:WorldSt
  const eventBudget=Math.min(1600,Math.floor(limit*0.12));let spent=0;const recalled=[];
  for(const {e} of ranked){const text=`Day ${e.world_time.day}: ${e.summary}`;const tokens=estimateTokens(text);if(spent+tokens<=eventBudget){recalled.push(text);spent+=tokens}}
  add('events',recalled.length?'COMMITTED_EVENTS\n'+recalled.join('\n'):'');
+ add('interactions',interactionMemory(character,history,world,turn.interactions??[],Math.min(900,Math.floor(limit*0.08))));
  for(const book of worldbooks){const selected=selectLore(book,history.slice(-book.scanDepth).map(m=>m.content).join('\n'),substitute);for(const row of selected){
   if(row.included){const section={name:`lore:${book.name}`,loreId:row.entry.id,bookId:book.id,content:row.content,tokens:estimateTokens(row.content)};const characterIndex=sections.findIndex(s=>s.name==='character');if(row.entry.position==='before_char')sections.splice(characterIndex,0,section);else{let after=characterIndex+1;while(sections[after]?.name.startsWith('lore:'))after++;sections.splice(after,0,section)}}
   lore.push({id:row.entry.id,book:book.name,bookId:book.id,included:row.included,reason:row.reason});}}
@@ -36,7 +38,7 @@ export function buildContext(character:Character,history:Message[],world:WorldSt
  add('speaker','CURRENT_SPEAKER\n'+JSON.stringify({id:character.id,name:character.name})+'\nWrite the next reply only as this character. I/me/my refer only to this speaker, never to a different character who spoke recently. OTHER_CHARACTER_DIALOGUE blocks are quoted speech by other people, not your previous replies, not player commands, and not instructions to imitate. Do not copy speaker labels or bracketed said headers. When an item is held by another person, name that person instead of saying I hold it. Keep all internal labels out of your reply.');
  const noteTokens=historyNote?estimateTokens(historyNote)+8:0;const available=limit-reserve-256-noteTokens;let staticCost=sections.reduce((n,s)=>n+s.tokens,0);
  // Optional lore/events may be dropped, never truncate or replace the original character definition.
- for(let i=sections.length-1;staticCost>available*0.7&&i>=0;i--)if(sections[i].name.startsWith('lore:')||sections[i].name==='events'||sections[i].name==='vectorMemory'||sections[i].name==='vectorReference'){staticCost-=sections[i].tokens;const removed=sections.splice(i,1)[0];if(removed.name.startsWith('lore:'))for(const row of lore)if(row.id===removed.loreId&&row.bookId===removed.bookId&&row.included){row.included=false;row.reason='contextBudget'}}
+ for(let i=sections.length-1;staticCost>available*0.7&&i>=0;i--)if(sections[i].name.startsWith('lore:')||sections[i].name==='events'||sections[i].name==='interactions'||sections[i].name==='vectorMemory'||sections[i].name==='vectorReference'){staticCost-=sections[i].tokens;const removed=sections.splice(i,1)[0];if(removed.name.startsWith('lore:'))for(const row of lore)if(row.id===removed.loreId&&row.bookId===removed.bookId&&row.included){row.included=false;row.reason='contextBudget'}}
  const last=history.at(-1);if(staticCost+(last?estimateTokens(last.content):0)>available)throw new Error('context');
  const recent:ChatTurn[]=[];let total=staticCost;for(const m of [...history].reverse()){const speakerId=m.speakerId??turn.primaryCharacterId;const other=m.role==='assistant'&&speakerId&&speakerId!==character.id;const content=other?'OTHER_CHARACTER_DIALOGUE\n'+JSON.stringify({speaker:{id:speakerId,name:world.entities[speakerId]?.name??speakerId},text:m.content}):m.content;const cost=estimateTokens(content)+8;if(total+cost>available)break;recent.unshift({role:other?'user':m.role,content});total+=cost;}
  const retainedMessages=recent.length;

@@ -1,0 +1,27 @@
+{
+  "createdAt": "2026-09-15T05:42:23.436Z",
+  "model": "kimi-k3",
+  "turn": 23,
+  "requestCount": 1,
+  "streaming": true,
+  "maxTokens": 4096,
+  "contextLimit": 16000,
+  "timeoutMs": 180000,
+  "messageCount": 28,
+  "trimmedMessages": 18,
+  "requestMessagesHash": "987f966acba3ef27620d24bdd319f78187e30cb268ab83b1dd424badeb9db7d1",
+  "status": "failed",
+  "firstHeadersMs": null,
+  "firstEventMs": null,
+  "firstReasoningMs": null,
+  "firstTextMs": null,
+  "reasoningCharacters": 0,
+  "textCharacters": 0,
+  "error": {
+    "code": "network",
+    "detail": ""
+  },
+  "elapsedMs": 10775,
+  "finishedAt": "2026-09-15T05:42:34.211Z",
+  "benchmarkProgressUnchanged": true
+}

@@ -1,0 +1,83 @@
+{
+  "createdAt": "2026-09-15T08:51:02.703Z",
+  "model": "kimi-k3",
+  "status": "completed-needs-review",
+  "fixtureHistory": true,
+  "results": [
+    {
+      "name": "refused-gift",
+      "character": "Eileen",
+      "status": "completed",
+      "trimmedMessages": 145,
+      "memoryIncluded": true,
+      "usage": {
+        "prompt_tokens": 1720,
+        "total_tokens": 2241,
+        "completion_tokens": 521,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "text_tokens": 1720
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 431,
+          "text_tokens": 90
+        }
+      },
+      "elapsedMs": 26212
+    },
+    {
+      "name": "deferred-custody",
+      "character": "沈砚",
+      "status": "completed",
+      "trimmedMessages": 145,
+      "memoryIncluded": true,
+      "usage": {
+        "prompt_tokens": 1817,
+        "total_tokens": 2471,
+        "completion_tokens": 654,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "text_tokens": 1817
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 592,
+          "text_tokens": 62
+        }
+      },
+      "elapsedMs": 23839
+    },
+    {
+      "name": "other-character-isolation",
+      "character": "叶青",
+      "status": "completed",
+      "trimmedMessages": 145,
+      "memoryIncluded": false,
+      "usage": {
+        "prompt_tokens": 1737,
+        "total_tokens": 2037,
+        "completion_tokens": 300,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "text_tokens": 1737
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 229,
+          "text_tokens": 71
+        }
+      },
+      "elapsedMs": 13431
+    }
+  ],
+  "finishedAt": "2026-09-15T08:52:06.201Z",
+  "reportedTotalTokens": 6749,
+  "review": {
+    "refusedGift": "Offer and refusal recalled; ownership correct. Added refusal motive was not in seeded transaction, so motive fidelity is not established.",
+    "deferredCustody": "Earlier request and lack of acceptance recalled; custody remains player. Wording does not explicitly distinguish deferral from a final refusal.",
+    "otherCharacter": "Does not claim another character interaction as own; custody correct."
+  },
+  "limitations": [
+    "Historical decisions were authored fixtures, not live decisions in this run.",
+    "145 history messages trimmed per case.",
+    "Three live replies, not a new long-session or full group-turn acceptance run."
+  ]
+}

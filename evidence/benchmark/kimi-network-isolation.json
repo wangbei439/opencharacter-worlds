@@ -1,0 +1,43 @@
+{
+  "createdAt": "2026-09-15T06:07:32.566Z",
+  "modelRequests": 0,
+  "proxy": {
+    "windowsUserProxyEnabled": false,
+    "windowsPacConfigured": false,
+    "shellProxyEnvironmentPresent": false,
+    "dnsAdapterQuery": "access-denied"
+  },
+  "dns": [
+    {
+      "kind": "lookup4",
+      "status": "ok",
+      "elapsedMs": 5170,
+      "count": 2
+    },
+    {
+      "kind": "resolve4",
+      "status": "ok",
+      "elapsedMs": 17085,
+      "count": 2
+    },
+    {
+      "kind": "lookupAll",
+      "status": "ok",
+      "elapsedMs": 2926,
+      "count": 2
+    }
+  ],
+  "tls": [
+    {
+      "route": "resolved-ip-with-original-SNI",
+      "status": "timeout",
+      "elapsedMs": 12016
+    },
+    {
+      "route": "resolved-ip-with-original-SNI",
+      "status": "timeout",
+      "elapsedMs": 12006
+    }
+  ],
+  "finishedAt": "2026-09-15T06:08:21.770Z"
+}

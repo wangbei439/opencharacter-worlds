@@ -1,0 +1,13 @@
+{
+  "createdAt": "2026-09-15T09:08:16.917Z",
+  "finishedAt": "2026-09-15T09:08:59.343Z",
+  "model": "kimi-k3",
+  "newRequests": 1,
+  "newReportedTokens": 2769,
+  "reusedInitialReply": true,
+  "reusedDecision": true,
+  "trimmedMessages": 147,
+  "quoteIncluded": true,
+  "result": "Targeted check passed: recalls refusal while explicitly acknowledging the original possibility of reconsideration another time. Ring remains held by player.",
+  "limits": "One prompted case with synthetic filler history; not broad semantic or long-session acceptance."
+}

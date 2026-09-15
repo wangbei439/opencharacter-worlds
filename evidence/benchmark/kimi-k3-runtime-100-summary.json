@@ -1,0 +1,46 @@
+{
+  "model": "kimi-k3",
+  "arm": "runtime",
+  "createdAt": "2026-09-15T06:42:56.123Z",
+  "finishedAt": "2026-09-15T07:38:34.144Z",
+  "completedTurns": 100,
+  "actorCalls": 100,
+  "resolverCalls": 3,
+  "reportedTotalTokens": 554602,
+  "usageReportedCalls": 103,
+  "settings": {
+    "timeoutMs": 300000,
+    "temperature": null,
+    "topP": null,
+    "sampling": "provider-defaults",
+    "contextLimit": 16000,
+    "maxTokens": 4096
+  },
+  "metrics": {
+    "authoritativeRingOwner": "player",
+    "authoritativeInventedItems": 0,
+    "significantEvents": 1,
+    "unknownCodeTextLeakage": 0,
+    "runtimeFalsePositive": 0,
+    "runtimeFalseNegativeGivenAcceptedCandidates": 0,
+    "metricScope": "FP/FN refer only to the authored gift/promise script; not general semantic accuracy.",
+    "factContradictionManualReviewRequired": true,
+    "relationshipTextDriftManualReviewRequired": true
+  },
+  "review": {
+    "turn1": "Gift rejected; ring remains with player.",
+    "turn2": "Promise accepted and committed.",
+    "turn23": "Missing dragon egg rejected; text explicitly says no egg is seen.",
+    "turn56": "Player ring ownership/custody and exact return-tomorrow promise recalled after 84 messages trimmed.",
+    "turn71": "Unknown code not supplied or invented.",
+    "turn86": "Marriage denied; relationship remains stranger.",
+    "turn100": "Ownership and promise retained after 164 messages trimmed, but earlier rejected gift offer is not explicitly recalled."
+  },
+  "limitations": [
+    "Single card and one run; no full multi-card conclusion.",
+    "Normal baseline remains 22 complete turns plus separate turn-23 streaming diagnostic.",
+    "No matched completed two-arm comparison yet.",
+    "Failed interaction recall needs improvement; scripted counters do not measure general semantic accuracy.",
+    "No per-request duration captured; slow late turns observed."
+  ]
+}
