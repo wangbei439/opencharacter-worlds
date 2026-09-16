@@ -16,3 +16,13 @@
 .writing-open{margin-bottom:6px}.quick-replies{display:flex;gap:8px;overflow-x:auto;margin-bottom:8px}.quick-replies button{white-space:nowrap;border:1px solid var(--line);border-radius:6px;padding:5px 10px;color:var(--accent);font-size:12px}.writing-panel label{display:block;margin:12px 0}.writing-panel .form-actions{flex-wrap:wrap}.writing-panel details{margin:12px 0}.writing-quick-row{border:1px solid var(--line);padding:10px;border-radius:6px;margin:10px 0}.writing-panel select{max-width:100%}
 
 .writing-panel label:has(>input[type=checkbox]){display:flex;align-items:center;gap:.6rem}.writing-panel label>input[type=checkbox]{width:auto;margin:0;flex:none}.advanced-writing small{overflow-wrap:anywhere}.advanced-writing pre{white-space:pre-wrap;overflow-wrap:anywhere}
+/* Scene transitions obey the same runtime motion gate as video and parallax. */
+.scene:not(.scene-motion) .scene-backdrop,.scene:not(.scene-motion) .scene-portrait{animation:none;transition:none}
+.scene-motion .scene-portrait{animation:breathe 8s ease-in-out infinite,portrait-enter .4s ease-out}
+.scene-motion .scene-portrait.expression-surprised{animation:breathe 8s ease-in-out infinite,portrait-surprise .4s ease-out}
+.scene-motion .scene-portrait.expression-fear,.scene-motion .scene-portrait.expression-angry{animation:breathe 8s ease-in-out infinite,portrait-shake .35s ease-out}
+@keyframes portrait-enter{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes portrait-surprise{from{opacity:.6;transform:scale(.98)}60%{transform:scale(1.015)}to{opacity:1;transform:scale(1)}}
+@keyframes portrait-shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-2px)}75%{transform:translateX(2px)}}
+.scene-quiet-toggle{border:1px solid #52625188;background:#0b1712e8;color:#d8e5db;border-radius:6px;padding:7px 10px;font-size:11px;min-height:32px}.scene-quiet-toggle[aria-pressed=true]{border-color:#a9cebd}
+.user-guide,.guide-hint{overflow-wrap:anywhere}.guide-hint ol{padding-left:24px;margin:8px 0 20px}.guide-hint li{font-size:13px;line-height:1.9;margin-bottom:14px;color:var(--muted)}.user-guide h3{margin-top:4px}.guide-hint summary{font-weight:500}.user-guide input{max-width:100%}

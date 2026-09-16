@@ -31,8 +31,8 @@ export async function saveProvider(provider:ProviderConfig){
  const cipher=await crypto.subtle.encrypt({name:'AES-GCM',iv},await localKey(),new TextEncoder().encode(JSON.stringify({apiKey,headers})));
  await configs.put({id:provider.id,config,iv:[...iv],cipher:[...new Uint8Array(cipher)]});
 }
-export async function loadProvider():Promise<ProviderConfig|undefined>{
- const row=await configs.get('primary');if(!row)return;
+export async function loadProvider(id='primary'):Promise<ProviderConfig|undefined>{
+ const row=await configs.get(id);if(!row)return;
  const plain=await crypto.subtle.decrypt({name:'AES-GCM',iv:new Uint8Array(row.iv)},await localKey(),new Uint8Array(row.cipher));
  return normalizeProvider({...row.config,...JSON.parse(new TextDecoder().decode(plain))});
 }

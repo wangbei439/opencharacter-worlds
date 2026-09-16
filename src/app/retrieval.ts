@@ -2,12 +2,13 @@ import {CompatibleProvider} from '../providers/adapter.ts';
 import type {ProviderConfig} from '../domain/types.ts';
 import {cosine,parseVectors} from '../context/vectors.ts';
 import type {MemorySource} from '../context/memory-sources.ts';
-import {db} from '../storage/db.ts';
+import {db,loadProvider} from '../storage/db.ts';
 const table=db.table<{key:string;value:unknown},string>('settings'),cacheKey='vector-cache-v1';
 type CachedVector={hash:string;vector:number[]};
 export async function clearVectorCache(){await table.delete(cacheKey)}
 async function fingerprint(text:string){const digest=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(text));return [...new Uint8Array(digest)].map(v=>v.toString(16).padStart(2,'0')).join('')}
-export async function recallVectors(config:ProviderConfig,model:string,sources:MemorySource[],query:string,signal:AbortSignal){
+export async function recallVectors(config:ProviderConfig,model:string,sources:MemorySource[],query:string,signal:AbortSignal,independent=false){
+ if(independent){const separate=await loadProvider('embedding');if(!separate)throw Error('embeddingConfig');config=separate;model=separate.model;}
  if(!model.trim()||config.kind==='mock'||config.protocol==='anthropic')throw Error('embeddingConfig');
  if(!sources.length)return [];
  const stored=(await table.get(cacheKey))?.value;

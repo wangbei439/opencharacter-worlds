@@ -1,3 +1,4 @@
+import {GuideHint} from './UserGuide.tsx';
 import {usesProviderSamplingDefaults} from '../providers/adapter.ts';
 import {providerPresets,normalizeProvider} from '../providers/presets.ts';
 import {useEffect,useState} from 'react';
@@ -14,7 +15,7 @@ export function ProviderForm({onSaved}:{onSaved?:()=>void}){
  const nativeClaude=config.kind==='claude'||config.protocol==='anthropic',sampling=!nativeClaude&&!usesProviderSamplingDefaults(config);
  const validated=()=>{let parsed;try{parsed=JSON.parse(headers);if(!parsed||Array.isArray(parsed)||typeof parsed!=='object'||Object.values(parsed).some(v=>typeof v!=='string'))throw Error()}catch{throw new Error('headerJson')}return {...config,headers:parsed as Record<string,string>,contextLimit:Math.max(2048,Math.min(1000000,config.contextLimit)),maxTokens:Math.max(32,Math.min(16384,config.maxTokens))}};
  return <form className="provider-form" onSubmit={e=>{e.preventDefault();void run(async()=>{await configureProvider(validated());onSaved?.();if(!onSaved)patchApp({notice:'saved'})})}}>
-  <label>{t('provider.kind')}<select value={config.kind} onChange={e=>choose(e.target.value as ProviderConfig['kind'])}>{providerPresets.map(p=><option key={p.kind} value={p.kind}>{p.kind==='mock'?t('provider.demo'):p.kind==='custom'?t('provider.custom'):p.name}</option>)}</select></label>
+  <GuideHint topic="connection"/><label>{t('provider.kind')}<select value={config.kind} onChange={e=>choose(e.target.value as ProviderConfig['kind'])}>{providerPresets.map(p=><option key={p.kind} value={p.kind}>{p.kind==='mock'?t('provider.demo'):p.kind==='custom'?t('provider.custom'):p.name}</option>)}</select></label>
   {config.kind!=='mock'?<><label>{t('provider.key')}<input type="password" autoComplete="off" spellCheck={false} value={config.apiKey} onChange={e=>set({apiKey:e.target.value})} onBlur={()=>{if(config.apiKey&&config.baseUrl)void loadModels()}} placeholder="••••••••••••••••"/></label><p className="hint"><Icon name="lock"/>{t('provider.private')}</p>
   <label>{t('provider.model')}<input required list="provider-models" value={config.model} onChange={e=>set({model:e.target.value})} placeholder={t('provider.manual')}/><datalist id="provider-models">{models.map(m=><option key={m.id} value={m.id}>{m.name}</option>)}</datalist></label>
   <button type="button" className="text-button" disabled={modelLoading||!config.baseUrl} onClick={()=>void loadModels()}>{modelLoading?t('provider.testing'):t('provider.models')}</button>

@@ -10,6 +10,9 @@ try {
  page.on('pageerror',e=>errors.push(e.message));
  await page.route('https://fixture.example.test/**',async route=>{const body=route.request().postDataJSON();if(!body)return route.fulfill({contentType:'application/json',body:'{"data":[]}'});requests.push(body);return route.fulfill({contentType:'text/event-stream',body:'data: '+JSON.stringify({choices:[{delta:{content:'窗外的雨声渐渐停了。'},finish_reason:'stop'}]})+'\n\ndata: [DONE]\n\n'})});
  await page.goto('http://127.0.0.1:4173/');
+ await page.getByRole('button',{name:zh['nav.settings'],exact:true}).click();
+ await page.getByLabel(zh['settings.mode'],{exact:true}).selectOption('advanced');
+ await page.getByRole('dialog').getByRole('button',{name:zh['common.close'],exact:true}).click();
  await page.getByRole('button',{name:zh['landing.example'],exact:true}).click();await page.locator('.import-preview button').click();await page.locator('.provider-form select').first().selectOption('custom');await page.locator('.provider-form input[type=url]').fill('https://fixture.example.test/v1');await page.locator('input[list=provider-models]').fill('fixture-model');await page.locator('input[type=password]').fill('fixture-only');await page.locator('.provider-form button[type=submit]').click();await page.locator('.enter-world button').click();await page.locator('.conversation-main').waitFor();
  const read=()=>page.evaluate(async()=>{const db=await new Promise(resolve=>{const r=indexedDB.open('opencharacter-worlds');r.onsuccess=()=>resolve(r.result)});const all=n=>new Promise(resolve=>{const r=db.transaction(n).objectStore(n).getAll();r.onsuccess=()=>resolve(r.result)});return {chats:await all('chats'),characters:await all('characters')}});
  const original=(await read()).characters;

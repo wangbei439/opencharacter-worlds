@@ -105,7 +105,7 @@ npx wrangler deploy
 
 Use your own Cloudflare account. No account is embedded or currently authenticated for this project. After deployment, use the returned HTTPS URL to repeat import → configure real model → stream chat → trigger event → inspect world → export save. Localhost saves do not automatically appear on the public origin; transfer them using `.ocwsave` and enter the provider key again.
 
-GitHub CI is provided for build, unit tests and browser smoke checks. No remote repository or deployment secret has been configured. Public deployment must be verified separately; a successful local build is not a deployment result.
+GitHub CI is provided for build, unit tests and browser smoke checks. The public repository is [wangbei439/opencharacter-worlds](https://github.com/wangbei439/opencharacter-worlds). No Cloudflare deployment credentials are bundled. Public deployment must be verified separately; a successful local build is not a deployment result. The current local closeout and remaining release boundaries are listed in [RELEASE-CLOSEOUT.md](docs/RELEASE-CLOSEOUT.md).
 
 ## Project notes
 
